@@ -210,19 +210,86 @@ input{
 
   <h3>🔄 Aktivitas CSSD</h3>
 
-  <label>Nama Aktivitas</label>
-  <input id="namaAktivitas"
+  <label>Tanggal</label>
+  <input id="tanggalAktivitas" type="date">
+
+  <label>Jam</label>
+  <input id="jamAktivitas" type="time">
+
+  <label>Nama Petugas</label>
+  <input id="petugasAktivitas"
          type="text"
-         placeholder="Masukkan aktivitas">
+         value="Handri Gumelar"
+         readonly>
+
+  <label>Unit / Ruangan Asal</label>
+  <input id="unitAktivitas"
+         type="text"
+         placeholder="Contoh: Kamar Operasi">
+
+  <label>Jenis Aktivitas</label>
+  <select id="jenisAktivitas">
+    <option value="">Pilih aktivitas</option>
+    <option>Penerimaan alat kotor</option>
+    <option>Dekontaminasi dan pencucian</option>
+    <option>Inspeksi dan setting instrumen</option>
+    <option>Pengemasan / packing</option>
+    <option>Proses sterilisasi</option>
+    <option>Penyimpanan alat steril</option>
+    <option>Distribusi alat steril</option>
+    <option>Resterilisasi</option>
+    <option>Monitoring dan pengendalian</option>
+    <option>Aktivitas lainnya</option>
+  </select>
+
+  <label>Nama Alat / Set Instrumen</label>
+  <input id="namaAlat"
+         type="text"
+         placeholder="Masukkan nama alat atau set">
+
+  <label>Jumlah</label>
+  <input id="jumlahAlat"
+         type="number"
+         min="1"
+         placeholder="Masukkan jumlah">
+
+  <label>Kondisi Alat</label>
+  <select id="kondisiAlat">
+    <option value="">Pilih kondisi</option>
+    <option>Baik</option>
+    <option>Rusak</option>
+    <option>Tidak lengkap</option>
+    <option>Perlu pemeriksaan</option>
+  </select>
+
+  <label>Status Pekerjaan</label>
+  <select id="statusAktivitas">
+    <option value="">Pilih status</option>
+    <option>Dalam proses</option>
+    <option>Selesai</option>
+    <option>Perlu tindak lanjut</option>
+  </select>
 
   <label>Catatan</label>
-  <input id="catatanAktivitas"
-         type="text"
-         placeholder="Masukkan catatan">
+  <textarea id="catatanAktivitas"
+            rows="4"
+            placeholder="Masukkan catatan aktivitas"></textarea>
 
-  <button class="primary" type="button">
+  <button class="primary"
+          id="simpanAktivitas"
+          type="button">
     Simpan Aktivitas
   </button>
+
+  <button class="primary"
+          id="lihatRiwayat"
+          type="button">
+    Riwayat Aktivitas
+  </button>
+
+  <div id="pesanAktivitas"
+       style="margin-top:15px;color:#047857;font-weight:bold">
+  </div>
 
   <button class="logout"
           id="tutupAktivitas"
@@ -230,6 +297,7 @@ input{
     Kembali ke Menu Utama
   </button>
 </div>
+
 
   </div>
 </section>
@@ -283,6 +351,31 @@ document.getElementById("btnAktivitas").onclick=function(){
 
 document.getElementById("tutupAktivitas").onclick=function(){
   document.getElementById("isiAktivitas").style.display="none";
+};
+document.getElementById("simpanAktivitas").onclick=function(){
+
+  var tanggal=document.getElementById("tanggalAktivitas").value;
+  var jam=document.getElementById("jamAktivitas").value;
+  var unit=document.getElementById("unitAktivitas").value;
+  var jenis=document.getElementById("jenisAktivitas").value;
+  var alat=document.getElementById("namaAlat").value;
+  var jumlah=document.getElementById("jumlahAlat").value;
+  var kondisi=document.getElementById("kondisiAlat").value;
+  var status=document.getElementById("statusAktivitas").value;
+  var catatan=document.getElementById("catatanAktivitas").value;
+
+  if(!tanggal || !jam || !unit || !jenis || !alat || !jumlah || !kondisi || !status){
+    document.getElementById("pesanAktivitas").innerText=
+      "Lengkapi data aktivitas terlebih dahulu.";
+    return;
+  }
+
+  document.getElementById("pesanAktivitas").innerText=
+    "Aktivitas berhasil dicatat.";
+};
+document.getElementById("lihatRiwayat").onclick=function(){
+  document.getElementById("pesanAktivitas").innerText=
+    "Riwayat aktivitas akan ditampilkan di sini.";
 };
 
 </script>
