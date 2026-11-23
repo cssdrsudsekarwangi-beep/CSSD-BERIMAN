@@ -163,9 +163,9 @@ input{
 
     <h3>Menu Utama</h3>
 
-    <button class="primary" type="button">
-      🏠 Beranda
-    </button>
+    <button class="primary" id="btnBeranda" type="button">
+  🏠 Beranda
+</button>
 
     <button class="primary" type="button">
       🔄 Aktivitas CSSD
@@ -186,6 +186,24 @@ input{
     <button class="logout" id="logout">
       Keluar
     </button>
+<div id="isiBeranda" style="display:none;margin-top:25px">
+  <hr>
+
+  <h3>🏠 Beranda</h3>
+
+  <p>
+    Selamat datang di sistem CSSD BERIMAN.
+  </p>
+
+  <p>
+    Dashboard Kepala Instalasi digunakan untuk memantau
+    aktivitas CSSD, akun petugas, dan laporan.
+  </p>
+
+  <button class="logout" id="tutupBeranda" type="button">
+    Kembali ke Menu Utama
+  </button>
+</div>
 
   </div>
 </section>
@@ -224,6 +242,13 @@ document.getElementById("logout").onclick=function(){
   document.getElementById("dashboard").style.display="none";
   document.getElementById("login").style.display="flex";
   pass.value="";
+};
+  document.getElementById("btnBeranda").onclick=function(){
+  document.getElementById("isiBeranda").style.display="block";
+};
+
+document.getElementById("tutupBeranda").onclick=function(){
+  document.getElementById("isiBeranda").style.display="none";
 };
 
 </script>
