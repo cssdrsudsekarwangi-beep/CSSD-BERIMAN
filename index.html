@@ -1,13 +1,183 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>CSSD BERIMAN</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CSSD BERIMAN</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  color:#17201d;
+  background:#edf7f3
+}
+.login{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:linear-gradient(145deg,#064e3b,#047857,#0f766e)
+}
+.card{
+  width:100%;
+  max-width:410px;
+  background:white;
+  border-radius:24px;
+  padding:32px;
+  box-shadow:0 24px 60px rgba(0,0,0,.22)
+}
+.brand{
+  text-align:center;
+  color:#047857;
+  font-weight:800;
+  letter-spacing:.14em;
+  font-size:13px
+}
+h1{
+  text-align:center;
+  color:#12372e;
+  margin:8px 0 5px
+}
+.sub{
+  text-align:center;
+  color:#64748b;
+  font-size:14px;
+  margin-bottom:24px
+}
+label{
+  display:block;
+  font-weight:bold;
+  font-size:13px;
+  margin:14px 0 7px
+}
+input{
+  width:100%;
+  border:1px solid #d9e4df;
+  border-radius:12px;
+  padding:13px;
+  font-size:16px;
+  background:#f8fbfa
+}
+.pass{
+  position:relative
+}
+.pass input{
+  padding-right:70px
+}
+.show{
+  position:absolute;
+  right:8px;
+  top:7px;
+  border:0;
+  background:transparent;
+  color:#047857;
+  font-weight:bold;
+  padding:7px
+}
+.primary{
+  width:100%;
+  margin-top:23px;
+  border:0;
+  border-radius:12px;
+  background:#047857;
+  color:white;
+  font-weight:bold;
+  padding:14px;
+  font-size:16px
+}
+.msg{
+  text-align:center;
+  min-height:20px;
+  font-size:13px;
+  margin-top:12px;
+  color:#b42318
+}
+.dashboard{
+  display:none;
+  min-height:100vh;
+  padding:20px
+}
+.panel{
+  max-width:700px;
+  margin:auto;
+  background:white;
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 8px 25px rgba(6,78,59,.1)
+}
+.badge{
+  display:inline-block;
+  background:#d1fae5;
+  color:#065f46;
+  border-radius:99px;
+  padding:6px 10px;
+  font-size:12px;
+  font-weight:bold
+}
+.logout{
+  border:0;
+  border-radius:10px;
+  background:#064e3b;
+  color:white;
+  padding:11px 15px
+}
+</style>
 </head>
+
 <body>
-  <main id="app"></main>
-  <script src="app.js"></script>
-</body>
-</html>
+
+<section class="login" id="login">
+  <div class="card">
+    <div class="brand">CSSD BERIMAN</div>
+    <h1>Log In</h1>
+    <div class="sub">Silakan masuk untuk melanjutkan</div>
+
+    <form id="form">
+      <label for="user">Username</label>
+      <input id="user" placeholder="Masukkan username">
+
+      <label for="pass">Kata sandi</label>
+      <div class="pass">
+        <input id="pass" type="password" placeholder="Masukkan kata sandi">
+        <button class="show" id="show" type="button">Lihat</button>
+      </div>
+
+      <button class="primary" type="submit">Masuk</button>
+      <div class="msg" id="msg"></div>
+    </form>
+  </div>
+</section>
+
+<section class="dashboard" id="dashboard">
+  <div class="panel">
+    <span class="badge">ADMIN</span>
+    <h2 style="text-align:left">Dashboard CSSD BERIMAN</h2>
+    <p>Selamat datang, Handri Gumelar.</p>
+    <p>Anda masuk sebagai Kepala Instalasi / Admin.</p>
+    <button class="logout" id="logout">Keluar</button>
+  </div>
+</section>
+
+<script>
+var form=document.getElementById("form");
+var pass=document.getElementById("pass");
+var show=document.getElementById("show");
+var msg=document.getElementById("msg");
+
+show.onclick=function(){
+  if(pass.type==="password"){
+    pass.type="text";
+    show.innerText="Tutup";
+  }else{
+    pass.type="password";
+    show.innerText="Lihat";
+  }
+};
+
+form.onsubmit=function(event){
+  event.preventDefault();
+
+  var username=document
