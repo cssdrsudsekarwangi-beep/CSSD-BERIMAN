@@ -167,9 +167,10 @@ input{
   🏠 Beranda
 </button>
 
-    <button class="primary" type="button">
-      🔄 Aktivitas CSSD
-    </button>
+    
+<button class="primary" id="btnAktivitas" type="button">
+  🔄 Aktivitas CSSD
+</button>
 
     <button class="primary" type="button">
       👥 Kelola Akun
@@ -201,6 +202,31 @@ input{
   </p>
 
   <button class="logout" id="tutupBeranda" type="button">
+    Kembali ke Menu Utama
+  </button>
+</div>
+<div id="isiAktivitas" style="display:none;margin-top:25px">
+  <hr>
+
+  <h3>🔄 Aktivitas CSSD</h3>
+
+  <label>Nama Aktivitas</label>
+  <input id="namaAktivitas"
+         type="text"
+         placeholder="Masukkan aktivitas">
+
+  <label>Catatan</label>
+  <input id="catatanAktivitas"
+         type="text"
+         placeholder="Masukkan catatan">
+
+  <button class="primary" type="button">
+    Simpan Aktivitas
+  </button>
+
+  <button class="logout"
+          id="tutupAktivitas"
+          type="button">
     Kembali ke Menu Utama
   </button>
 </div>
@@ -249,6 +275,14 @@ document.getElementById("logout").onclick=function(){
 
 document.getElementById("tutupBeranda").onclick=function(){
   document.getElementById("isiBeranda").style.display="none";
+};
+document.getElementById("btnAktivitas").onclick=function(){
+  document.getElementById("isiBeranda").style.display="none";
+  document.getElementById("isiAktivitas").style.display="block";
+};
+
+document.getElementById("tutupAktivitas").onclick=function(){
+  document.getElementById("isiAktivitas").style.display="none";
 };
 
 </script>
