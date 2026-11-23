@@ -177,7 +177,25 @@ show.onclick=function(){
   }
 };
 
-form.onsubmit=function(event){
-  event.preventDefault();
+  form.onsubmit=function(e){
+  e.preventDefault();
+  var u=document.getElementById("user").value.trim().toLowerCase();
 
-  var username=document
+  if(u==="handrigumelar" && pass.value==="HG-4821"){
+    document.getElementById("login").style.display="none";
+    document.getElementById("dashboard").style.display="block";
+    msg.innerText="";
+  }else{
+    msg.innerText="Username atau kata sandi tidak sesuai.";
+  }
+};
+
+document.getElementById("logout").onclick=function(){
+  document.getElementById("dashboard").style.display="none";
+  document.getElementById("login").style.display="flex";
+  pass.value="";
+};
+
+</script>
+</body>
+</html>
