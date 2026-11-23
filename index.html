@@ -223,9 +223,42 @@ input{
          readonly>
 
   <label>Unit / Ruangan Asal</label>
-  <input id="unitAktivitas"
-         type="text"
-         placeholder="Contoh: Kamar Operasi">
+<select id="unitAktivitas">
+  <option value="">Pilih unit / ruangan</option>
+  <option>CUT MUTIA</option>
+  <option>CND</option>
+  <option>RAK</option>
+  <option>NAD</option>
+  <option>NICU</option>
+  <option>PICU</option>
+  <option>RDS</option>
+  <option>NAS LT 1</option>
+  <option>NAS LT 2</option>
+  <option>AISYAH 1</option>
+  <option>AISYAH 2</option>
+  <option>AIS 1</option>
+  <option>AIS 2</option>
+  <option>FTW 1</option>
+  <option>FTW 2</option>
+  <option>ICU</option>
+  <option>IBS/OKA</option>
+  <option>CATHLAB</option>
+  <option>HD</option>
+  <option>IGD</option>
+  <option>WK</option>
+  <option>PONEK</option>
+  <option>POLI ANAK</option>
+  <option>POLI ANAK 2</option>
+  <option>POLI BEDAH</option>
+  <option>POLI GIGI</option>
+  <option>POLI OBGYN</option>
+  <option>POLI MATA</option>
+  <option>POLI DALAM 1</option>
+  <option>POLI DALAM 2</option>
+  <option>POLI THT</option>
+  <option>POLI EDELWIES</option>
+  <option>RUANGAN LAINNYA</option>
+</select>
 
   <label>Jenis Aktivitas</label>
   <select id="jenisAktivitas">
@@ -242,10 +275,103 @@ input{
     <option>Aktivitas lainnya</option>
   </select>
 
-  <label>Nama Alat / Set Instrumen</label>
-  <input id="namaAlat"
-         type="text"
-         placeholder="Masukkan nama alat atau set">
+  
+<label>Nama Alat / Set Instrumen</label>
+<select id="namaAlat">
+  <option value="">Pilih nama alat / set</option>
+
+  <optgroup label="KASSA">
+    <option>KASSA 5 CM</option>
+    <option>KASSA 7,5 CM</option>
+    <option>BIGKASSA</option>
+    <option>TAMPON</option>
+  </optgroup>
+
+  <optgroup label="LINEN">
+    <option>SET LINEN OPRASI</option>
+    <option>SET LINEN MATA</option>
+    <option>SET LINEN CATHLAB</option>
+    <option>DUK BOLONG KECIL SATUAN</option>
+    <option>JAS KOAN SATUAN</option>
+    <option>JAS CATHLAB SATUAN</option>
+  </optgroup>
+
+  <optgroup label="SET INSTRUMEN">
+    <option>SET BEDAH MIKRO</option>
+    <option>SET BEDAH MINOR</option>
+    <option>SET BEDAH ANAK</option>
+    <option>SET BEDAH UMUM</option>
+    <option>SET BEDAH LAPARATOMY</option>
+    <option>SET BEDAH APENDIKTOMY</option>
+    <option>SET BEDAH MAYOR SNNT</option>
+    <option>SET BEDAH LAPARASKOPIK</option>
+    <option>SET BEDAH UROLOGI MINOR</option>
+    <option>SET BEDAH UROLOGI BESAR</option>
+    <option>SET BEDAH SARAF MINOR</option>
+    <option>SET BEDAH SARAF BESAR</option>
+    <option>SET ORTOPEDI MIKRO</option>
+    <option>SET ORTOPEDI MINOR</option>
+    <option>SET ORTOPEDI BESAR</option>
+    <option>SET THT TONSIL</option>
+    <option>SET THT SINUS</option>
+    <option>SET THT FESS</option>
+    <option>SET OBGIN SC</option>
+    <option>SET OBGIN LAPARATOMY</option>
+    <option>SET OBGIN HISTER ECTOMY</option>
+    <option>SET POST PARTUM</option>
+    <option>SET TRACKHEOSTOMY</option>
+    <option>SET BIOPSI OKA</option>
+    <option>SET WSD OKA</option>
+    <option>SET LABIOPLASTY</option>
+    <option>SET ALAT MATA</option>
+    <option>ALAT SATUAN LAPARASKOPIK</option>
+    <option>ALAT SATUAN ENDO UROLOGI</option>
+    <option>ALAT SATUAN BEDAH SARAF</option>
+    <option>ALAT SATUAN LAINNYA</option>
+  </optgroup>
+
+  <optgroup label="SET INSTRUMEN LAINNYA">
+    <option>SET GV</option>
+    <option>SET HECTING</option>
+    <option>SET ORAL</option>
+    <option>SET WSD</option>
+    <option>SET CVC</option>
+    <option>SET PARTUS</option>
+    <option>SET KURET</option>
+    <option>SET LAMINARIA</option>
+    <option>BENGKOK SATUAN</option>
+    <option>KOM SATUAN</option>
+    <option>ALAT SATUAN PONEK</option>
+    <option>ALAT SATUAN LAINNYA</option>
+  </optgroup>
+
+  <optgroup label="BARANG LAINNYA">
+    <option>SET VENTILATOR</option>
+    <option>SET CPAP</option>
+    <option>AMUBAG</option>
+    <option>MANDREIN</option>
+    <option>SELANG SUCTION</option>
+    <option>BARANG SATUAN LAINNYA</option>
+  </optgroup>
+
+  <optgroup label="POLI RAWAT JALAN SATUAN">
+    <option>ALAT SATUAN POLI EDELWEIS</option>
+    <option>ALAT SATUAN POLI OBGIN</option>
+    <option>ALAT SATUAN POLI BEDAH</option>
+    <option>ALAT SATUAN POLI UROLOGI</option>
+    <option>ALAT SATUAN POLI GIGI UMUM</option>
+    <option>ALAT SATUAN POLI GIGI SP</option>
+    <option>ALAT SATUAN POLI THT</option>
+    <option>ALAT SATUAN POLI BEDAH SARAF</option>
+    <option>ALAT SATUAN POLI VASKULER</option>
+    <option>ALAT SATUAN POLI ORTOPEDI</option>
+    <option>ALAT SATUAN POLI LAINNYA</option>
+  </optgroup>
+
+  <optgroup label="ALAT LAINNYA">
+    <option>LAINNYA</option>
+  </optgroup>
+</select>
 
   <label>Jumlah</label>
   <input id="jumlahAlat"
