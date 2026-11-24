@@ -231,6 +231,36 @@ input{
   color:#557068;
   border:1px solid #dce6e2;
 }
+#isiDistribusi{
+  background:#f7fbf9;
+  border:1px solid #dcebe5;
+  border-radius:20px;
+  padding:20px;
+}
+#isiDistribusi > h3,
+#isiDistribusi > p{
+  text-align:center;
+}
+#isiDistribusi > h3{
+  background:#e5f3ee;
+  color:#3f7166;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:8px;
+}
+#isiDistribusi > .logout{
+  display:block;
+  width:100%;
+  margin-top:12px;
+  padding:13px 16px;
+  text-align:center;
+  border-radius:14px;
+}
+#riwayatDistribusi{
+  width:100%;
+  margin-top:12px;
+  text-align:center;
+}
 
 #isiBeranda{
   background:#f7fbf9;
@@ -1656,10 +1686,14 @@ document.getElementById("tutupAktivitas").onclick=function(){
  document.getElementById("homeDistribusi").onclick=function(){
   document.getElementById("homeModern").style.display="none";
   document.getElementById("isiDistribusi").style.display="block";
+   document.getElementById("logout").style.display="none";
+
 };
 document.getElementById("tutupDistribusi").onclick=function(){
   document.getElementById("isiDistribusi").style.display="none";
   document.getElementById("homeModern").style.display="block";
+  document.getElementById("logout").style.display="block";
+
 };
 
   document.getElementById("homePenerimaan").onclick=function(){
@@ -2102,17 +2136,26 @@ dataDistribusi.forEach(function(dokumen){
   var data=dokumen.data();
   var kartu=document.createElement("div");
 
-  kartu.style.background="#ffffff";
-  kartu.style.border="1px solid #dcebe5";
-  kartu.style.borderRadius="15px";
-  kartu.style.padding="15px";
-  kartu.style.marginBottom="12px";
+  kartu.style.background="linear-gradient(145deg,#ffffff,#f3f9f6)";
+kartu.style.border="1px solid #d8e9e2";
+kartu.style.borderRadius="18px";
+kartu.style.padding="18px";
+kartu.style.marginBottom="14px";
+kartu.style.boxShadow="0 5px 16px rgba(60,100,88,.08)";
+
 
   var judul=document.createElement("strong");
   judul.textContent="📦 "+data.ruang;
+judul.style.display="block";
+judul.style.fontSize="17px";
+judul.style.color="#3f7166";
+judul.style.marginBottom="6px";
 
   var waktu=document.createElement("p");
   waktu.textContent=data.tanggal+" • "+data.jam;
+waktu.style.fontSize="13px";
+waktu.style.color="#7b8d87";
+waktu.style.margin="4px 0 14px";
 
   var daftar=document.createElement("div");
 
@@ -2120,16 +2163,38 @@ dataDistribusi.forEach(function(dokumen){
     var baris=document.createElement("div");
     baris.textContent="• "+item.alat+" — "+item.jumlah;
     daftar.appendChild(baris);
+   baris.style.background="#eef7f3";
+baris.style.padding="9px 11px";
+baris.style.borderRadius="10px";
+baris.style.marginBottom="6px";
+baris.style.color="#456b62";
+baris.style.fontSize="13px";
+ 
   });
 
   var petugas=document.createElement("p");
   petugas.textContent="Petugas CSSD: "+data.petugas;
+petugas.style.margin="14px 0 4px";
+petugas.style.fontSize="13px";
+petugas.style.color="#526f67";
+petugas.style.fontWeight="600";
 
   var penerima=document.createElement("p");
   penerima.textContent="Penerima: "+data.penerima;
+penerima.style.margin="4px 0";
+penerima.style.fontSize="13px";
+penerima.style.color="#526f67";
 
   var status=document.createElement("p");
   status.textContent="Status: "+data.status;
+status.style.display="inline-block";
+status.style.margin="8px 0 4px";
+status.style.padding="6px 10px";
+status.style.background="#e3f3ed";
+status.style.color="#397064";
+status.style.borderRadius="999px";
+status.style.fontSize="12px";
+status.style.fontWeight="700";
 
   kartu.appendChild(judul);
   kartu.appendChild(waktu);
@@ -2142,8 +2207,15 @@ dataDistribusi.forEach(function(dokumen){
     var catatan=document.createElement("p");
     catatan.textContent="Catatan: "+data.catatan;
     kartu.appendChild(catatan);
-  }
-
+catatan.style.background="#f7f9f8";
+catatan.style.borderLeft="3px solid #9fc5b9";
+catatan.style.padding="9px 11px";
+catatan.style.borderRadius="8px";
+catatan.style.fontSize="12px";
+catatan.style.color="#667a74";
+catatan.style.margin="10px 0 0";
+}
+                       
   hasilRiwayat.appendChild(kartu);
 
 });
