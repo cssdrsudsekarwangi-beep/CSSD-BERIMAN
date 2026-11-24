@@ -1283,6 +1283,72 @@ hr{
     Kembali ke Menu Utama
   </button>
 </div>
+<div id="isiDistribusi" style="display:none;margin-top:25px">
+
+  <h3>📦 Distribusi Alat Steril</h3>
+  <p>Pencatatan alat steril keluar ke unit / ruangan.</p>
+
+  <label>Tanggal</label>
+  <input id="tanggalDistribusi" type="date">
+
+  <label>Jam</label>
+  <input id="jamDistribusi" type="time">
+<label>Ruang Tujuan</label>
+<select id="ruangDistribusi">
+  <option value="">Pilih ruang tujuan</option>
+</select>
+<label>Nama Alat / Set</label>
+<select id="alatDistribusi">
+  <option value="">Pilih nama alat / set</option>
+</select>
+
+<label>Jumlah</label>
+<input id="jumlahDistribusi"
+       type="number"
+       min="1"
+       placeholder="Masukkan jumlah">
+  <div id="daftarAlatTambahan"></div>
+
+<button class="primary"
+        id="tambahAlatDistribusi"
+        type="button">
+  + Tambah Alat / Set
+</button>
+<label>Petugas CSSD</label>
+<input id="petugasDistribusi"
+       type="text"
+       readonly>
+<label>Petugas Penerima</label>
+<input id="petugasPenerima"
+       type="text"
+       placeholder="Masukkan nama petugas penerima">
+<label>Status Penerimaan</label>
+<select id="statusDistribusi">
+  <option value="">Pilih status penerimaan</option>
+  <option>Diterima lengkap</option>
+  <option>Diterima sebagian</option>
+  <option>Perlu tindak lanjut</option>
+</select>
+<label>Catatan</label>
+<textarea id="catatanDistribusi"
+          rows="4"
+          placeholder="Masukkan catatan distribusi"></textarea>
+<button class="primary"
+        id="simpanDistribusi"
+        type="button">
+  Simpan Distribusi
+</button>
+  <div id="pesanDistribusi"
+     style="margin-top:15px;color:#047857;font-weight:bold">
+</div>
+
+<button class="logout"
+        id="tutupDistribusi"
+        type="button">
+  Kembali ke Menu Utama
+</button>
+
+</div>
 
 
   </div>
@@ -1329,6 +1395,38 @@ var form=document.getElementById("form");
 var pass=document.getElementById("pass");
 var show=document.getElementById("show");
 var msg=document.getElementById("msg");
+var unitAsal=document.getElementById("unitAktivitas");
+var ruangTujuan=document.getElementById("ruangDistribusi");
+
+ruangTujuan.innerHTML=unitAsal.innerHTML;
+ruangTujuan.options[0].text="Pilih ruang tujuan";
+var alatAsal=document.getElementById("namaAlat");
+var alatDistribusi=document.getElementById("alatDistribusi");
+
+alatDistribusi.innerHTML=alatAsal.innerHTML;
+alatDistribusi.options[0].text="Pilih nama alat / set";
+var daftarAlatTambahan=document.getElementById("daftarAlatTambahan");
+var tombolTambahAlat=document.getElementById("tambahAlatDistribusi");
+tombolTambahAlat.onclick=function(){
+
+  var item=document.createElement("div");
+
+  item.innerHTML=
+    '<label>Nama Alat / Set</label>'+
+    '<select class="alatDistribusiTambahan">'+
+      alatAsal.innerHTML+
+    '</select>'+
+    '<label>Jumlah</label>'+
+    '<input class="jumlahDistribusiTambahan" type="number" min="1" placeholder="Masukkan jumlah">'+
+    '<button type="button" class="hapusAlatDistribusi">Hapus</button>';
+
+  daftarAlatTambahan.appendChild(item);
+
+  item.querySelector(".hapusAlatDistribusi").onclick=function(){
+    item.remove();
+  };
+
+};
 
 show.onclick=function(){
   if(pass.type==="password"){
@@ -1462,6 +1560,8 @@ document.getElementById("isiProfil").style.display="none";
 
   document.getElementById("petugasAktivitas").value=
     penggunaAktif.nama;
+document.getElementById("petugasDistribusi").value=
+  penggunaAktif.nama;
 
   var badge=document.querySelector(".badge");
   var sapaan=document.querySelector(".panel > h2 + p");
@@ -1545,7 +1645,15 @@ document.getElementById("tutupAktivitas").onclick=function(){
   document.getElementById("isiAktivitas").style.display="none";
   document.getElementById("homeModern").style.display="block";
 };
- 
+ document.getElementById("homeDistribusi").onclick=function(){
+  document.getElementById("homeModern").style.display="none";
+  document.getElementById("isiDistribusi").style.display="block";
+};
+document.getElementById("tutupDistribusi").onclick=function(){
+  document.getElementById("isiDistribusi").style.display="none";
+  document.getElementById("homeModern").style.display="block";
+};
+
   document.getElementById("homePenerimaan").onclick=function(){
   document.getElementById("homeModern").style.display="none";
   document.getElementById("isiAktivitas").style.display="block";
@@ -1874,6 +1982,88 @@ document.getElementById("simpanAktivitas").onclick=async function(){
 
   document.getElementById("pesanAktivitas").innerText=
     "Aktivitas gagal disimpan. Pastikan akun Firebase sudah login.";
+}
+
+};
+document.getElementById("simpanDistribusi").onclick=async function(){
+
+  var tanggal=document.getElementById("tanggalDistribusi").value;
+  var jam=document.getElementById("jamDistribusi").value;
+  var ruang=document.getElementById("ruangDistribusi").value;
+  var petugas=document.getElementById("petugasDistribusi").value;
+  var penerima=document.getElementById("petugasPenerima").value;
+  var status=document.getElementById("statusDistribusi").value;
+  var catatan=document.getElementById("catatanDistribusi").value;
+var alat=document.getElementById("alatDistribusi").value;
+var jumlah=document.getElementById("jumlahDistribusi").value;
+var items=[];
+
+items.push({
+  alat:alat,
+  jumlah:Number(jumlah)
+});
+  var alatTambahan=document.querySelectorAll("#daftarAlatTambahan > div");
+
+alatTambahan.forEach(function(item){
+  var nama=item.querySelector(".alatDistribusiTambahan").value;
+  var banyak=item.querySelector(".jumlahDistribusiTambahan").value;
+
+  if(nama && banyak){
+    items.push({
+      alat:nama,
+      jumlah:Number(banyak)
+    });
+  }
+});
+
+if(!tanggal || !jam || !ruang || !petugas ||
+   !penerima || !status || !alat || !jumlah){
+
+  document.getElementById("pesanDistribusi").innerText=
+    "Lengkapi data distribusi terlebih dahulu.";
+  return;
+}
+var distribusi={
+  tanggal:tanggal,
+  jam:jam,
+  ruang:ruang,
+  petugas:petugas,
+  penerima:penerima,
+  status:status,
+  catatan:catatan,
+  items:items
+};
+try{
+
+  distribusi.dibuatPada=serverTimestamp();
+  distribusi.userId=firebaseAuth.currentUser
+  ? firebaseAuth.currentUser.uid
+  : penggunaAktif.username;
+
+
+  await addDoc(
+    collection(firebaseDb,"distribusi"),
+    distribusi
+  );
+
+  document.getElementById("pesanDistribusi").innerText=
+    "✓ Distribusi berhasil disimpan.";
+document.getElementById("tanggalDistribusi").value="";
+document.getElementById("jamDistribusi").value="";
+document.getElementById("ruangDistribusi").value="";
+document.getElementById("alatDistribusi").value="";
+document.getElementById("jumlahDistribusi").value="";
+document.getElementById("petugasPenerima").value="";
+document.getElementById("statusDistribusi").value="";
+document.getElementById("catatanDistribusi").value="";
+daftarAlatTambahan.innerHTML="";
+
+}catch(error){
+
+  console.log(error);
+
+  document.getElementById("pesanDistribusi").innerText=
+    "Distribusi gagal disimpan.";
 }
 
 };
