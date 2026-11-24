@@ -983,7 +983,42 @@ hr{
 </section>
 
 
-<script>
+<script type="module">
+  var form=document.getElementById("form");
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut
+}
+from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBj2mYrTvHzVgVacGRUmchDjSa1H9-3OAw",
+  authDomain: "cssd-beriman.firebaseapp.com",
+  projectId: "cssd-beriman",
+  storageBucket: "cssd-beriman.firebasestorage.app",
+  messagingSenderId: "999391054833",
+  appId: "1:999391054833:web:1f718ac47dc1ee09349250",
+  measurementId: "G-5MPMKTEJ80"
+};
+const firebaseApp = initializeApp(firebaseConfig);
+const firebaseAuth = getAuth(firebaseApp);
+const firebaseDb = getFirestore(firebaseApp);
+
 var form=document.getElementById("form");
 var pass=document.getElementById("pass");
 var show=document.getElementById("show");
@@ -1004,7 +1039,7 @@ show.onclick=function(){
 var daftarAkun=[
   {
     username:"handrigumelar",
-    password:"HG-4821",
+    email:"cssdrsudsekarwangi@gmail.com",
     nama:"Handri Gumelar",
     role:"admin"
   },
@@ -1070,7 +1105,7 @@ var daftarAkun=[
   }
 ];
 
-form.onsubmit=function(e){
+form.onsubmit=async function(e){
   e.preventDefault();
 
   var username=document.getElementById("user")
@@ -1079,8 +1114,7 @@ form.onsubmit=function(e){
   var password=pass.value;
 
   penggunaAktif=daftarAkun.find(function(akun){
-    return akun.username===username &&
-           akun.password===password;
+    return akun.username===username;
   });
 
   if(!penggunaAktif){
@@ -1088,9 +1122,28 @@ form.onsubmit=function(e){
     return;
   }
 
-  document.getElementById("login").style.display="none";
-  document.getElementById("dashboard").style.display="block";
-  msg.innerText="";
+  if(penggunaAktif.role==="admin"){
+    try{
+      await signInWithEmailAndPassword(
+        firebaseAuth,
+        penggunaAktif.email,
+        password
+      );
+    }catch(error){
+      msg.innerText="Username atau kata sandi tidak sesuai.";
+      return;
+    }
+  }else{
+    if(penggunaAktif.password!==password){
+      msg.innerText="Username atau kata sandi tidak sesuai.";
+      return;
+    }
+  }
+
+document.getElementById("login").style.display="none";
+document.getElementById("dashboard").style.display="block";
+msg.innerText="";
+
 
   document.getElementById("petugasAktivitas").value=
     penggunaAktif.nama;
@@ -1130,11 +1183,25 @@ form.onsubmit=function(e){
 };
 
 
-document.getElementById("logout").onclick=function(){
+  document.getElementById("logout").onclick=async function(){
+
+  if(penggunaAktif && penggunaAktif.role==="admin"){
+    try{
+      await signOut(firebaseAuth);
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  penggunaAktif=null;
+
   document.getElementById("dashboard").style.display="none";
   document.getElementById("login").style.display="flex";
+
   pass.value="";
+  document.getElementById("user").value="";
 };
+
   document.getElementById("btnBeranda").onclick=function(){
   var tombol=document.getElementById("btnBeranda");
   var panel=document.getElementById("isiBeranda");
@@ -1393,7 +1460,7 @@ document.getElementById("tutupProfil").onclick=function(){
   document.getElementById("isiProfil").style.display="none";
 };
 
-document.getElementById("simpanAktivitas").onclick=function(){
+document.getElementById("simpanAktivitas").onclick=async function(){
 
   var tanggal=document.getElementById("tanggalAktivitas").value;
   var jam=document.getElementById("jamAktivitas").value;
@@ -1427,20 +1494,27 @@ document.getElementById("simpanAktivitas").onclick=function(){
     catatan:catatan
   };
 
-  var data=JSON.parse(
-    localStorage.getItem("cssdAktivitas") || "[]"
-  );
+  try{
+  aktivitas.dibuatPada=serverTimestamp();
+  aktivitas.userId=firebaseAuth.currentUser.uid;
 
-  data.push(aktivitas);
-
-  localStorage.setItem(
-    "cssdAktivitas",
-    JSON.stringify(data)
+  await addDoc(
+    collection(firebaseDb,"aktivitas"),
+    aktivitas
   );
 
   document.getElementById("pesanAktivitas").innerText=
-    "✓ Aktivitas berhasil disimpan.";
+    "✓ Aktivitas berhasil disimpan ke database pusat.";
+
+}catch(error){
+  console.log(error);
+
+  document.getElementById("pesanAktivitas").innerText=
+    "Aktivitas gagal disimpan. Pastikan akun Firebase sudah login.";
+}
+
 };
+
 
 document.getElementById("lihatRiwayat").onclick=function(){
 
