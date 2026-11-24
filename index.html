@@ -1176,6 +1176,7 @@ document.getElementById("simpanAktivitas").onclick=function(){
 
   var tanggal=document.getElementById("tanggalAktivitas").value;
   var jam=document.getElementById("jamAktivitas").value;
+  var petugas=document.getElementById("petugasAktivitas").value;
   var unit=document.getElementById("unitAktivitas").value;
   var jenis=document.getElementById("jenisAktivitas").value;
   var alat=document.getElementById("namaAlat").value;
@@ -1184,18 +1185,56 @@ document.getElementById("simpanAktivitas").onclick=function(){
   var status=document.getElementById("statusAktivitas").value;
   var catatan=document.getElementById("catatanAktivitas").value;
 
-  if(!tanggal || !jam || !unit || !jenis || !alat || !jumlah || !kondisi || !status){
+  if(!tanggal || !jam || !unit || !jenis ||
+     !alat || !jumlah || !kondisi || !status){
+
     document.getElementById("pesanAktivitas").innerText=
       "Lengkapi data aktivitas terlebih dahulu.";
     return;
   }
 
+  var aktivitas={
+    tanggal:tanggal,
+    jam:jam,
+    petugas:petugas,
+    unit:unit,
+    jenis:jenis,
+    alat:alat,
+    jumlah:Number(jumlah),
+    kondisi:kondisi,
+    status:status,
+    catatan:catatan
+  };
+
+  var data=JSON.parse(
+    localStorage.getItem("cssdAktivitas") || "[]"
+  );
+
+  data.push(aktivitas);
+
+  localStorage.setItem(
+    "cssdAktivitas",
+    JSON.stringify(data)
+  );
+
   document.getElementById("pesanAktivitas").innerText=
-    "Aktivitas berhasil dicatat.";
+    "✓ Aktivitas berhasil disimpan.";
 };
+
 document.getElementById("lihatRiwayat").onclick=function(){
+
+  var data=JSON.parse(
+    localStorage.getItem("cssdAktivitas") || "[]"
+  );
+
+  if(data.length===0){
+    document.getElementById("pesanAktivitas").innerText=
+      "Belum ada riwayat aktivitas.";
+    return;
+  }
+
   document.getElementById("pesanAktivitas").innerText=
-    "Riwayat aktivitas akan ditampilkan di sini.";
+    "Tersimpan "+data.length+" aktivitas CSSD.";
 };
 
 </script>
