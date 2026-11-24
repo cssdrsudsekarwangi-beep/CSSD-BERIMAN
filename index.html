@@ -1341,6 +1341,14 @@ hr{
   <div id="pesanDistribusi"
      style="margin-top:15px;color:#047857;font-weight:bold">
 </div>
+<button class="primary"
+        id="riwayatDistribusi"
+        type="button">
+  📋 Riwayat Distribusi
+</button>
+<div id="hasilRiwayatDistribusi"
+     style="display:none;margin-top:15px">
+</div>
 
 <button class="logout"
         id="tutupDistribusi"
@@ -2065,6 +2073,87 @@ daftarAlatTambahan.innerHTML="";
   document.getElementById("pesanDistribusi").innerText=
   "Gagal: "+error.code+" - "+error.message;
 
+}
+
+};
+document.getElementById("riwayatDistribusi").onclick=async function(){
+
+  var hasilRiwayat=
+    document.getElementById("hasilRiwayatDistribusi");
+
+  hasilRiwayat.style.display="block";
+  hasilRiwayat.innerHTML="Memuat riwayat distribusi...";
+try{
+
+  var qDistribusi=query(
+    collection(firebaseDb,"distribusi"),
+    orderBy("dibuatPada","desc")
+  );
+
+  var dataDistribusi=await getDocs(qDistribusi);
+
+  if(dataDistribusi.empty){
+    hasilRiwayat.innerHTML="Belum ada riwayat distribusi.";
+    return;
+  }
+hasilRiwayat.innerHTML="";
+dataDistribusi.forEach(function(dokumen){
+
+  var data=dokumen.data();
+  var kartu=document.createElement("div");
+
+  kartu.style.background="#ffffff";
+  kartu.style.border="1px solid #dcebe5";
+  kartu.style.borderRadius="15px";
+  kartu.style.padding="15px";
+  kartu.style.marginBottom="12px";
+
+  var judul=document.createElement("strong");
+  judul.textContent="📦 "+data.ruang;
+
+  var waktu=document.createElement("p");
+  waktu.textContent=data.tanggal+" • "+data.jam;
+
+  var daftar=document.createElement("div");
+
+  (data.items || []).forEach(function(item){
+    var baris=document.createElement("div");
+    baris.textContent="• "+item.alat+" — "+item.jumlah;
+    daftar.appendChild(baris);
+  });
+
+  var petugas=document.createElement("p");
+  petugas.textContent="Petugas CSSD: "+data.petugas;
+
+  var penerima=document.createElement("p");
+  penerima.textContent="Penerima: "+data.penerima;
+
+  var status=document.createElement("p");
+  status.textContent="Status: "+data.status;
+
+  kartu.appendChild(judul);
+  kartu.appendChild(waktu);
+  kartu.appendChild(daftar);
+  kartu.appendChild(petugas);
+  kartu.appendChild(penerima);
+  kartu.appendChild(status);
+
+  if(data.catatan){
+    var catatan=document.createElement("p");
+    catatan.textContent="Catatan: "+data.catatan;
+    kartu.appendChild(catatan);
+  }
+
+  hasilRiwayat.appendChild(kartu);
+
+});
+
+}catch(error){
+
+  console.log(error);
+
+  hasilRiwayat.innerHTML=
+    "Riwayat distribusi gagal dimuat.";
 }
 
 };
