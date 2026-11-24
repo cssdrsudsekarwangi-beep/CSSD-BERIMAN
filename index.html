@@ -737,7 +737,8 @@ hr{
   </div>
 
   <div class="home-welcome">
-    <strong>Selamat Datang 👋</strong>
+    <strong id="homeWelcome">Selamat Datang 👋</strong>
+
     <span>
       Sistem pencatatan dan dokumentasi pelayanan CSSD.
     </span>
@@ -1446,6 +1447,9 @@ form.onsubmit=async function(e){
 document.getElementById("login").style.display="none";
 document.getElementById("dashboard").style.display="block";
 document.getElementById("homeModern").style.display="block";
+document.getElementById("homeWelcome").textContent=
+  "Selamat Datang, "+penggunaAktif.nama+" 😎";
+  
 document.getElementById("isiBeranda").style.display="none";
 document.getElementById("isiAktivitas").style.display="none";
 document.getElementById("isiKelolaAkun").style.display="none";
