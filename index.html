@@ -427,17 +427,165 @@ hr{
   🔄 Aktivitas CSSD
 </button>
 
-    <button class="primary" type="button">
+    <button class="primary" id="btnKelolaAkun" type="button">
       👥 Kelola Akun
     </button>
+<div id="isiKelolaAkun" style="display:none;margin-top:12px">
 
-    <button class="primary" type="button">
-      📊 Laporan
+  <h3>👥 Kelola Akun</h3>
+
+  <p style="color:#647a74;font-size:14px">
+    Pengelolaan akun Petugas CSSD
+  </p>
+
+  <label>Nama Petugas</label>
+  <select id="akunPetugas">
+    <option value="">Pilih petugas</option>
+    <option>Handri Gumelar</option>
+    <option>Enden Dessa R</option>
+    <option>Nanan Mulyana</option>
+    <option>Dedi Syarieffudin</option>
+    <option>M. Pradifto</option>
+    <option>Yana Mulyana</option>
+    <option>Helmi Maulana</option>
+    <option>Wahyudin</option>
+    <option>Deva Afrian</option>
+    <option>Dudung</option>
+    <option>Dwi Pangestu</option>
+  </select>
+
+  <label>Role / Hak Akses</label>
+  <select id="roleAkun">
+    <option>Pelaksana</option>
+    <option>Kepala Instalasi / Admin</option>
+  </select>
+
+  <label>Status Akun</label>
+  <select id="statusAkun">
+    <option>Aktif</option>
+    <option>Nonaktif</option>
+  </select>
+
+  <button class="primary"
+          id="btnResetPassword"
+          type="button">
+    🔑 Reset Kata Sandi
+  </button>
+
+  <div id="pesanAkun"
+       style="margin-top:12px;color:#47796e;font-weight:700">
+  </div>
+
+  <button class="logout"
+          id="tutupKelolaAkun"
+          type="button">
+    Kembali ke Menu Utama
+  </button>
+
+</div>
+
+    <button class="primary" id="btnLaporan" type="button">
+     📊 Laporan
     </button>
+<div id="isiLaporan" style="display:none;margin-top:12px">
 
-    <button class="primary" type="button">
+  <h3>📊 Laporan & Rekap</h3>
+
+  <label>Tanggal</label>
+  <input id="tanggalLaporan" type="date">
+
+  <label>Jam</label>
+  <input id="jamLaporan" type="time">
+
+  <label>Periode</label>
+  <select id="periodeLaporan">
+    <option value="">Pilih periode</option>
+    <option>Harian</option>
+    <option>Bulanan</option>
+    <option>3 Bulan</option>
+    <option>1 Tahun</option>
+  </select>
+
+  <label>Jenis Laporan</label>
+  <select id="jenisLaporan">
+    <option value="">Pilih jenis laporan</option>
+    <option>Laporan Menyeluruh</option>
+    <option>Laporan Individu</option>
+  </select>
+
+  <label>Petugas CSSD</label>
+  <select id="petugasLaporan">
+    <option value="">Pilih petugas CSSD</option>
+    <option>Handri Gumelar</option>
+    <option>Enden Dessa R</option>
+    <option>Nanan Mulyana</option>
+    <option>Dedi Syarieffudin</option>
+    <option>M. Pradifto</option>
+    <option>Yana Mulyana</option>
+    <option>Helmi Maulana</option>
+    <option>Wahyudin</option>
+    <option>Deva Afrian</option>
+    <option>Dudung</option>
+    <option>Dwi Pangestu</option>
+  </select>
+
+  <label>Catatan</label>
+  <textarea id="catatanLaporan"
+            rows="3"
+            placeholder="Catatan laporan"></textarea>
+
+  <button class="primary"
+          id="buatLaporan"
+          type="button">
+    Tampilkan Laporan
+  </button>
+
+  <div id="hasilLaporan"
+       style="margin-top:12px;color:#47796e;font-weight:700">
+  </div>
+
+  <button class="logout"
+          id="tutupLaporan"
+          type="button">
+    Kembali ke Menu Utama
+  </button>
+
+</div>
+
+    <button class="primary" id="btnProfil" type="button">
       👤 Profil
     </button>
+<div id="isiProfil" style="display:none;margin-top:12px">
+
+  <h3>👤 Profil</h3>
+
+  <label>Nama Petugas</label>
+  <input type="text"
+         value="Handri Gumelar"
+         readonly>
+
+  <label>Jabatan / Role</label>
+  <input type="text"
+         value="Kepala Instalasi / Admin"
+         readonly>
+
+  <label>Username</label>
+  <input type="text"
+         value="handrigumelar"
+         readonly>
+
+  <label>Status Akun</label>
+  <input type="text"
+         value="Aktif"
+         readonly>
+
+  <button class="logout"
+          id="tutupProfil"
+          type="button">
+    Kembali ke Menu Utama
+  </button>
+
+</div>
 
     <button class="logout" id="logout">
       Keluar
@@ -744,6 +892,87 @@ document.getElementById("btnAktivitas").onclick=function(){
 
 document.getElementById("tutupAktivitas").onclick=function(){
   document.getElementById("isiAktivitas").style.display="none";
+};
+document.getElementById("btnKelolaAkun").onclick=function(){
+  var tombol=document.getElementById("btnKelolaAkun");
+  var panel=document.getElementById("isiKelolaAkun");
+
+  tombol.insertAdjacentElement("afterend",panel);
+
+  document.getElementById("isiBeranda").style.display="none";
+  document.getElementById("isiAktivitas").style.display="none";
+
+  panel.style.display="block";
+};
+
+document.getElementById("tutupKelolaAkun").onclick=function(){
+  document.getElementById("isiKelolaAkun").style.display="none";
+};
+document.getElementById("btnResetPassword").onclick=function(){
+  var petugas=document.getElementById("akunPetugas").value;
+
+  if(!petugas){
+    document.getElementById("pesanAkun").innerText=
+      "Pilih nama petugas terlebih dahulu.";
+    return;
+  }
+
+  document.getElementById("pesanAkun").innerText=
+    "Reset kata sandi untuk "+petugas+" siap diproses.";
+};
+document.getElementById("btnLaporan").onclick=function(){
+  var tombol=document.getElementById("btnLaporan");
+  var panel=document.getElementById("isiLaporan");
+
+  tombol.insertAdjacentElement("afterend",panel);
+
+  document.getElementById("isiBeranda").style.display="none";
+  document.getElementById("isiAktivitas").style.display="none";
+  document.getElementById("isiKelolaAkun").style.display="none";
+
+  panel.style.display="block";
+};
+
+document.getElementById("tutupLaporan").onclick=function(){
+  document.getElementById("isiLaporan").style.display="none";
+};
+
+document.getElementById("buatLaporan").onclick=function(){
+  var periode=document.getElementById("periodeLaporan").value;
+  var jenis=document.getElementById("jenisLaporan").value;
+  var petugas=document.getElementById("petugasLaporan").value;
+
+  if(!periode || !jenis){
+    document.getElementById("hasilLaporan").innerText=
+      "Pilih periode dan jenis laporan terlebih dahulu.";
+    return;
+  }
+
+  if(jenis==="Laporan Individu" && !petugas){
+    document.getElementById("hasilLaporan").innerText=
+      "Pilih Petugas CSSD untuk laporan individu.";
+    return;
+  }
+
+  document.getElementById("hasilLaporan").innerText=
+    "Laporan siap ditampilkan.";
+};
+document.getElementById("btnProfil").onclick=function(){
+  var tombol=document.getElementById("btnProfil");
+  var panel=document.getElementById("isiProfil");
+
+  tombol.insertAdjacentElement("afterend",panel);
+
+  document.getElementById("isiBeranda").style.display="none";
+  document.getElementById("isiAktivitas").style.display="none";
+  document.getElementById("isiKelolaAkun").style.display="none";
+  document.getElementById("isiLaporan").style.display="none";
+
+  panel.style.display="block";
+};
+
+document.getElementById("tutupProfil").onclick=function(){
+  document.getElementById("isiProfil").style.display="none";
 };
 
 document.getElementById("simpanAktivitas").onclick=function(){
