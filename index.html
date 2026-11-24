@@ -442,24 +442,24 @@ hr{
     <button class="logout" id="logout">
       Keluar
     </button>
-<div id="isiBeranda" style="display:none;margin-top:25px">
-  <hr>
 
+<div id="isiBeranda" style="display:none;margin-top:12px">
   <h3>🏠 Beranda</h3>
 
-  <p>
-    Selamat datang di sistem CSSD BERIMAN.
-  </p>
+  <p>Selamat datang di sistem CSSD BERIMAN.</p>
 
   <p>
     Dashboard Kepala Instalasi digunakan untuk memantau
     aktivitas CSSD, akun petugas, dan laporan.
   </p>
 
-  <button class="logout" id="tutupBeranda" type="button">
+  <button class="logout"
+          id="tutupBeranda"
+          type="button">
     Kembali ke Menu Utama
   </button>
 </div>
+
 <div id="isiAktivitas" style="display:none;margin-top:25px">
   <hr>
 
@@ -719,20 +719,33 @@ document.getElementById("logout").onclick=function(){
   pass.value="";
 };
   document.getElementById("btnBeranda").onclick=function(){
-  document.getElementById("isiBeranda").style.display="block";
+  var tombol=document.getElementById("btnBeranda");
+  var panel=document.getElementById("isiBeranda");
+
+  tombol.insertAdjacentElement("afterend",panel);
+
+  document.getElementById("isiAktivitas").style.display="none";
+  panel.style.display="block";
 };
 
 document.getElementById("tutupBeranda").onclick=function(){
   document.getElementById("isiBeranda").style.display="none";
 };
+
 document.getElementById("btnAktivitas").onclick=function(){
+  var tombol=document.getElementById("btnAktivitas");
+  var panel=document.getElementById("isiAktivitas");
+
+  tombol.insertAdjacentElement("afterend",panel);
+
   document.getElementById("isiBeranda").style.display="none";
-  document.getElementById("isiAktivitas").style.display="block";
+  panel.style.display="block";
 };
 
 document.getElementById("tutupAktivitas").onclick=function(){
   document.getElementById("isiAktivitas").style.display="none";
 };
+
 document.getElementById("simpanAktivitas").onclick=function(){
 
   var tanggal=document.getElementById("tanggalAktivitas").value;
