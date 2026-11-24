@@ -1093,7 +1093,7 @@ var daftarAkun=[
   },
   {
     username:"dudung",
-    password:"DD-9732",
+    email:"ddhudung@gmail.com",
     nama:"Dudung",
     role:"pelaksana"
   },
@@ -1122,7 +1122,7 @@ form.onsubmit=async function(e){
     return;
   }
 
-  if(penggunaAktif.role==="admin"){
+  if(penggunaAktif.email){
     try{
       await signInWithEmailAndPassword(
         firebaseAuth,
@@ -1185,7 +1185,7 @@ msg.innerText="";
 
   document.getElementById("logout").onclick=async function(){
 
-  if(penggunaAktif && penggunaAktif.role==="admin"){
+  if(penggunaAktif && penggunaAktif.email){
     try{
       await signOut(firebaseAuth);
     }catch(error){
