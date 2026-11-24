@@ -491,11 +491,10 @@ hr{
 
   <h3>📊 Laporan & Rekap</h3>
 
-  <label>Tanggal</label>
-  <input id="tanggalLaporan" type="date">
-
-  <label>Jam</label>
-  <input id="jamLaporan" type="time">
+  <label>Penanggung Jawab Rekap</label>
+  <input type="text"
+         value="Handri Gumelar"
+         readonly>
 
   <label>Periode</label>
   <select id="periodeLaporan">
@@ -506,17 +505,47 @@ hr{
     <option>1 Tahun</option>
   </select>
 
-  <label>Jenis Laporan</label>
-  <select id="jenisLaporan">
-    <option value="">Pilih jenis laporan</option>
-    <option>Laporan Menyeluruh</option>
-    <option>Laporan Individu</option>
-  </select>
+  <hr>
 
-  <label>Petugas CSSD</label>
+  <h4>📋 Laporan Satuan Proses</h4>
+
+  <button class="primary laporan-btn"
+          id="laporanDistribusi"
+          type="button">
+    📦 Distribusi Alat Steril
+  </button>
+
+  <button class="primary laporan-btn"
+          id="laporanPenerimaan"
+          type="button">
+    🧰 Penerimaan Alat Kotor
+  </button>
+
+  <button class="primary laporan-btn"
+          id="laporanDekontaminasi"
+          type="button">
+    🧼 Dekontaminasi
+  </button>
+
+  <button class="primary laporan-btn"
+          id="laporanPacking"
+          type="button">
+    📋 Packing
+  </button>
+
+  <button class="primary laporan-btn"
+          id="laporanSterilisasi"
+          type="button">
+    ♨️ Sterilisasi
+  </button>
+
+  <hr>
+
+  <h4>👤 Laporan Satuan Petugas</h4>
+
+  <label>Pilih Pelaksana CSSD</label>
   <select id="petugasLaporan">
-    <option value="">Pilih petugas CSSD</option>
-    <option>Handri Gumelar</option>
+    <option value="">Pilih petugas</option>
     <option>Enden Dessa R</option>
     <option>Nanan Mulyana</option>
     <option>Dedi Syarieffudin</option>
@@ -529,19 +558,24 @@ hr{
     <option>Dwi Pangestu</option>
   </select>
 
-  <label>Catatan</label>
-  <textarea id="catatanLaporan"
-            rows="3"
-            placeholder="Catatan laporan"></textarea>
+  <button class="primary"
+          id="laporanPetugas"
+          type="button">
+    👤 Tampilkan Laporan Petugas
+  </button>
+
+  <hr>
+
+  <h4>📊 Laporan Menyeluruh</h4>
 
   <button class="primary"
-          id="buatLaporan"
+          id="laporanMenyeluruh"
           type="button">
-    Tampilkan Laporan
+    📊 Rekap Semua Proses CSSD
   </button>
 
   <div id="hasilLaporan"
-       style="margin-top:12px;color:#47796e;font-weight:700">
+       style="margin-top:16px;color:#47796e;font-weight:700">
   </div>
 
   <button class="logout"
@@ -551,6 +585,7 @@ hr{
   </button>
 
 </div>
+
 
     <button class="primary" id="btnProfil" type="button">
       👤 Profil
@@ -937,26 +972,72 @@ document.getElementById("tutupLaporan").onclick=function(){
   document.getElementById("isiLaporan").style.display="none";
 };
 
-document.getElementById("buatLaporan").onclick=function(){
+  function cekPeriodeLaporan(){
   var periode=document.getElementById("periodeLaporan").value;
-  var jenis=document.getElementById("jenisLaporan").value;
-  var petugas=document.getElementById("petugasLaporan").value;
 
-  if(!periode || !jenis){
+  if(!periode){
     document.getElementById("hasilLaporan").innerText=
-      "Pilih periode dan jenis laporan terlebih dahulu.";
-    return;
+      "Pilih periode laporan terlebih dahulu.";
+    return false;
   }
 
-  if(jenis==="Laporan Individu" && !petugas){
+  return true;
+}
+
+function tampilLaporanProses(namaProses){
+  if(!cekPeriodeLaporan()) return;
+
+  var periode=document.getElementById("periodeLaporan").value;
+
+  document.getElementById("hasilLaporan").innerText=
+    "Laporan "+namaProses+" periode "+periode+" siap ditampilkan.";
+}
+
+document.getElementById("laporanDistribusi").onclick=function(){
+  tampilLaporanProses("Distribusi Alat Steril");
+};
+
+document.getElementById("laporanPenerimaan").onclick=function(){
+  tampilLaporanProses("Penerimaan Alat Kotor");
+};
+
+document.getElementById("laporanDekontaminasi").onclick=function(){
+  tampilLaporanProses("Dekontaminasi");
+};
+
+document.getElementById("laporanPacking").onclick=function(){
+  tampilLaporanProses("Packing");
+};
+
+document.getElementById("laporanSterilisasi").onclick=function(){
+  tampilLaporanProses("Sterilisasi");
+};
+
+document.getElementById("laporanPetugas").onclick=function(){
+  if(!cekPeriodeLaporan()) return;
+
+  var petugas=document.getElementById("petugasLaporan").value;
+  var periode=document.getElementById("periodeLaporan").value;
+
+  if(!petugas){
     document.getElementById("hasilLaporan").innerText=
-      "Pilih Petugas CSSD untuk laporan individu.";
+      "Pilih pelaksana CSSD terlebih dahulu.";
     return;
   }
 
   document.getElementById("hasilLaporan").innerText=
-    "Laporan siap ditampilkan.";
+    "Laporan "+petugas+" periode "+periode+" siap ditampilkan.";
 };
+
+document.getElementById("laporanMenyeluruh").onclick=function(){
+  if(!cekPeriodeLaporan()) return;
+
+  var periode=document.getElementById("periodeLaporan").value;
+
+  document.getElementById("hasilLaporan").innerText=
+    "Rekap seluruh proses CSSD periode "+periode+" siap ditampilkan.";
+};
+
 document.getElementById("btnProfil").onclick=function(){
   var tombol=document.getElementById("btnProfil");
   var panel=document.getElementById("isiProfil");
