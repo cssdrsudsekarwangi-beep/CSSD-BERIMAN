@@ -999,18 +999,136 @@ show.onclick=function(){
   }
 };
 
-  form.onsubmit=function(e){
-  e.preventDefault();
-  var u=document.getElementById("user").value.trim().toLowerCase();
+  var penggunaAktif=null;
 
-  if(u==="handrigumelar" && pass.value==="HG-4821"){
-    document.getElementById("login").style.display="none";
-    document.getElementById("dashboard").style.display="block";
-    msg.innerText="";
-  }else{
+var daftarAkun=[
+  {
+    username:"handrigumelar",
+    password:"HG-4821",
+    nama:"Handri Gumelar",
+    role:"admin"
+  },
+  {
+    username:"endendessar",
+    password:"ED-7314",
+    nama:"Enden Dessa R",
+    role:"pelaksana"
+  },
+  {
+    username:"nananmulyana",
+    password:"NM-2468",
+    nama:"Nanan Mulyana",
+    role:"pelaksana"
+  },
+  {
+    username:"dedisyarieffudin",
+    password:"DS-5193",
+    nama:"Dedi Syarieffudin",
+    role:"pelaksana"
+  },
+  {
+    username:"m.pradifto",
+    password:"MP-8642",
+    nama:"M. Pradifto",
+    role:"pelaksana"
+  },
+  {
+    username:"yanamulyana",
+    password:"YM-3571",
+    nama:"Yana Mulyana",
+    role:"pelaksana"
+  },
+  {
+    username:"helmimaulana",
+    password:"HM-6285",
+    nama:"Helmi Maulana",
+    role:"pelaksana"
+  },
+  {
+    username:"wahyudin",
+    password:"WH-1947",
+    nama:"Wahyudin",
+    role:"pelaksana"
+  },
+  {
+    username:"devaafrian",
+    password:"DA-4056",
+    nama:"Deva Afrian",
+    role:"pelaksana"
+  },
+  {
+    username:"dudung",
+    password:"DD-9732",
+    nama:"Dudung",
+    role:"pelaksana"
+  },
+  {
+    username:"dwipangestu",
+    password:"DP-5804",
+    nama:"Dwi Pangestu",
+    role:"pelaksana"
+  }
+];
+
+form.onsubmit=function(e){
+  e.preventDefault();
+
+  var username=document.getElementById("user")
+    .value.trim().toLowerCase();
+
+  var password=pass.value;
+
+  penggunaAktif=daftarAkun.find(function(akun){
+    return akun.username===username &&
+           akun.password===password;
+  });
+
+  if(!penggunaAktif){
     msg.innerText="Username atau kata sandi tidak sesuai.";
+    return;
+  }
+
+  document.getElementById("login").style.display="none";
+  document.getElementById("dashboard").style.display="block";
+  msg.innerText="";
+
+  document.getElementById("petugasAktivitas").value=
+    penggunaAktif.nama;
+
+  var badge=document.querySelector(".badge");
+  var sapaan=document.querySelector(".panel > h2 + p");
+
+  if(penggunaAktif.role==="admin"){
+    badge.innerText="KEPALA INSTALASI / ADMIN";
+    sapaan.innerText="Selamat datang, "+penggunaAktif.nama+".";
+
+    document.getElementById("btnKelolaAkun").style.display="flex";
+    document.getElementById("btnLaporan").style.display="flex";
+  }else{
+    badge.innerText="PELAKSANA";
+    sapaan.innerText="Selamat datang, "+penggunaAktif.nama+".";
+
+    document.getElementById("btnKelolaAkun").style.display="none";
+    document.getElementById("isiKelolaAkun").style.display="none";
+
+    document.getElementById("btnLaporan").style.display="none";
+    document.getElementById("isiLaporan").style.display="none";
+  }
+
+  var profil=document.querySelectorAll("#isiProfil input");
+
+  if(profil.length>=4){
+    profil[0].value=penggunaAktif.nama;
+    profil[1].value=
+      penggunaAktif.role==="admin"
+      ? "Kepala Instalasi / Admin"
+      : "Pelaksana";
+
+    profil[2].value=penggunaAktif.username;
+    profil[3].value="Aktif";
   }
 };
+
 
 document.getElementById("logout").onclick=function(){
   document.getElementById("dashboard").style.display="none";
