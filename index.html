@@ -2063,7 +2063,8 @@ daftarAlatTambahan.innerHTML="";
   console.log(error);
 
   document.getElementById("pesanDistribusi").innerText=
-    "Distribusi gagal disimpan.";
+  "Gagal: "+error.code+" - "+error.message;
+
 }
 
 };
