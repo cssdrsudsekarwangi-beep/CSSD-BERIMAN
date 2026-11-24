@@ -1088,7 +1088,13 @@ document.getElementById("tutupLaporan").onclick=function(){
   document.getElementById("isiLaporan").style.display="none";
 };
 
-  function cekPeriodeLaporan(){
+  function ambilSemuaAktivitas(){
+  return JSON.parse(
+    localStorage.getItem("cssdAktivitas") || "[]"
+  );
+}
+
+function cekPeriodeLaporan(){
   var periode=document.getElementById("periodeLaporan").value;
 
   if(!periode){
@@ -1100,40 +1106,122 @@ document.getElementById("tutupLaporan").onclick=function(){
   return true;
 }
 
-function tampilLaporanProses(namaProses){
-  if(!cekPeriodeLaporan()) return;
+function sesuaiPeriode(tanggalAktivitas,periode){
+  var tanggal=new Date(tanggalAktivitas+"T00:00:00");
+  var sekarang=new Date();
 
+  tanggal.setHours(0,0,0,0);
+  sekarang.setHours(0,0,0,0);
+
+  if(periode==="Harian"){
+    return tanggal.getTime()===sekarang.getTime();
+  }
+
+  if(periode==="Bulanan"){
+    return tanggal.getMonth()===sekarang.getMonth() &&
+           tanggal.getFullYear()===sekarang.getFullYear();
+  }
+
+  if(periode==="3 Bulan"){
+    var tigaBulan=new Date(sekarang);
+    tigaBulan.setMonth(tigaBulan.getMonth()-3);
+
+    return tanggal>=tigaBulan && tanggal<=sekarang;
+  }
+
+  if(periode==="1 Tahun"){
+    var satuTahun=new Date(sekarang);
+    satuTahun.setFullYear(satuTahun.getFullYear()-1);
+
+    return tanggal>=satuTahun && tanggal<=sekarang;
+  }
+
+  return true;
+}
+
+function filterBerdasarkanPeriode(data){
   var periode=document.getElementById("periodeLaporan").value;
 
-  document.getElementById("hasilLaporan").innerText=
-    "Laporan "+namaProses+" periode "+periode+" siap ditampilkan.";
+  return data.filter(function(item){
+    return sesuaiPeriode(item.tanggal,periode);
+  });
+}
+
+function formatHasilLaporan(judul,data){
+  var periode=document.getElementById("periodeLaporan").value;
+  var totalJumlah=0;
+
+  data.forEach(function(item){
+    totalJumlah+=Number(item.jumlah || 0);
+  });
+
+  if(data.length===0){
+    document.getElementById("hasilLaporan").innerHTML=
+      "<strong>"+judul+"</strong><br>"+
+      "Belum ada data untuk periode "+periode+".";
+    return;
+  }
+
+  document.getElementById("hasilLaporan").innerHTML=
+    "<strong>"+judul+"</strong><br>"+
+    "Periode: "+periode+"<br>"+
+    "Jumlah aktivitas: "+data.length+"<br>"+
+    "Total alat/set: "+totalJumlah;
+}
+
+function tampilLaporanProses(judul,jenisAktivitas){
+  if(!cekPeriodeLaporan()) return;
+
+  var data=ambilSemuaAktivitas();
+
+  data=data.filter(function(item){
+    return item.jenis===jenisAktivitas;
+  });
+
+  data=filterBerdasarkanPeriode(data);
+
+  formatHasilLaporan(judul,data);
 }
 
 document.getElementById("laporanDistribusi").onclick=function(){
-  tampilLaporanProses("Distribusi Alat Steril");
+  tampilLaporanProses(
+    "Laporan Distribusi Alat Steril",
+    "Distribusi alat steril"
+  );
 };
 
 document.getElementById("laporanPenerimaan").onclick=function(){
-  tampilLaporanProses("Penerimaan Alat Kotor");
+  tampilLaporanProses(
+    "Laporan Penerimaan Alat Kotor",
+    "Penerimaan alat kotor"
+  );
 };
 
 document.getElementById("laporanDekontaminasi").onclick=function(){
-  tampilLaporanProses("Dekontaminasi");
+  tampilLaporanProses(
+    "Laporan Dekontaminasi",
+    "Dekontaminasi dan pencucian"
+  );
 };
 
 document.getElementById("laporanPacking").onclick=function(){
-  tampilLaporanProses("Packing");
+  tampilLaporanProses(
+    "Laporan Packing",
+    "Pengemasan / packing"
+  );
 };
 
 document.getElementById("laporanSterilisasi").onclick=function(){
-  tampilLaporanProses("Sterilisasi");
+  tampilLaporanProses(
+    "Laporan Sterilisasi",
+    "Proses sterilisasi"
+  );
 };
 
 document.getElementById("laporanPetugas").onclick=function(){
   if(!cekPeriodeLaporan()) return;
 
   var petugas=document.getElementById("petugasLaporan").value;
-  var periode=document.getElementById("periodeLaporan").value;
 
   if(!petugas){
     document.getElementById("hasilLaporan").innerText=
@@ -1141,18 +1229,33 @@ document.getElementById("laporanPetugas").onclick=function(){
     return;
   }
 
-  document.getElementById("hasilLaporan").innerText=
-    "Laporan "+petugas+" periode "+periode+" siap ditampilkan.";
+  var data=ambilSemuaAktivitas();
+
+  data=data.filter(function(item){
+    return item.petugas===petugas;
+  });
+
+  data=filterBerdasarkanPeriode(data);
+
+  formatHasilLaporan(
+    "Laporan Satuan Petugas: "+petugas,
+    data
+  );
 };
 
 document.getElementById("laporanMenyeluruh").onclick=function(){
   if(!cekPeriodeLaporan()) return;
 
-  var periode=document.getElementById("periodeLaporan").value;
+  var data=ambilSemuaAktivitas();
 
-  document.getElementById("hasilLaporan").innerText=
-    "Rekap seluruh proses CSSD periode "+periode+" siap ditampilkan.";
+  data=filterBerdasarkanPeriode(data);
+
+  formatHasilLaporan(
+    "Rekap Menyeluruh CSSD",
+    data
+  );
 };
+
 
 document.getElementById("btnProfil").onclick=function(){
   var tombol=document.getElementById("btnProfil");
