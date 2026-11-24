@@ -1516,20 +1516,46 @@ document.getElementById("simpanAktivitas").onclick=async function(){
 };
 
 
-document.getElementById("lihatRiwayat").onclick=function(){
 
-  var data=JSON.parse(
-    localStorage.getItem("cssdAktivitas") || "[]"
-  );
-
-  if(data.length===0){
-    document.getElementById("pesanAktivitas").innerText=
-      "Belum ada riwayat aktivitas.";
-    return;
-  }
+document.getElementById("lihatRiwayat").onclick=async function(){
 
   document.getElementById("pesanAktivitas").innerText=
-    "Tersimpan "+data.length+" aktivitas CSSD.";
+    "Memuat riwayat aktivitas...";
+
+  try{
+    var q=query(
+      collection(firebaseDb,"aktivitas"),
+      orderBy("dibuatPada","desc")
+    );
+
+    var hasil=await getDocs(q);
+    var totalAlat=0;
+
+    hasil.forEach(function(dokumen){
+      var aktivitas=dokumen.data();
+      totalAlat+=Number(aktivitas.jumlah || 0);
+    });
+
+    if(hasil.empty){
+      document.getElementById("pesanAktivitas").innerText=
+        "Belum ada riwayat aktivitas.";
+      return;
+    }
+
+    document.getElementById("pesanAktivitas").innerText=
+      "Riwayat database pusat: "+
+      hasil.size+
+      " aktivitas, total "+
+      totalAlat+
+      " alat/set.";
+
+  }catch(error){
+    console.log(error);
+
+    document.getElementById("pesanAktivitas").innerText=
+      "Riwayat gagal dimuat dari database pusat.";
+  }
+
 };
 
 </script>
