@@ -244,6 +244,140 @@ hr{
   border-top:1px solid #e3ece8;
   margin:22px 0;
 }
+/* ===== POLISH DASHBOARD MODERN ===== */
+
+/* Badge rata tengah */
+.badge{
+  display:block;
+  width:max-content;
+  max-width:100%;
+  margin:0 auto 18px auto;
+  text-align:center;
+  background:#e4f3ee;
+  color:#3d7066;
+  border:1px solid #d8ebe4;
+  border-radius:999px;
+  padding:8px 16px;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.3px;
+}
+
+/* Identitas dashboard lebih rapi */
+.panel > h2{
+  text-align:center !important;
+  margin:8px 0 8px;
+  font-size:28px;
+  color:#315f55;
+  letter-spacing:.3px;
+}
+
+.panel > h2 + p{
+  text-align:center;
+  color:#647a74;
+  margin:0 0 26px;
+}
+
+/* Judul Menu Utama */
+.panel > h3{
+  font-size:18px;
+  margin:24px 2px 14px;
+  color:#426b62;
+}
+
+/* Semua tombol menu */
+.panel > .primary{
+  width:100%;
+  min-height:58px;
+  margin:10px 0 0;
+  padding:14px 18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+
+  border-radius:16px;
+  border:1px solid #dce9e5;
+
+  font-size:16px;
+  font-weight:700;
+
+  box-shadow:0 2px 8px rgba(55,95,85,.04);
+
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease,
+    background .15s ease;
+}
+
+/* Beranda */
+.panel > .primary:nth-of-type(1){
+  background:#edf7f3;
+  color:#47796e;
+}
+
+/* Aktivitas */
+.panel > .primary:nth-of-type(2){
+  background:#edf8f8;
+  color:#457879;
+}
+
+/* Kelola Akun */
+.panel > .primary:nth-of-type(3){
+  background:#f0f5fa;
+  color:#57758c;
+}
+
+/* Laporan */
+.panel > .primary:nth-of-type(4){
+  background:#f0f8f4;
+  color:#52786c;
+}
+
+/* Profil */
+.panel > .primary:nth-of-type(5){
+  background:#f3f6f8;
+  color:#60757d;
+}
+
+/* Efek sentuh */
+.panel > .primary:active{
+  transform:scale(.985);
+  box-shadow:none;
+}
+
+/* Tombol keluar lebih minimal */
+.panel > .logout{
+  display:block;
+  width:100%;
+  margin-top:18px;
+  padding:13px 16px;
+
+  background:#f7f9f8;
+  color:#61736d;
+
+  border:1px solid #dde7e3;
+  border-radius:14px;
+
+  font-weight:700;
+}
+
+/* Lebih lega di layar HP */
+@media(max-width:600px){
+  .panel{
+    padding:22px 18px;
+  }
+
+  .panel > h2{
+    font-size:25px;
+  }
+
+  .panel > .primary{
+    min-height:56px;
+    font-size:16px;
+  }
+}
 
 </style>
 </head>
