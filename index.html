@@ -2888,6 +2888,10 @@ document.getElementById("riwayatPenerimaan").onclick=async function(){
 
   var hasilRiwayat=
     document.getElementById("hasilRiwayatPenerimaan");
+if(hasilRiwayat.style.display==="block"){
+  hasilRiwayat.style.display="none";
+  return;
+}
 
   hasilRiwayat.style.display="block";
   hasilRiwayat.innerHTML="Memuat riwayat penerimaan...";
@@ -3086,6 +3090,10 @@ document.getElementById("riwayatDekontaminasi").onclick=async function(){
 
   var hasilRiwayat=
     document.getElementById("hasilRiwayatDekontaminasi");
+if(hasilRiwayat.style.display==="block"){
+  hasilRiwayat.style.display="none";
+  return;
+}
 
   hasilRiwayat.style.display="block";
   hasilRiwayat.innerHTML="Memuat riwayat dekontaminasi...";
@@ -3323,6 +3331,10 @@ daftarAlatPackingTambahan.innerHTML="";
 
   var hasilRiwayat=
     document.getElementById("hasilRiwayatPacking");
+if(hasilRiwayat.style.display==="block"){
+  hasilRiwayat.style.display="none";
+  return;
+}
 
   hasilRiwayat.style.display="block";
   hasilRiwayat.innerHTML="Memuat riwayat packing...";
