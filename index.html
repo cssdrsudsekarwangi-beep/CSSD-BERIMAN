@@ -3635,7 +3635,8 @@ document.getElementById("pesanSterilisasi").innerText=
   console.log(error);
 
   document.getElementById("pesanSterilisasi").innerText=
-    "Sterilisasi gagal disimpan: "+error.code;
+  "Gagal upload: "+error.code+" - "+error.message;
+
 
 }
 };
