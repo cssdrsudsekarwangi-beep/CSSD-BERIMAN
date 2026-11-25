@@ -308,6 +308,49 @@ input{
   color:#ffffff !important;
   border:1px solid #7f453e !important;
 }
+#isiDekontaminasi{
+  background:#fff8f6;
+  border:1px solid #f0d8d3;
+  border-radius:20px;
+  padding:20px;
+}
+#isiDekontaminasi > h3,
+#isiDekontaminasi > p{
+  text-align:center;
+}
+#isiDekontaminasi > h3{
+  background:#fde9e5;
+  color:#8a544b;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:8px;
+}
+#tambahAlatDekontaminasi{
+  background:#a85f55 !important;
+  color:#ffffff !important;
+}
+#simpanDekontaminasi{
+  background:#a85f55 !important;
+  color:#ffffff !important;
+}
+#riwayatDekontaminasi{
+  width:100%;
+  margin-top:12px;
+  text-align:center;
+  background:#a85f55 !important;
+  color:#ffffff !important;
+}
+#tutupDekontaminasi{
+  display:block;
+  width:100%;
+  margin-top:12px;
+  padding:13px 16px;
+  text-align:center;
+  border-radius:14px;
+  background:#8f4f47 !important;
+  color:#ffffff !important;
+  border:1px solid #7f453e !important;
+}
 
 #isiBeranda{
   background:#f7fbf9;
@@ -1512,6 +1555,73 @@ hr{
 </button>
  
 </div>
+<div id="isiDekontaminasi" style="display:none;margin-top:25px">
+
+  <h3>🧼 Dekontaminasi</h3>
+  <p>Proses dekontaminasi dan pencucian alat.</p>
+
+  <label>Tanggal</label>
+  <input id="tanggalDekontaminasi" type="date">
+
+  <label>Jam</label>
+  <input id="jamDekontaminasi" type="time">
+<label>Petugas CSSD</label>
+<input id="petugasDekontaminasi"
+       type="text"
+       readonly>
+<label>Nama Alat / Set</label>
+<select id="alatDekontaminasi">
+  <option value="">Pilih nama alat / set</option>
+</select>
+
+<label>Jumlah</label>
+<input id="jumlahDekontaminasi"
+       type="number"
+       min="1"
+       placeholder="Masukkan jumlah">
+<div id="daftarAlatDekontaminasiTambahan"></div>
+
+<button class="primary"
+        id="tambahAlatDekontaminasi"
+        type="button">
+  + Tambah Alat / Set
+</button>
+<label>Metode Dekontaminasi</label>
+<select id="metodeDekontaminasi">
+  <option value="">Pilih metode dekontaminasi</option>
+  <option>Manual</option>
+  <option>Washer Disinfector</option>
+  <option>Ultrasonic</option>
+  <option>Desinfeksi Tingkat Tinggi</option>
+</select>
+<label>Catatan</label>
+<textarea id="catatanDekontaminasi"
+          rows="4"
+          placeholder="Masukkan catatan dekontaminasi"></textarea>
+<button class="primary"
+        id="simpanDekontaminasi"
+        type="button">
+  Simpan Dekontaminasi
+</button>
+  <div id="pesanDekontaminasi"
+     style="margin-top:15px;color:#a85f55;font-weight:bold">
+</div>
+
+<button class="primary"
+        id="riwayatDekontaminasi"
+        type="button">
+  📋 Riwayat Dekontaminasi
+</button>
+<div id="hasilRiwayatDekontaminasi"
+     style="display:none;margin-top:15px">
+</div>
+<button class="logout"
+        id="tutupDekontaminasi"
+        type="button">
+  Kembali ke Menu Utama
+</button>
+
+</div>
 
 </div>
 
@@ -1580,6 +1690,37 @@ var tombolTambahAlat=document.getElementById("tambahAlatDistribusi");
 
 alatPenerimaan.innerHTML=alatAsal.innerHTML;
 alatPenerimaan.options[0].text="Pilih nama alat / set";
+  var alatDekontaminasi=
+  document.getElementById("alatDekontaminasi");
+
+alatDekontaminasi.innerHTML=alatAsal.innerHTML;
+alatDekontaminasi.options[0].text="Pilih nama alat / set";
+var daftarAlatDekontaminasiTambahan=
+  document.getElementById("daftarAlatDekontaminasiTambahan");
+
+var tombolTambahAlatDekontaminasi=
+  document.getElementById("tambahAlatDekontaminasi");
+tombolTambahAlatDekontaminasi.onclick=function(){
+
+  var item=document.createElement("div");
+
+  item.innerHTML=
+    '<label>Nama Alat / Set</label>'+
+    '<select class="alatDekontaminasiTambahan">'+
+      alatAsal.innerHTML+
+    '</select>'+
+    '<label>Jumlah</label>'+
+    '<input class="jumlahDekontaminasiTambahan" type="number" min="1" placeholder="Masukkan jumlah">'+
+    '<button type="button" class="hapusAlatDekontaminasi">Hapus</button>';
+
+  daftarAlatDekontaminasiTambahan.appendChild(item);
+
+  item.querySelector(".hapusAlatDekontaminasi").onclick=function(){
+    item.remove();
+  };
+
+};
+
 var daftarAlatPenerimaanTambahan=
   document.getElementById("daftarAlatPenerimaanTambahan");
 
@@ -1772,6 +1913,8 @@ document.getElementById("petugasDistribusi").value=
   penggunaAktif.nama;
 document.getElementById("petugasPenerimaan").value=
   penggunaAktif.nama;
+document.getElementById("petugasDekontaminasi").value=
+  penggunaAktif.nama;
 
   var badge=document.querySelector(".badge");
   var sapaan=document.querySelector(".panel > h2 + p");
@@ -1883,11 +2026,17 @@ document.getElementById("tutupPenerimaan").onclick=function(){
 
 document.getElementById("homeDekontaminasi").onclick=function(){
   document.getElementById("homeModern").style.display="none";
-  document.getElementById("isiAktivitas").style.display="block";
+  document.getElementById("isiDekontaminasi").style.display="block";
 
-  document.getElementById("jenisAktivitas").value=
-    "Dekontaminasi dan pencucian";
+document.getElementById("logout").style.display="none";
+
 };
+  document.getElementById("tutupDekontaminasi").onclick=function(){
+  document.getElementById("isiDekontaminasi").style.display="none";
+  document.getElementById("homeModern").style.display="block";
+  document.getElementById("logout").style.display="block";
+};
+
 document.getElementById("homePacking").onclick=function(){
   document.getElementById("homeModern").style.display="none";
   document.getElementById("isiAktivitas").style.display="block";
@@ -2615,7 +2764,214 @@ if(data.catatan){
 }
 
 };
+document.getElementById("simpanDekontaminasi").onclick=async function(){
 
+  var tanggal=document.getElementById("tanggalDekontaminasi").value;
+  var jam=document.getElementById("jamDekontaminasi").value;
+  var petugas=document.getElementById("petugasDekontaminasi").value;
+  var alat=document.getElementById("alatDekontaminasi").value;
+  var jumlah=document.getElementById("jumlahDekontaminasi").value;
+  var metode=document.getElementById("metodeDekontaminasi").value;
+  var catatan=document.getElementById("catatanDekontaminasi").value;
+var items=[];
+
+items.push({
+  alat:alat,
+  jumlah:Number(jumlah)
+});
+var alatTambahan=
+  document.querySelectorAll("#daftarAlatDekontaminasiTambahan > div");
+
+alatTambahan.forEach(function(item){
+
+  var nama=
+    item.querySelector(".alatDekontaminasiTambahan").value;
+
+  var banyak=
+    item.querySelector(".jumlahDekontaminasiTambahan").value;
+
+  if(nama && banyak){
+    items.push({
+      alat:nama,
+      jumlah:Number(banyak)
+    });
+  }
+
+});
+if(!tanggal || !jam || !petugas ||
+   !alat || !jumlah || !metode){
+
+document.getElementById("pesanDekontaminasi").innerText=
+  "Lengkapi data dekontaminasi terlebih dahulu.";
+ return;
+ 
+}
+var dekontaminasi={
+  tanggal:tanggal,
+  jam:jam,
+  petugas:petugas,
+  metode:metode,
+  catatan:catatan,
+  items:items
+};
+try{
+
+  dekontaminasi.dibuatPada=serverTimestamp();
+
+  dekontaminasi.userId=firebaseAuth.currentUser
+    ? firebaseAuth.currentUser.uid
+    : penggunaAktif.username;
+
+  await addDoc(
+    collection(firebaseDb,"dekontaminasi"),
+    dekontaminasi
+  );
+
+  document.getElementById("pesanDekontaminasi").innerText=
+  "✓ Dekontaminasi berhasil disimpan.";
+
+document.getElementById("tanggalDekontaminasi").value="";
+document.getElementById("jamDekontaminasi").value="";
+document.getElementById("alatDekontaminasi").value="";
+document.getElementById("jumlahDekontaminasi").value="";
+document.getElementById("metodeDekontaminasi").value="";
+document.getElementById("catatanDekontaminasi").value="";
+daftarAlatDekontaminasiTambahan.innerHTML="";
+
+}catch(error){
+
+  console.log(error);
+  document.getElementById("pesanDekontaminasi").innerText=
+  "Dekontaminasi gagal disimpan: "+error.code;
+
+
+}
+
+};
+
+document.getElementById("riwayatDekontaminasi").onclick=async function(){
+
+  var hasilRiwayat=
+    document.getElementById("hasilRiwayatDekontaminasi");
+
+  hasilRiwayat.style.display="block";
+  hasilRiwayat.innerHTML="Memuat riwayat dekontaminasi...";
+
+try{
+
+  var qDekontaminasi=query(
+    collection(firebaseDb,"dekontaminasi"),
+    orderBy("dibuatPada","desc")
+  );
+
+  var dataDekontaminasi=await getDocs(qDekontaminasi);
+
+  if(dataDekontaminasi.empty){
+    hasilRiwayat.innerHTML="Belum ada riwayat dekontaminasi.";
+    return;
+  }
+
+  hasilRiwayat.innerHTML="";
+dataDekontaminasi.forEach(function(dokumen){
+
+  var data=dokumen.data();
+  var kartu=document.createElement("div");
+
+  kartu.style.background="linear-gradient(145deg,#ffffff,#fff5f3)";
+  kartu.style.border="1px solid #f0d8d3";
+  kartu.style.borderRadius="18px";
+  kartu.style.padding="18px";
+  kartu.style.marginBottom="14px";
+  kartu.style.boxShadow="0 5px 16px rgba(140,80,70,.08)";
+var judul=document.createElement("strong");
+judul.textContent="🧼 Dekontaminasi";
+
+judul.style.display="block";
+judul.style.fontSize="17px";
+judul.style.color="#8a5b52";
+judul.style.marginBottom="6px";
+
+var waktu=document.createElement("p");
+waktu.textContent=data.tanggal+" • "+data.jam;
+
+waktu.style.fontSize="13px";
+waktu.style.color="#9a7772";
+waktu.style.margin="4px 0 14px";
+
+kartu.appendChild(judul);
+kartu.appendChild(waktu);
+var daftar=document.createElement("div");
+
+(data.items || []).forEach(function(item){
+
+  var baris=document.createElement("div");
+
+  baris.textContent=
+    item.alat+" • "+item.jumlah;
+
+  baris.style.background="#fff1ee";
+  baris.style.border="1px solid #f1d8d2";
+  baris.style.padding="10px 12px";
+  baris.style.borderRadius="10px";
+  baris.style.marginBottom="7px";
+  baris.style.color="#8a5b52";
+  baris.style.fontSize="13px";
+
+  daftar.appendChild(baris);
+
+});
+
+kartu.appendChild(daftar);
+var metode=document.createElement("p");
+metode.textContent="Metode: "+data.metode;
+
+metode.style.display="inline-block";
+metode.style.margin="8px 0 4px";
+metode.style.padding="6px 10px";
+metode.style.background="#fde9e5";
+metode.style.color="#8a544b";
+metode.style.borderRadius="999px";
+metode.style.fontSize="12px";
+metode.style.fontWeight="700";
+
+kartu.appendChild(metode);
+var petugas=document.createElement("p");
+petugas.textContent="Petugas CSSD: "+data.petugas;
+
+petugas.style.margin="12px 0 4px";
+petugas.style.fontSize="13px";
+petugas.style.color="#8a5b52";
+petugas.style.fontWeight="600";
+
+kartu.appendChild(petugas);
+if(data.catatan){
+
+  var catatan=document.createElement("p");
+  catatan.textContent="Catatan: "+data.catatan;
+
+  catatan.style.background="#fff4f1";
+  catatan.style.borderLeft="3px solid #d9a39a";
+  catatan.style.padding="9px 11px";
+  catatan.style.borderRadius="8px";
+  catatan.style.fontSize="12px";
+  catatan.style.color="#8a625b";
+  catatan.style.margin="10px 0 0";
+
+  kartu.appendChild(catatan);
+}
+
+  hasilRiwayat.appendChild(kartu);
+
+});
+
+}catch(error){
+
+  console.log(error);
+
+  hasilRiwayat.innerHTML=
+    "Riwayat dekontaminasi gagal dimuat.";
+}
+};
 
 document.getElementById("lihatRiwayat").onclick=async function(){
 
