@@ -412,6 +412,49 @@ input{
   color:#ffffff !important;
   border:1px solid #3f6382 !important;
 }
+#isiSterilisasi{
+  background:#f5f9ff;
+  border:1px solid #d5e6f7;
+  border-radius:20px;
+  padding:20px;
+}
+#isiSterilisasi > h3{
+  background:#e7f1fb;
+  color:#527aa0;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:8px;
+  text-align:center;
+}
+#isiSterilisasi > p{
+  text-align:center;
+}
+#tambahAlatSterilisasi{
+  background:#5f89b0 !important;
+  color:#ffffff !important;
+}
+#simpanSterilisasi{
+  background:#5f89b0 !important;
+  color:#ffffff !important;
+}
+#riwayatSterilisasi{
+  width:100%;
+  margin-top:12px;
+  text-align:center;
+  background:#5f89b0 !important;
+  color:#ffffff !important;
+}
+#tutupSterilisasi{
+  display:block;
+  width:100%;
+  margin-top:12px;
+  padding:13px 16px;
+  text-align:center;
+  border-radius:14px;
+  background:#496f91 !important;
+  color:#ffffff !important;
+  border:1px solid #3f6382 !important;
+}
 
 #isiBeranda{
   background:#f7fbf9;
@@ -1796,6 +1839,78 @@ overflow:hidden;
 </button>
 
 </div>
+<div id="isiSterilisasi" style="display:none;margin-top:25px">
+
+  <h3>♨️ Sterilisasi</h3>
+  <p>Dokumentasi proses sterilisasi alat.</p>
+<label>Tanggal</label>
+<input id="tanggalSterilisasi" type="date">
+<label>Jam</label>
+<input id="jamSterilisasi" type="time">
+<label>Petugas CSSD</label>
+<input id="petugasSterilisasi"
+       type="text"
+       readonly>
+<label>Nama Alat / Set</label>
+<select id="alatSterilisasi">
+  <option value="">Pilih nama alat / set</option>
+</select>
+<label>Jumlah</label>
+<input id="jumlahSterilisasi"
+       type="number"
+       min="1"
+       placeholder="Masukkan jumlah">
+<div id="daftarAlatSterilisasiTambahan"></div>
+<button class="primary"
+        id="tambahAlatSterilisasi"
+        type="button">
+  + Tambah Alat / Set
+</button>
+<label>Metode Sterilisasi</label>
+<select id="metodeSterilisasi">
+  <option value="">Pilih metode sterilisasi</option>
+  <option>Suhu Tinggi</option>
+  <option>Suhu Rendah</option>
+</select>
+<label>📷 Bukti Printout</label>
+<input id="fotoPrintout"
+       type="file"
+       accept="image/*"
+       capture="environment">
+<img id="previewPrintout" style="display:none;width:100%;margin-top:10px;border-radius:12px">
+<label>📷 Sampel Indikator Kimia</label>
+<input id="fotoIndikatorKimia"
+       type="file"
+       accept="image/*"
+       capture="environment">
+<img id="previewIndikatorKimia" style="display:none;width:100%;margin-top:10px;border-radius:12px">
+<label>Catatan Sterilisasi</label>
+<textarea id="catatanSterilisasi"
+          rows="4"
+          placeholder="Masukkan catatan sterilisasi"></textarea>
+<button class="primary"
+        id="simpanSterilisasi"
+        type="button">
+  Simpan Sterilisasi
+</button>
+<div id="pesanSterilisasi"
+     style="margin-top:15px;color:#5f89b0;font-weight:bold">
+</div>
+<button class="primary"
+        id="riwayatSterilisasi"
+        type="button">
+  📋 Riwayat Sterilisasi
+</button>
+<div id="hasilRiwayatSterilisasi"
+     style="display:none;margin-top:15px">
+</div>
+<button class="logout"
+        id="tutupSterilisasi"
+        type="button">
+  Kembali ke Menu Utama
+</button>
+
+</div>
 
 </div>
 
@@ -1825,7 +1940,15 @@ import {
   serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+}
+from "https://www.gstatic.com/firebasejs/12.11.0/firebase-storage.js";
+
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBj2mYrTvHzVgVacGRUmchDjSa1H9-3OAw",
   authDomain: "cssd-beriman.firebaseapp.com",
@@ -1838,6 +1961,7 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const firebaseAuth = getAuth(firebaseApp);
 const firebaseDb = getFirestore(firebaseApp);
+const firebaseStorage = getStorage(firebaseApp);
 
 var form=document.getElementById("form");
 var pass=document.getElementById("pass");
@@ -1863,6 +1987,63 @@ var alatPacking=
 
 alatPacking.innerHTML=alatAsal.innerHTML;
 alatPacking.options[0].text="Pilih nama alat / set";
+  var alatSterilisasi=
+  document.getElementById("alatSterilisasi");
+
+alatSterilisasi.innerHTML=alatAsal.innerHTML;
+alatSterilisasi.options[0].text="Pilih nama alat / set";
+var daftarAlatSterilisasiTambahan=
+  document.getElementById("daftarAlatSterilisasiTambahan");
+
+var tombolTambahAlatSterilisasi=
+  document.getElementById("tambahAlatSterilisasi");
+tombolTambahAlatSterilisasi.onclick=function(){
+
+  var item=document.createElement("div");
+  item.innerHTML=
+    '<label>Nama Alat / Set</label>'+
+    '<select class="alatSterilisasiTambahan">'+
+      alatAsal.innerHTML+
+    '</select>'+
+    '<label>Jumlah</label>'+
+    '<input class="jumlahSterilisasiTambahan" type="number" min="1" placeholder="Masukkan jumlah">'+
+'<button type="button" class="hapusAlatSterilisasi">Hapus</button>';
+  item.querySelector(".hapusAlatSterilisasi").onclick=function(){
+    item.remove();
+  };
+
+    daftarAlatSterilisasiTambahan.appendChild(item);
+
+};
+document.getElementById("fotoPrintout").onchange=function(){
+
+  var file=this.files[0];
+  var preview=document.getElementById("previewPrintout");
+
+  if(!file){
+    preview.style.display="none";
+    preview.removeAttribute("src");
+    return;
+  }
+
+  preview.src=URL.createObjectURL(file);
+  preview.style.display="block";
+};
+document.getElementById("fotoIndikatorKimia").onchange=function(){
+
+  var file=this.files[0];
+  var preview=document.getElementById("previewIndikatorKimia");
+
+  if(!file){
+    preview.style.display="none";
+    preview.removeAttribute("src");
+    return;
+  }
+
+  preview.src=URL.createObjectURL(file);
+  preview.style.display="block";
+};
+
 var daftarAlatPackingTambahan=
   document.getElementById("daftarAlatPackingTambahan");
 
@@ -2156,6 +2337,8 @@ document.getElementById("petugasDekontaminasi").value=
   penggunaAktif.nama;
 document.getElementById("petugasPacking").value=
   penggunaAktif.nama;
+document.getElementById("petugasSterilisasi").value=
+  penggunaAktif.nama;
 
   var badge=document.querySelector(".badge");
   var sapaan=document.querySelector(".panel > h2 + p");
@@ -2293,10 +2476,15 @@ document.getElementById("tutupPacking").onclick=function(){
   
 document.getElementById("homeSterilisasi").onclick=function(){
   document.getElementById("homeModern").style.display="none";
-  document.getElementById("isiAktivitas").style.display="block";
+  document.getElementById("isiSterilisasi").style.display="block";
+document.getElementById("logout").style.display="none";
 
-  document.getElementById("jenisAktivitas").value=
-    "Proses sterilisasi";
+
+};
+document.getElementById("tutupSterilisasi").onclick=function(){
+  document.getElementById("isiSterilisasi").style.display="none";
+  document.getElementById("homeModern").style.display="block";
+  document.getElementById("logout").style.display="block";
 };
 
 document.getElementById("btnKelolaAkun").onclick=function(){
@@ -3352,6 +3540,97 @@ daftarAlatPackingTambahan.innerHTML="";
   console.log(error);
   document.getElementById("pesanPacking").innerText=
   "Packing gagal disimpan: "+error.code;
+
+}
+};
+document.getElementById("simpanSterilisasi").onclick=async function(){
+  var tanggal=document.getElementById("tanggalSterilisasi").value;
+  var jam=document.getElementById("jamSterilisasi").value;
+  var petugas=document.getElementById("petugasSterilisasi").value;
+  var alat=document.getElementById("alatSterilisasi").value;
+  var jumlah=document.getElementById("jumlahSterilisasi").value;
+  var metode=document.getElementById("metodeSterilisasi").value;
+var catatan=document.getElementById("catatanSterilisasi").value;
+var items=[];
+items.push({
+  alat:alat,
+  jumlah:Number(jumlah)
+});
+var alatTambahan=
+  document.querySelectorAll("#daftarAlatSterilisasiTambahan > div");
+alatTambahan.forEach(function(item){
+  var nama=
+    item.querySelector(".alatSterilisasiTambahan").value;
+  var banyak=
+    item.querySelector(".jumlahSterilisasiTambahan").value;
+  if(nama && banyak){
+    items.push({
+      alat:nama,
+      jumlah:Number(banyak)
+    });
+  }
+});
+var fotoPrintout=document.getElementById("fotoPrintout").files[0];
+var fotoIndikatorKimia=document.getElementById("fotoIndikatorKimia").files[0];
+
+  if(!tanggal || !jam || !petugas ||
+   !alat || !jumlah || !metode ||
+   !fotoPrintout || !fotoIndikatorKimia){
+
+    document.getElementById("pesanSterilisasi").innerText=
+    "Lengkapi data sterilisasi dan kedua bukti foto.";
+  return;
+}
+var sterilisasi={
+  tanggal:tanggal,
+  jam:jam,
+  petugas:petugas,
+  metode:metode,
+  catatan:catatan,
+  items:items
+};
+sterilisasi.dibuatPada=serverTimestamp();
+
+sterilisasi.userId=firebaseAuth.currentUser
+  ? firebaseAuth.currentUser.uid
+  : penggunaAktif.username;
+try{
+   var urlPrintout="";
+
+  if(fotoPrintout){
+    var refPrintout=ref(
+      firebaseStorage,
+      "sterilisasi/printout/"+Date.now()+"_"+fotoPrintout.name
+    );
+
+    await uploadBytes(refPrintout,fotoPrintout);
+    urlPrintout=await getDownloadURL(refPrintout);
+  }
+ sterilisasi.urlPrintout=urlPrintout;
+var urlIndikatorKimia="";
+
+if(fotoIndikatorKimia){
+  var refIndikatorKimia=ref(
+    firebaseStorage,
+    "sterilisasi/indikator-kimia/"+Date.now()+"_"+fotoIndikatorKimia.name
+  );
+
+  await uploadBytes(refIndikatorKimia,fotoIndikatorKimia);
+  urlIndikatorKimia=await getDownloadURL(refIndikatorKimia);
+}
+sterilisasi.urlIndikatorKimia=urlIndikatorKimia;
+
+  await addDoc(
+    collection(firebaseDb,"sterilisasi"),
+    sterilisasi
+  );
+document.getElementById("pesanSterilisasi").innerText=
+  "✓ Sterilisasi berhasil disimpan.";
+}catch(error){
+  console.log(error);
+
+  document.getElementById("pesanSterilisasi").innerText=
+    "Sterilisasi gagal disimpan: "+error.code;
 
 }
 };
