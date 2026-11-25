@@ -261,6 +261,36 @@ input{
   margin-top:12px;
   text-align:center;
 }
+#isiPenerimaan{
+  background:#fff8f6;
+  border:1px solid #f0d8d3;
+  border-radius:20px;
+  padding:20px;
+}
+#isiPenerimaan > h3,
+#isiPenerimaan > p{
+  text-align:center;
+}
+#isiPenerimaan > h3{
+  background:#fde9e5;
+  color:#8a544b;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:8px;
+}
+#isiPenerimaan > .logout{
+  display:block;
+  width:100%;
+  margin-top:12px;
+  padding:13px 16px;
+  text-align:center;
+  border-radius:14px;
+}
+#riwayatPenerimaan{
+  width:100%;
+  margin-top:12px;
+  text-align:center;
+}
 
 #isiBeranda{
   background:#f7fbf9;
@@ -1387,7 +1417,82 @@ hr{
 </button>
 
 </div>
+<div id="isiPenerimaan" style="display:none;margin-top:25px">
 
+  <h3>🧺 Penerimaan Alat Kotor</h3>
+  <p>Pencatatan alat kotor masuk ke CSSD.</p>
+
+  <label>Tanggal</label>
+  <input id="tanggalPenerimaan" type="date">
+
+  <label>Jam</label>
+  <input id="jamPenerimaan" type="time">
+<label>Unit / Ruangan Asal</label>
+<select id="ruangPenerimaan">
+  <option value="">Pilih unit / ruangan</option>
+</select>
+<label>Nama Alat / Set</label>
+<select id="alatPenerimaan">
+  <option value="">Pilih nama alat / set</option>
+</select>
+
+<label>Jumlah</label>
+<input id="jumlahPenerimaan"
+       type="number"
+       min="1"
+       placeholder="Masukkan jumlah">
+<label>Kondisi Alat</label>
+<select id="kondisiPenerimaan">
+  <option value="">Pilih kondisi alat</option>
+  <option>Baik</option>
+  <option>Rusak</option>
+  <option>Tidak lengkap</option>
+  <option>Perlu pemeriksaan</option>
+</select>
+  
+<div id="daftarAlatPenerimaanTambahan"></div>
+
+<button class="primary"
+        id="tambahAlatPenerimaan"
+        type="button">
+  + Tambah Alat / Set
+  </button>
+
+  <label>Petugas CSSD</label>
+<input id="petugasPenerimaan"
+       type="text"
+       readonly>
+<label>Petugas yang Menyerahkan</label>
+<input id="petugasMenyerahkan"
+       type="text"
+       placeholder="Masukkan nama petugas yang menyerahkan">
+<label>Catatan</label>
+<textarea id="catatanPenerimaan"
+          rows="4"
+          placeholder="Masukkan catatan penerimaan"></textarea>
+<button class="primary"
+        id="simpanPenerimaan"
+        type="button">
+  Simpan Penerimaan
+</button>
+<button class="primary"
+        id="riwayatPenerimaan"
+        type="button">
+  📋 Riwayat Penerimaan
+</button>
+<div id="hasilRiwayatPenerimaan"
+     style="display:none;margin-top:15px">
+  </div>
+
+ <button class="logout"
+        id="tutupPenerimaan"
+        type="button">
+  Kembali ke Menu Utama
+</button>
+ 
+</div>
+
+</div>
 
   </div>
 </section>
@@ -1438,6 +1543,11 @@ var ruangTujuan=document.getElementById("ruangDistribusi");
 
 ruangTujuan.innerHTML=unitAsal.innerHTML;
 ruangTujuan.options[0].text="Pilih ruang tujuan";
+  var ruangPenerimaan=document.getElementById("ruangPenerimaan");
+
+ruangPenerimaan.innerHTML=unitAsal.innerHTML;
+ruangPenerimaan.options[0].text="Pilih unit / ruangan";
+
 var alatAsal=document.getElementById("namaAlat");
 var alatDistribusi=document.getElementById("alatDistribusi");
 
@@ -1445,6 +1555,45 @@ alatDistribusi.innerHTML=alatAsal.innerHTML;
 alatDistribusi.options[0].text="Pilih nama alat / set";
 var daftarAlatTambahan=document.getElementById("daftarAlatTambahan");
 var tombolTambahAlat=document.getElementById("tambahAlatDistribusi");
+  var alatPenerimaan=document.getElementById("alatPenerimaan");
+
+alatPenerimaan.innerHTML=alatAsal.innerHTML;
+alatPenerimaan.options[0].text="Pilih nama alat / set";
+var daftarAlatPenerimaanTambahan=
+  document.getElementById("daftarAlatPenerimaanTambahan");
+
+var tombolTambahAlatPenerimaan=
+  document.getElementById("tambahAlatPenerimaan");
+tombolTambahAlatPenerimaan.onclick=function(){
+
+  var item=document.createElement("div");
+
+  item.innerHTML=
+    '<label>Nama Alat / Set</label>'+
+    '<select class="alatPenerimaanTambahan">'+
+      alatAsal.innerHTML+
+    '</select>'+
+   '<label>Jumlah</label>'+
+'<input class="jumlahPenerimaanTambahan" type="number" min="1" placeholder="Masukkan jumlah">'+
+'<label>Kondisi Alat</label>'+
+'<select class="kondisiPenerimaanTambahan">'+
+  '<option value="">Pilih kondisi alat</option>'+
+  '<option>Baik</option>'+
+  '<option>Rusak</option>'+
+  '<option>Tidak lengkap</option>'+
+  '<option>Perlu pemeriksaan</option>'+
+'</select>'+
+'<button type="button" class="hapusAlatPenerimaan">Hapus</button>';
+ 
+
+  daftarAlatPenerimaanTambahan.appendChild(item);
+
+  item.querySelector(".hapusAlatPenerimaan").onclick=function(){
+    item.remove();
+  };
+
+};
+
 tombolTambahAlat.onclick=function(){
 
   var item=document.createElement("div");
@@ -1600,6 +1749,8 @@ document.getElementById("isiProfil").style.display="none";
     penggunaAktif.nama;
 document.getElementById("petugasDistribusi").value=
   penggunaAktif.nama;
+document.getElementById("petugasPenerimaan").value=
+  penggunaAktif.nama;
 
   var badge=document.querySelector(".badge");
   var sapaan=document.querySelector(".panel > h2 + p");
@@ -1698,11 +1849,16 @@ document.getElementById("tutupDistribusi").onclick=function(){
 
   document.getElementById("homePenerimaan").onclick=function(){
   document.getElementById("homeModern").style.display="none";
-  document.getElementById("isiAktivitas").style.display="block";
+  document.getElementById("isiPenerimaan").style.display="block";
+document.getElementById("logout").style.display="none";
 
-  document.getElementById("jenisAktivitas").value=
-    "Penerimaan alat kotor";
+document.getElementById("tutupPenerimaan").onclick=function(){
+  document.getElementById("isiPenerimaan").style.display="none";
+  document.getElementById("homeModern").style.display="block";
+  document.getElementById("logout").style.display="block";
 };
+
+
 document.getElementById("homeDekontaminasi").onclick=function(){
   document.getElementById("homeModern").style.display="none";
   document.getElementById("isiAktivitas").style.display="block";
@@ -2226,6 +2382,208 @@ catatan.style.margin="10px 0 0";
 
   hasilRiwayat.innerHTML=
     "Riwayat distribusi gagal dimuat.";
+}
+
+};
+document.getElementById("simpanPenerimaan").onclick=async function(){
+
+  var tanggal=document.getElementById("tanggalPenerimaan").value;
+  var jam=document.getElementById("jamPenerimaan").value;
+  var ruang=document.getElementById("ruangPenerimaan").value;
+  var petugas=document.getElementById("petugasPenerimaan").value;
+  var menyerahkan=document.getElementById("petugasMenyerahkan").value;
+  var catatan=document.getElementById("catatanPenerimaan").value;
+var alat=document.getElementById("alatPenerimaan").value;
+var jumlah=document.getElementById("jumlahPenerimaan").value;
+var kondisi=document.getElementById("kondisiPenerimaan").value;
+var items=[];
+
+items.push({
+  alat:alat,
+  jumlah:Number(jumlah),
+  kondisi:kondisi
+});
+var alatTambahan=
+  document.querySelectorAll("#daftarAlatPenerimaanTambahan > div");
+
+alatTambahan.forEach(function(item){
+
+  var nama=
+    item.querySelector(".alatPenerimaanTambahan").value;
+
+  var banyak=
+    item.querySelector(".jumlahPenerimaanTambahan").value;
+
+  var kondisiTambahan=
+    item.querySelector(".kondisiPenerimaanTambahan").value;
+
+  if(nama && banyak && kondisiTambahan){
+    items.push({
+      alat:nama,
+      jumlah:Number(banyak),
+      kondisi:kondisiTambahan
+    });
+  }
+
+});
+if(!tanggal || !jam || !ruang || !petugas ||
+   !menyerahkan || !alat || !jumlah || !kondisi){
+
+  alert("Lengkapi data penerimaan terlebih dahulu.");
+  return;
+}
+var penerimaan={
+  tanggal:tanggal,
+  jam:jam,
+  ruang:ruang,
+  petugas:petugas,
+  menyerahkan:menyerahkan,
+  catatan:catatan,
+  items:items
+};
+try{
+
+  penerimaan.dibuatPada=serverTimestamp();
+
+  penerimaan.userId=firebaseAuth.currentUser
+    ? firebaseAuth.currentUser.uid
+    : penggunaAktif.username;
+
+  await addDoc(
+    collection(firebaseDb,"penerimaan"),
+    penerimaan
+  );
+
+  alert("✓ Penerimaan berhasil disimpan.");
+  document.getElementById("tanggalPenerimaan").value="";
+document.getElementById("jamPenerimaan").value="";
+document.getElementById("ruangPenerimaan").value="";
+document.getElementById("alatPenerimaan").value="";
+document.getElementById("jumlahPenerimaan").value="";
+document.getElementById("kondisiPenerimaan").value="";
+document.getElementById("petugasMenyerahkan").value="";
+document.getElementById("catatanPenerimaan").value="";
+daftarAlatPenerimaanTambahan.innerHTML="";
+
+
+}catch(error){
+
+  console.log(error);
+  alert("Penerimaan gagal disimpan: "+error.code);
+
+}
+
+};
+document.getElementById("riwayatPenerimaan").onclick=async function(){
+
+  var hasilRiwayat=
+    document.getElementById("hasilRiwayatPenerimaan");
+
+  hasilRiwayat.style.display="block";
+  hasilRiwayat.innerHTML="Memuat riwayat penerimaan...";
+try{
+
+  var qPenerimaan=query(
+    collection(firebaseDb,"penerimaan"),
+    orderBy("dibuatPada","desc")
+  );
+
+  var dataPenerimaan=await getDocs(qPenerimaan);
+
+  if(dataPenerimaan.empty){
+    hasilRiwayat.innerHTML="Belum ada riwayat penerimaan.";
+    return;
+  }
+
+  hasilRiwayat.innerHTML="";
+dataPenerimaan.forEach(function(dokumen){
+
+  var data=dokumen.data();
+  var kartu=document.createElement("div");
+
+  kartu.style.background="linear-gradient(145deg,#ffffff,#fff5f3)";
+  kartu.style.border="1px solid #f0d8d3";
+  kartu.style.borderRadius="18px";
+  kartu.style.padding="18px";
+  kartu.style.marginBottom="14px";
+  kartu.style.boxShadow="0 5px 16px rgba(140,80,70,.08)";
+
+  var judul=document.createElement("strong");
+  judul.textContent="🧺 "+data.ruang;
+var waktu=document.createElement("p");
+waktu.textContent=data.tanggal+" • "+data.jam;
+
+waktu.style.fontSize="13px";
+waktu.style.color="#9a7772";
+waktu.style.margin="6px 0 14px";
+
+hasilRiwayat.appendChild(kartu);
+kartu.appendChild(judul);
+kartu.appendChild(waktu);
+var daftar=document.createElement("div");
+
+(data.items || []).forEach(function(item){
+
+  var baris=document.createElement("div");
+
+  baris.textContent=
+    item.alat+" • "+item.jumlah+" • "+item.kondisi;
+
+  baris.style.background="#fff1ee";
+  baris.style.border="1px solid #f1d8d2";
+  baris.style.padding="10px 12px";
+  baris.style.borderRadius="10px";
+  baris.style.marginBottom="7px";
+  baris.style.color="#8a5b52";
+  baris.style.fontSize="13px";
+
+  daftar.appendChild(baris);
+
+});
+
+kartu.appendChild(daftar);
+var petugas=document.createElement("p");
+petugas.textContent="Petugas CSSD: "+data.petugas;
+
+petugas.style.margin="14px 0 4px";
+petugas.style.fontSize="13px";
+petugas.style.color="#8a5b52";
+petugas.style.fontWeight="600";
+
+kartu.appendChild(petugas);
+var menyerahkan=document.createElement("p");
+menyerahkan.textContent="Petugas yang Menyerahkan: "+data.menyerahkan;
+
+menyerahkan.style.margin="4px 0";
+menyerahkan.style.fontSize="13px";
+menyerahkan.style.color="#8a5b52";
+
+kartu.appendChild(menyerahkan);
+if(data.catatan){
+
+  var catatan=document.createElement("p");
+  catatan.textContent="Catatan: "+data.catatan;
+
+  catatan.style.background="#fff4f1";
+  catatan.style.borderLeft="3px solid #d9a39a";
+  catatan.style.padding="9px 11px";
+  catatan.style.borderRadius="8px";
+  catatan.style.fontSize="12px";
+  catatan.style.color="#8a625b";
+  catatan.style.margin="10px 0 0";
+
+  kartu.appendChild(catatan);
+}
+
+
+});
+
+}catch(error){
+
+  console.log(error);
+
+  hasilRiwayat.innerHTML=
+    "Riwayat penerimaan gagal dimuat.";
 }
 
 };
