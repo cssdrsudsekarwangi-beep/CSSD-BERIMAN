@@ -1492,6 +1492,10 @@ hr{
         type="button">
   Simpan Penerimaan
 </button>
+ <div id="pesanPenerimaan"
+     style="margin-top:15px;color:#a85f55;font-weight:bold">
+</div>
+ 
 <button class="primary"
         id="riwayatPenerimaan"
         type="button">
@@ -2447,8 +2451,10 @@ alatTambahan.forEach(function(item){
 if(!tanggal || !jam || !ruang || !petugas ||
    !menyerahkan || !alat || !jumlah || !kondisi){
 
-  alert("Lengkapi data penerimaan terlebih dahulu.");
-  return;
+  document.getElementById("pesanPenerimaan").innerText=
+  "Lengkapi data penerimaan terlebih dahulu.";
+return;
+
 }
 var penerimaan={
   tanggal:tanggal,
@@ -2472,7 +2478,9 @@ try{
     penerimaan
   );
 
-  alert("✓ Penerimaan berhasil disimpan.");
+  document.getElementById("pesanPenerimaan").innerText=
+  "✓ Penerimaan berhasil disimpan.";
+
   document.getElementById("tanggalPenerimaan").value="";
 document.getElementById("jamPenerimaan").value="";
 document.getElementById("ruangPenerimaan").value="";
@@ -2487,7 +2495,9 @@ daftarAlatPenerimaanTambahan.innerHTML="";
 }catch(error){
 
   console.log(error);
-  alert("Penerimaan gagal disimpan: "+error.code);
+  document.getElementById("pesanPenerimaan").innerText=
+  "Penerimaan gagal disimpan: "+error.code;
+
 
 }
 
