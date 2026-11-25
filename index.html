@@ -3598,32 +3598,7 @@ sterilisasi.userId=firebaseAuth.currentUser
   ? firebaseAuth.currentUser.uid
   : penggunaAktif.username;
 try{
-   var urlPrintout="";
-
-  if(fotoPrintout){
-    var refPrintout=ref(
-      firebaseStorage,
-      "sterilisasi/printout/"+Date.now()+"_"+fotoPrintout.name
-    );
-document.getElementById("pesanSterilisasi").innerText=
-  "Sedang mengunggah foto Bukti Printout...";
-
-    await uploadBytes(refPrintout,fotoPrintout);
-    urlPrintout=await getDownloadURL(refPrintout);
-  }
- sterilisasi.urlPrintout=urlPrintout;
-var urlIndikatorKimia="";
-
-if(fotoIndikatorKimia){
-  var refIndikatorKimia=ref(
-    firebaseStorage,
-    "sterilisasi/indikator-kimia/"+Date.now()+"_"+fotoIndikatorKimia.name
-  );
-
-  await uploadBytes(refIndikatorKimia,fotoIndikatorKimia);
-  urlIndikatorKimia=await getDownloadURL(refIndikatorKimia);
-}
-sterilisasi.urlIndikatorKimia=urlIndikatorKimia;
+  
 
   await addDoc(
     collection(firebaseDb,"sterilisasi"),
