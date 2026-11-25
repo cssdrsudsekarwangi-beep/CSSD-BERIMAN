@@ -1872,18 +1872,22 @@ overflow:hidden;
   <option>Suhu Tinggi</option>
   <option>Suhu Rendah</option>
 </select>
-<label>📷 Bukti Printout</label>
-<input id="fotoPrintout"
-       type="file"
-       accept="image/*"
-       capture="environment">
-<img id="previewPrintout" style="display:none;width:100%;margin-top:10px;border-radius:12px">
-<label>📷 Sampel Indikator Kimia</label>
-<input id="fotoIndikatorKimia"
-       type="file"
-       accept="image/*"
-       capture="environment">
-<img id="previewIndikatorKimia" style="display:none;width:100%;margin-top:10px;border-radius:12px">
+<label>Validasi Sterilisasi</label>
+
+<label>Hasil Printout / Parameter Mesin</label>
+<select id="validasiPrintout">
+  <option value="">Pilih hasil validasi</option>
+  <option>Sesuai</option>
+  <option>Tidak Sesuai</option>
+</select>
+
+<label>Hasil Indikator Kimia</label>
+<select id="validasiIndikatorKimia">
+  <option value="">Pilih hasil validasi</option>
+  <option>Sesuai</option>
+  <option>Tidak Sesuai</option>
+</select>
+
 <label>Catatan Sterilisasi</label>
 <textarea id="catatanSterilisasi"
           rows="4"
@@ -2014,34 +2018,6 @@ tombolTambahAlatSterilisasi.onclick=function(){
 
     daftarAlatSterilisasiTambahan.appendChild(item);
 
-};
-document.getElementById("fotoPrintout").onchange=function(){
-
-  var file=this.files[0];
-  var preview=document.getElementById("previewPrintout");
-
-  if(!file){
-    preview.style.display="none";
-    preview.removeAttribute("src");
-    return;
-  }
-
-  preview.src=URL.createObjectURL(file);
-  preview.style.display="block";
-};
-document.getElementById("fotoIndikatorKimia").onchange=function(){
-
-  var file=this.files[0];
-  var preview=document.getElementById("previewIndikatorKimia");
-
-  if(!file){
-    preview.style.display="none";
-    preview.removeAttribute("src");
-    return;
-  }
-
-  preview.src=URL.createObjectURL(file);
-  preview.style.display="block";
 };
 
 var daftarAlatPackingTambahan=
@@ -3553,6 +3529,12 @@ document.getElementById("simpanSterilisasi").onclick=async function(){
   var alat=document.getElementById("alatSterilisasi").value;
   var jumlah=document.getElementById("jumlahSterilisasi").value;
   var metode=document.getElementById("metodeSterilisasi").value;
+ var validasiPrintout=
+  document.getElementById("validasiPrintout").value;
+
+var validasiIndikatorKimia=
+  document.getElementById("validasiIndikatorKimia").value;
+ 
 var catatan=document.getElementById("catatanSterilisasi").value;
 var items=[];
 items.push({
@@ -3573,22 +3555,23 @@ alatTambahan.forEach(function(item){
     });
   }
 });
-var fotoPrintout=document.getElementById("fotoPrintout").files[0];
-var fotoIndikatorKimia=document.getElementById("fotoIndikatorKimia").files[0];
 
   if(!tanggal || !jam || !petugas ||
    !alat || !jumlah || !metode ||
-   !fotoPrintout || !fotoIndikatorKimia){
+   !validasiPrintout || !validasiIndikatorKimia){
 
-    document.getElementById("pesanSterilisasi").innerText=
-    "Lengkapi data sterilisasi dan kedua bukti foto.";
+  document.getElementById("pesanSterilisasi").innerText=
+    "Lengkapi data sterilisasi dan hasil validasi.";
   return;
 }
+
 var sterilisasi={
   tanggal:tanggal,
   jam:jam,
   petugas:petugas,
   metode:metode,
+  validasiPrintout:validasiPrintout,
+validasiIndikatorKimia:validasiIndikatorKimia,
   catatan:catatan,
   items:items
 };
@@ -3615,21 +3598,15 @@ document.getElementById("catatanSterilisasi").value="";
 
 daftarAlatSterilisasiTambahan.innerHTML="";
 
-document.getElementById("fotoPrintout").value="";
-document.getElementById("fotoIndikatorKimia").value="";
+document.getElementById("validasiPrintout").value="";
+document.getElementById("validasiIndikatorKimia").value="";
 
-document.getElementById("previewPrintout").removeAttribute("src");
-document.getElementById("previewPrintout").style.display="none";
-
-document.getElementById("previewIndikatorKimia").removeAttribute("src");
-document.getElementById("previewIndikatorKimia").style.display="none";
   
 }catch(error){
   console.log(error);
 
   document.getElementById("pesanSterilisasi").innerText=
-  "Gagal upload: "+error.code+" - "+error.message;
-
+  "Sterilisasi gagal disimpan: "+error.code+" - "+error.message;
 
 }
 };
@@ -3707,6 +3684,23 @@ metode.style.borderRadius="999px";
 metode.style.fontSize="12px";
 metode.style.fontWeight="700";
 kartu.appendChild(metode);
+
+var validasi=document.createElement("div");
+validasi.style.background="#f4f8fc";
+validasi.style.border="1px solid #d5e6f7";
+validasi.style.borderRadius="10px";
+validasi.style.padding="10px 12px";
+validasi.style.margin="10px 0";
+validasi.style.color="#52708b";
+validasi.style.fontSize="13px";
+validasi.style.lineHeight="1.6";
+
+validasi.innerHTML=
+  "<strong>Validasi Sterilisasi</strong><br>"+
+  "Hasil Printout / Parameter Mesin: "+(data.validasiPrintout || "-")+"<br>"+
+  "Hasil Indikator Kimia: "+(data.validasiIndikatorKimia || "-");
+
+kartu.appendChild(validasi);
 
 var petugas=document.createElement("p");
 petugas.textContent="Petugas CSSD: "+data.petugas;
