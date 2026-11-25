@@ -3544,6 +3544,9 @@ daftarAlatPackingTambahan.innerHTML="";
 }
 };
 document.getElementById("simpanSterilisasi").onclick=async function(){
+  document.getElementById("pesanSterilisasi").innerText=
+  "Tombol Simpan berhasil ditekan. Sedang memproses...";
+
   var tanggal=document.getElementById("tanggalSterilisasi").value;
   var jam=document.getElementById("jamSterilisasi").value;
   var petugas=document.getElementById("petugasSterilisasi").value;
