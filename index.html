@@ -3606,6 +3606,24 @@ try{
   );
 document.getElementById("pesanSterilisasi").innerText=
   "✓ Sterilisasi berhasil disimpan.";
+document.getElementById("tanggalSterilisasi").value="";
+document.getElementById("jamSterilisasi").value="";
+document.getElementById("alatSterilisasi").value="";
+document.getElementById("jumlahSterilisasi").value="";
+document.getElementById("metodeSterilisasi").value="";
+document.getElementById("catatanSterilisasi").value="";
+
+daftarAlatSterilisasiTambahan.innerHTML="";
+
+document.getElementById("fotoPrintout").value="";
+document.getElementById("fotoIndikatorKimia").value="";
+
+document.getElementById("previewPrintout").removeAttribute("src");
+document.getElementById("previewPrintout").style.display="none";
+
+document.getElementById("previewIndikatorKimia").removeAttribute("src");
+document.getElementById("previewIndikatorKimia").style.display="none";
+  
 }catch(error){
   console.log(error);
 
