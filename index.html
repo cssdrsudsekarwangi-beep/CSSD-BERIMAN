@@ -28,7 +28,25 @@ body{
   border-radius:24px;
   padding:32px;
   box-shadow:0 24px 60px rgba(0,0,0,.22)
+  position:relative;
+overflow:hidden;
+
 }
+  .card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:url("images (11).jpeg");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:85% auto;
+  opacity:.25;
+}
+.card > *{
+  position:relative;
+  z-index:1;
+}
+
 .brand{
   text-align:center;
   color:#047857;
