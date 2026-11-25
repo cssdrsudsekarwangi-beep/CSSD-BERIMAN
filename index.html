@@ -629,6 +629,23 @@ hr{
   padding:18px 12px;
   background:linear-gradient(135deg,#e8f5f0,#eef8f6);
   border-radius:18px;
+  position:relative;
+overflow:hidden;
+
+}
+.home-head::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:url("images (11).jpeg");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:130px auto;
+  opacity:.10;
+}
+.home-head > *{
+  position:relative;
+  z-index:1;
 }
 
 .home-kicker{
