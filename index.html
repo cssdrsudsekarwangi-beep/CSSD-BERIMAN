@@ -351,6 +351,49 @@ input{
   color:#ffffff !important;
   border:1px solid #7f453e !important;
 }
+#isiPacking{
+  background:#f5f9ff;
+  border:1px solid #d5e6f7;
+  border-radius:20px;
+  padding:20px;
+}
+#isiPacking > h3,
+#isiPacking > p{
+  text-align:center;
+}
+#isiPacking > h3{
+  background:#e7f1fb;
+  color:#527aa0;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:8px;
+}
+#tambahAlatPacking{
+  background:#5f89b0 !important;
+  color:#ffffff !important;
+}
+#simpanPacking{
+  background:#5f89b0 !important;
+  color:#ffffff !important;
+}
+#riwayatPacking{
+  width:100%;
+  margin-top:12px;
+  text-align:center;
+  background:#5f89b0 !important;
+  color:#ffffff !important;
+}
+#tutupPacking{
+  display:block;
+  width:100%;
+  margin-top:12px;
+  padding:13px 16px;
+  text-align:center;
+  border-radius:14px;
+  background:#496f91 !important;
+  color:#ffffff !important;
+  border:1px solid #3f6382 !important;
+}
 
 #isiBeranda{
   background:#f7fbf9;
@@ -1646,6 +1689,95 @@ overflow:hidden;
 </button>
 
 </div>
+<div id="isiPacking" style="display:none;margin-top:25px">
+
+  <h3>📋 Packing</h3>
+  <p>Pemeriksaan dan pengemasan alat sebelum proses sterilisasi.</p>
+
+  <label>Tanggal</label>
+  <input id="tanggalPacking" type="date">
+
+  <label>Waktu</label>
+  <input id="waktuPacking" type="time">
+
+  <label>Petugas CSSD</label>
+  <input id="petugasPacking"
+         type="text"
+         readonly>
+<label>Nama Alat / Set</label>
+<select id="alatPacking">
+  <option value="">Pilih nama alat / set</option>
+</select>
+
+<label>Jumlah</label>
+<input id="jumlahPacking"
+       type="number"
+       min="1"
+       placeholder="Masukkan jumlah">
+<label>Kondisi Alat</label>
+<select id="kondisiPacking">
+  <option value="">Pilih kondisi alat</option>
+  <option>Lengkap</option>
+  <option>Tidak lengkap</option>
+  <option>Masih kotor</option>
+</select>
+<label>Jenis Kemasan</label>
+<select id="kemasanPacking">
+  <option value="">Pilih jenis kemasan</option>
+  <option>Pouch</option>
+  <option>Linen</option>
+  <option>Wrapping</option>
+</select>
+<label>Indikator Suhu Tinggi</label>
+<select id="indikatorTinggiPacking">
+  <option value="">Pilih penggunaan indikator</option>
+  <option>Pakai</option>
+  <option>Tidak Pakai</option>
+  <option>Stok Habis</option>
+</select>
+<label>Indikator Suhu Rendah</label>
+<select id="indikatorRendahPacking">
+  <option value="">Pilih penggunaan indikator</option>
+  <option>Pakai</option>
+  <option>Tidak Pakai</option>
+  <option>Stok Habis</option>
+</select>
+<div id="daftarAlatPackingTambahan"></div>
+
+<button class="primary"
+        id="tambahAlatPacking"
+        type="button">
+  + Tambah Alat / Set
+</button>
+<label>Catatan</label>
+<textarea id="catatanPacking"
+          rows="4"
+          placeholder="Masukkan catatan packing"></textarea>
+<button class="primary"
+        id="simpanPacking"
+        type="button">
+  Simpan Packing
+</button>
+  <div id="pesanPacking"
+     style="margin-top:15px;color:#5f89b0;font-weight:bold">
+</div>
+
+
+<button class="primary"
+        id="riwayatPacking"
+        type="button">
+  📋 Riwayat Packing
+</button>
+<div id="hasilRiwayatPacking"
+     style="display:none;margin-top:15px">
+</div>
+<button class="logout"
+        id="tutupPacking"
+        type="button">
+  Kembali ke Menu Utama
+</button>
+
+</div>
 
 </div>
 
@@ -1708,7 +1840,72 @@ var alatDistribusi=document.getElementById("alatDistribusi");
 
 alatDistribusi.innerHTML=alatAsal.innerHTML;
 alatDistribusi.options[0].text="Pilih nama alat / set";
-var daftarAlatTambahan=document.getElementById("daftarAlatTambahan");
+var alatPacking=
+  document.getElementById("alatPacking");
+
+alatPacking.innerHTML=alatAsal.innerHTML;
+alatPacking.options[0].text="Pilih nama alat / set";
+var daftarAlatPackingTambahan=
+  document.getElementById("daftarAlatPackingTambahan");
+
+var tombolTambahAlatPacking=
+  document.getElementById("tambahAlatPacking");
+tombolTambahAlatPacking.onclick=function(){
+
+  var item=document.createElement("div");
+
+  item.innerHTML=
+    '<label>Nama Alat / Set</label>'+
+    '<select class="alatPackingTambahan">'+
+      alatAsal.innerHTML+
+    '</select>'+
+
+    '<label>Jumlah</label>'+
+    '<input class="jumlahPackingTambahan" type="number" min="1" placeholder="Masukkan jumlah">'+
+
+    '<label>Kondisi Alat</label>'+
+    '<select class="kondisiPackingTambahan">'+
+      '<option value="">Pilih kondisi alat</option>'+
+      '<option>Lengkap</option>'+
+      '<option>Tidak lengkap</option>'+
+      '<option>Masih kotor</option>'+
+    '</select>'+
+
+    '<label>Jenis Kemasan</label>'+
+    '<select class="kemasanPackingTambahan">'+
+      '<option value="">Pilih jenis kemasan</option>'+
+      '<option>Pouch</option>'+
+      '<option>Linen</option>'+
+      '<option>Wrapping</option>'+
+    '</select>'+
+
+    '<label>Indikator Suhu Tinggi</label>'+
+    '<select class="indikatorTinggiPackingTambahan">'+
+      '<option value="">Pilih penggunaan indikator</option>'+
+      '<option>Pakai</option>'+
+      '<option>Tidak Pakai</option>'+
+      '<option>Stok Habis</option>'+
+    '</select>'+
+
+    '<label>Indikator Suhu Rendah</label>'+
+    '<select class="indikatorRendahPackingTambahan">'+
+      '<option value="">Pilih penggunaan indikator</option>'+
+      '<option>Pakai</option>'+
+      '<option>Tidak Pakai</option>'+
+      '<option>Stok Habis</option>'+
+    '</select>'+
+
+    '<button type="button" class="hapusAlatPacking">Hapus</button>';
+
+  daftarAlatPackingTambahan.appendChild(item);
+
+  item.querySelector(".hapusAlatPacking").onclick=function(){
+    item.remove();
+  };
+
+};
+
+  var daftarAlatTambahan=document.getElementById("daftarAlatTambahan");
 var tombolTambahAlat=document.getElementById("tambahAlatDistribusi");
   var alatPenerimaan=document.getElementById("alatPenerimaan");
 
@@ -1939,6 +2136,8 @@ document.getElementById("petugasPenerimaan").value=
   penggunaAktif.nama;
 document.getElementById("petugasDekontaminasi").value=
   penggunaAktif.nama;
+document.getElementById("petugasPacking").value=
+  penggunaAktif.nama;
 
   var badge=document.querySelector(".badge");
   var sapaan=document.querySelector(".panel > h2 + p");
@@ -2063,11 +2262,17 @@ document.getElementById("logout").style.display="none";
 
 document.getElementById("homePacking").onclick=function(){
   document.getElementById("homeModern").style.display="none";
-  document.getElementById("isiAktivitas").style.display="block";
+  document.getElementById("isiPacking").style.display="block";
+document.getElementById("logout").style.display="none";
 
-  document.getElementById("jenisAktivitas").value=
-    "Pengemasan / packing";
+
 };
+document.getElementById("tutupPacking").onclick=function(){
+  document.getElementById("isiPacking").style.display="none";
+  document.getElementById("homeModern").style.display="block";
+  document.getElementById("logout").style.display="block";
+};
+  
 document.getElementById("homeSterilisasi").onclick=function(){
   document.getElementById("homeModern").style.display="none";
   document.getElementById("isiAktivitas").style.display="block";
@@ -2996,6 +3201,237 @@ if(data.catatan){
     "Riwayat dekontaminasi gagal dimuat.";
 }
 };
+document.getElementById("simpanPacking").onclick=async function(){
+
+  var tanggal=document.getElementById("tanggalPacking").value;
+  var waktu=document.getElementById("waktuPacking").value;
+  var petugas=document.getElementById("petugasPacking").value;
+
+  var alat=document.getElementById("alatPacking").value;
+  var jumlah=document.getElementById("jumlahPacking").value;
+  var kondisi=document.getElementById("kondisiPacking").value;
+  var kemasan=document.getElementById("kemasanPacking").value;
+  var indikatorTinggi=document.getElementById("indikatorTinggiPacking").value;
+  var indikatorRendah=document.getElementById("indikatorRendahPacking").value;
+
+  var catatan=document.getElementById("catatanPacking").value;
+var items=[];
+
+items.push({
+  alat:alat,
+  jumlah:Number(jumlah),
+  kondisi:kondisi,
+  kemasan:kemasan,
+  indikatorTinggi:indikatorTinggi,
+  indikatorRendah:indikatorRendah
+});
+var alatTambahan=
+  document.querySelectorAll("#daftarAlatPackingTambahan > div");
+
+alatTambahan.forEach(function(item){
+
+  var nama=
+    item.querySelector(".alatPackingTambahan").value;
+
+  var banyak=
+    item.querySelector(".jumlahPackingTambahan").value;
+
+  var kondisiTambahan=
+    item.querySelector(".kondisiPackingTambahan").value;
+
+  var kemasanTambahan=
+    item.querySelector(".kemasanPackingTambahan").value;
+
+  var indikatorTinggiTambahan=
+    item.querySelector(".indikatorTinggiPackingTambahan").value;
+
+  var indikatorRendahTambahan=
+    item.querySelector(".indikatorRendahPackingTambahan").value;
+
+  if(nama && banyak && kondisiTambahan &&
+     kemasanTambahan && indikatorTinggiTambahan &&
+     indikatorRendahTambahan){
+
+    items.push({
+      alat:nama,
+      jumlah:Number(banyak),
+      kondisi:kondisiTambahan,
+      kemasan:kemasanTambahan,
+      indikatorTinggi:indikatorTinggiTambahan,
+      indikatorRendah:indikatorRendahTambahan
+    });
+  }
+
+});
+if(!tanggal || !waktu || !petugas ||
+   !alat || !jumlah || !kondisi ||
+   !kemasan || !indikatorTinggi || !indikatorRendah){
+
+  document.getElementById("pesanPacking").innerText=
+  "Lengkapi data packing terlebih dahulu.";
+  return;
+}
+var packing={
+  tanggal:tanggal,
+  waktu:waktu,
+  petugas:petugas,
+  catatan:catatan,
+  items:items
+};
+try{
+
+  packing.dibuatPada=serverTimestamp();
+
+  packing.userId=firebaseAuth.currentUser
+    ? firebaseAuth.currentUser.uid
+    : penggunaAktif.username;
+
+  await addDoc(
+    collection(firebaseDb,"packing"),
+    packing
+  );
+
+  document.getElementById("pesanPacking").innerText=
+  "✓ Packing berhasil disimpan.";
+
+document.getElementById("tanggalPacking").value="";
+document.getElementById("waktuPacking").value="";
+document.getElementById("alatPacking").value="";
+document.getElementById("jumlahPacking").value="";
+document.getElementById("kondisiPacking").value="";
+document.getElementById("kemasanPacking").value="";
+document.getElementById("indikatorTinggiPacking").value="";
+document.getElementById("indikatorRendahPacking").value="";
+document.getElementById("catatanPacking").value="";
+daftarAlatPackingTambahan.innerHTML="";
+  
+
+}catch(error){
+
+  console.log(error);
+  document.getElementById("pesanPacking").innerText=
+  "Packing gagal disimpan: "+error.code;
+
+}
+};
+
+  document.getElementById("riwayatPacking").onclick=async function(){
+
+  var hasilRiwayat=
+    document.getElementById("hasilRiwayatPacking");
+
+  hasilRiwayat.style.display="block";
+  hasilRiwayat.innerHTML="Memuat riwayat packing...";
+try{
+
+  var qPacking=query(
+    collection(firebaseDb,"packing"),
+    orderBy("dibuatPada","desc")
+  );
+
+  var dataPacking=await getDocs(qPacking);
+
+  if(dataPacking.empty){
+    hasilRiwayat.innerHTML="Belum ada riwayat packing.";
+    return;
+  }
+
+  hasilRiwayat.innerHTML="";
+dataPacking.forEach(function(dokumen){
+
+  var data=dokumen.data();
+  var kartu=document.createElement("div");
+
+  kartu.style.background="linear-gradient(145deg,#ffffff,#eef6ff)";
+  kartu.style.border="1px solid #d5e6f7";
+  kartu.style.borderRadius="18px";
+  kartu.style.padding="18px";
+  kartu.style.marginBottom="14px";
+  kartu.style.boxShadow="0 5px 16px rgba(70,110,150,.08)";
+
+  hasilRiwayat.appendChild(kartu);
+var judul=document.createElement("strong");
+judul.textContent="📋 Packing";
+
+judul.style.display="block";
+judul.style.fontSize="17px";
+judul.style.color="#527aa0";
+judul.style.marginBottom="6px";
+
+var waktuRiwayat=document.createElement("p");
+waktuRiwayat.textContent=data.tanggal+" • "+data.waktu;
+
+waktuRiwayat.style.fontSize="13px";
+waktuRiwayat.style.color="#748da5";
+waktuRiwayat.style.margin="4px 0 14px";
+
+kartu.appendChild(judul);
+kartu.appendChild(waktuRiwayat);
+var daftar=document.createElement("div");
+
+(data.items || []).forEach(function(item){
+
+  var baris=document.createElement("div");
+
+  baris.innerHTML=
+    "<strong>"+item.alat+"</strong><br>"+
+    "Jumlah: "+item.jumlah+"<br>"+
+    "Kondisi: "+item.kondisi+"<br>"+
+    "Kemasan: "+item.kemasan+"<br>"+
+    "Indikator Suhu Tinggi: "+item.indikatorTinggi+"<br>"+
+    "Indikator Suhu Rendah: "+item.indikatorRendah;
+
+  baris.style.background="#eef6ff";
+  baris.style.border="1px solid #d5e6f7";
+  baris.style.padding="11px 12px";
+  baris.style.borderRadius="11px";
+  baris.style.marginBottom="8px";
+  baris.style.color="#52708b";
+  baris.style.fontSize="13px";
+  baris.style.lineHeight="1.6";
+
+  daftar.appendChild(baris);
+
+});
+
+kartu.appendChild(daftar);
+var petugas=document.createElement("p");
+petugas.textContent="Petugas CSSD: "+data.petugas;
+
+petugas.style.margin="14px 0 4px";
+petugas.style.fontSize="13px";
+petugas.style.color="#52708b";
+petugas.style.fontWeight="600";
+
+kartu.appendChild(petugas);
+if(data.catatan){
+
+  var catatan=document.createElement("p");
+  catatan.textContent="Catatan: "+data.catatan;
+
+  catatan.style.background="#f4f8fc";
+  catatan.style.borderLeft="3px solid #8eb4d6";
+  catatan.style.padding="9px 11px";
+  catatan.style.borderRadius="8px";
+  catatan.style.fontSize="12px";
+  catatan.style.color="#607b94";
+  catatan.style.margin="10px 0 0";
+
+  kartu.appendChild(catatan);
+}
+
+});
+
+}catch(error){
+
+  console.log(error);
+
+  hasilRiwayat.innerHTML=
+    "Riwayat packing gagal dimuat.";
+}
+
+};
+
 
 document.getElementById("lihatRiwayat").onclick=async function(){
 
