@@ -3605,6 +3605,8 @@ try{
       firebaseStorage,
       "sterilisasi/printout/"+Date.now()+"_"+fotoPrintout.name
     );
+document.getElementById("pesanSterilisasi").innerText=
+  "Sedang mengunggah foto Bukti Printout...";
 
     await uploadBytes(refPrintout,fotoPrintout);
     urlPrintout=await getDownloadURL(refPrintout);
