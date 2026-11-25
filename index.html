@@ -2670,6 +2670,10 @@ document.getElementById("riwayatDistribusi").onclick=async function(){
 
   var hasilRiwayat=
     document.getElementById("hasilRiwayatDistribusi");
+if(hasilRiwayat.style.display==="block"){
+  hasilRiwayat.style.display="none";
+  return;
+}
 
   hasilRiwayat.style.display="block";
   hasilRiwayat.innerHTML="Memuat riwayat distribusi...";
