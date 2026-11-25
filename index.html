@@ -2691,9 +2691,16 @@ try{
     return;
   }
 hasilRiwayat.innerHTML="";
+ var jumlahRiwayatPribadi=0;
+ 
 dataDistribusi.forEach(function(dokumen){
 
   var data=dokumen.data();
+  if(data.petugas!==penggunaAktif.nama){
+  return;
+}
+jumlahRiwayatPribadi++;
+
   var kartu=document.createElement("div");
 
   kartu.style.background="linear-gradient(145deg,#ffffff,#f3f9f6)";
@@ -2779,6 +2786,10 @@ catatan.style.margin="10px 0 0";
   hasilRiwayat.appendChild(kartu);
 
 });
+if(jumlahRiwayatPribadi===0){
+  hasilRiwayat.innerHTML=
+    "Belum ada riwayat distribusi Anda.";
+}
 
 }catch(error){
 
