@@ -3117,11 +3117,21 @@ try{
     return;
   }
 
-  hasilRiwayat.innerHTML="";
+hasilRiwayat.innerHTML="";
+var jumlahRiwayatPenerimaanPribadi=0;
+
 dataPenerimaan.forEach(function(dokumen){
 
   var data=dokumen.data();
+
+  if(data.petugas!==penggunaAktif.nama){
+    return;
+  }
+
+  jumlahRiwayatPenerimaanPribadi++;
+
   var kartu=document.createElement("div");
+
 
   kartu.style.background="linear-gradient(145deg,#ffffff,#fff5f3)";
   kartu.style.border="1px solid #f0d8d3";
@@ -3199,6 +3209,10 @@ if(data.catatan){
 
 
 });
+if(jumlahRiwayatPenerimaanPribadi===0){
+  hasilRiwayat.innerHTML=
+    "Belum ada riwayat penerimaan Anda.";
+}
 
 }catch(error){
 
@@ -3321,10 +3335,20 @@ try{
   }
 
   hasilRiwayat.innerHTML="";
+var jumlahRiwayatDekontaminasiPribadi=0;
+
 dataDekontaminasi.forEach(function(dokumen){
 
   var data=dokumen.data();
+
+  if(data.petugas!==penggunaAktif.nama){
+    return;
+  }
+
+  jumlahRiwayatDekontaminasiPribadi++;
+
   var kartu=document.createElement("div");
+
 
   kartu.style.background="linear-gradient(145deg,#ffffff,#fff5f3)";
   kartu.style.border="1px solid #f0d8d3";
@@ -3412,6 +3436,10 @@ if(data.catatan){
   hasilRiwayat.appendChild(kartu);
 
 });
+if(jumlahRiwayatDekontaminasiPribadi===0){
+  hasilRiwayat.innerHTML=
+    "Belum ada riwayat dekontaminasi Anda.";
+}
 
 }catch(error){
 
@@ -3646,9 +3674,20 @@ if(dataSterilisasi.empty){
   return;
 }
 hasilRiwayatSterilisasi.innerHTML="";
+var jumlahRiwayatSterilisasiPribadi=0;
+
 dataSterilisasi.forEach(function(dokumen){
-var data=dokumen.data();
-var kartu=document.createElement("div");
+
+  var data=dokumen.data();
+
+  if(data.petugas!==penggunaAktif.nama){
+    return;
+  }
+
+  jumlahRiwayatSterilisasiPribadi++;
+
+  var kartu=document.createElement("div");
+
 kartu.style.background="linear-gradient(145deg,#ffffff,#eef6ff)";
 kartu.style.border="1px solid #d5e6f7";
 kartu.style.borderRadius="18px";
@@ -3740,6 +3779,10 @@ if(data.catatan){
 hasilRiwayatSterilisasi.appendChild(kartu);
 
 });
+if(jumlahRiwayatSterilisasiPribadi===0){
+  hasilRiwayatSterilisasi.innerHTML=
+    "Belum ada riwayat sterilisasi Anda.";
+}
 
 }catch(error){
 
@@ -3778,10 +3821,20 @@ try{
   }
 
   hasilRiwayat.innerHTML="";
+var jumlahRiwayatPackingPribadi=0;
+
 dataPacking.forEach(function(dokumen){
 
   var data=dokumen.data();
+
+  if(data.petugas!==penggunaAktif.nama){
+    return;
+  }
+
+  jumlahRiwayatPackingPribadi++;
+
   var kartu=document.createElement("div");
+
 
   kartu.style.background="linear-gradient(145deg,#ffffff,#eef6ff)";
   kartu.style.border="1px solid #d5e6f7";
@@ -3862,6 +3915,10 @@ if(data.catatan){
 }
 
 });
+if(jumlahRiwayatPackingPribadi===0){
+  hasilRiwayat.innerHTML=
+    "Belum ada riwayat packing Anda.";
+}
 
 }catch(error){
 
