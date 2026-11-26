@@ -470,6 +470,73 @@ input{
   color:#ffffff !important;
   border:1px solid #3f6382 !important;
 }
+/* ===== SUHU & KELEMBABAN - OYEN MODERN ===== */
+
+#isiSuhu{
+  background:#fffaf4;
+  border:1px solid #f2dfc4;
+  border-radius:20px;
+  padding:20px;
+}
+
+#isiSuhu > h3{
+  background:#fff0dc;
+  color:#9a6736;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:8px;
+  text-align:center;
+}
+
+#isiSuhu > p{
+  text-align:center;
+  color:#8b7562;
+}
+
+#isiSuhu input,
+#isiSuhu select,
+#isiSuhu textarea{
+  width:100%;
+  background:#ffffff;
+  border:1px solid #f0dfca;
+  border-radius:12px;
+  padding:13px;
+  color:#65482f;
+  font-size:15px;
+}
+
+#isiSuhu input:focus,
+#isiSuhu select:focus,
+#isiSuhu textarea:focus{
+  outline:none;
+  border-color:#dda86d;
+  box-shadow:0 0 0 3px rgba(221,168,109,.15);
+}
+
+#simpanSuhu{
+  background:#d99552 !important;
+  color:#ffffff !important;
+}
+
+#riwayatSuhu{
+  width:100%;
+  margin-top:12px;
+  text-align:center;
+  background:#d99552 !important;
+  color:#ffffff !important;
+}
+
+#tutupSuhu{
+  display:block;
+  width:100%;
+  margin-top:12px;
+  padding:13px 16px;
+  text-align:center;
+  border-radius:14px;
+  background:#b97838 !important;
+  color:#ffffff !important;
+  border:1px solid #a96c31 !important;
+}
 
 #isiBeranda{
   background:#f7fbf9;
@@ -1062,8 +1129,9 @@ overflow:hidden;
           id="homeSuhu"
           type="button">
     <span class="home-icon">🌡️</span>
-    <strong>Suhu, Kelembaban &amp; Kebersihan</strong>
-    <small>Monitoring lingkungan CSSD</small>
+    <strong>Suhu &amp; Kelembaban</strong>
+<small>Monitoring suhu dan kelembaban area CSSD</small>
+
   </button>
 
   <button class="home-card card-ketidaksesuaian"
@@ -1930,6 +1998,104 @@ overflow:hidden;
 </button>
 
 </div>
+<div id="isiSuhu" style="display:none;margin-top:25px">
+
+  <h3>🌡️ Suhu &amp; Kelembaban</h3>
+  <p>Monitoring suhu dan kelembaban area CSSD.</p>
+
+  <label>Tanggal</label>
+  <input id="tanggalSuhu" type="date">
+
+  <label>Jam</label>
+  <input id="jamSuhu" type="time">
+
+  <label>Petugas CSSD</label>
+  <input id="petugasSuhu"
+         type="text"
+         readonly>
+
+  <label>Area / Ruangan CSSD</label>
+  <select id="areaSuhu">
+    <option value="">Pilih area / ruangan</option>
+    <option>DEKONTAMINASI</option>
+    <option>PACKING</option>
+    <option>PENYIMPANAN ALAT STERIL</option>
+  </select>
+
+  <label>Suhu Ruangan</label>
+  <select id="nilaiSuhu">
+    <option value="">Pilih suhu</option>
+    <option>15°C</option>
+    <option>15,5°C</option>
+    <option>16°C</option>
+    <option>16,5°C</option>
+    <option>17°C</option>
+    <option>17,5°C</option>
+    <option>18°C</option>
+    <option>18,5°C</option>
+    <option>19°C</option>
+    <option>19,5°C</option>
+    <option>20°C</option>
+    <option>20,5°C</option>
+    <option>21°C</option>
+    <option>21,5°C</option>
+    <option>22°C</option>
+    <option>22,5°C</option>
+    <option>23°C</option>
+    <option>23,5°C</option>
+    <option>24°C</option>
+    <option>24,5°C</option>
+    <option>25°C</option>
+    <option>25,5°C</option>
+    <option>26°C</option>
+    <option>26,5°C</option>
+    <option>27°C</option>
+    <option>27,5°C</option>
+    <option>28°C</option>
+    <option>28,5°C</option>
+    <option>29°C</option>
+    <option>29,5°C</option>
+    <option>30°C</option>
+  </select>
+
+  <label>Kelembaban Ruangan</label>
+  <select id="kelembabanSuhu">
+    <option value="">Pilih kelembaban</option>
+    <option>25%</option>
+    <option>30%</option>
+    <option>35%</option>
+    <option>40%</option>
+    <option>45%</option>
+    <option>50%</option>
+    <option>55%</option>
+    <option>60%</option>
+    <option>65%</option>
+    <option>70%</option>
+  </select>
+
+  <label>Catatan</label>
+  <textarea id="catatanSuhu"
+            rows="4"
+            placeholder="Masukkan catatan monitoring"></textarea>
+
+  <button class="primary"
+          id="simpanSuhu"
+          type="button">
+    Simpan Monitoring
+  </button>
+
+  <div id="pesanSuhu"
+       style="margin-top:15px;color:#b97838;font-weight:bold">
+  </div>
+
+  <button class="primary"
+          id="riwayatSuhu"
+          type="button">
+    📋 Riwayat Suhu &amp; Kelembaban
+  </button>
+
+  <div id="hasilRiwayatSuhu"
+       style="display:none;margin-top:
 
 </div>
 
@@ -2330,6 +2496,8 @@ document.getElementById("petugasPacking").value=
   penggunaAktif.nama;
 document.getElementById("petugasSterilisasi").value=
   penggunaAktif.nama;
+document.getElementById("petugasSuhu").value=
+  penggunaAktif.nama;
 
   var badge=document.querySelector(".badge");
   var sapaan=document.querySelector(".panel > h2 + p");
@@ -2476,6 +2644,197 @@ document.getElementById("tutupSterilisasi").onclick=function(){
   document.getElementById("isiSterilisasi").style.display="none";
   document.getElementById("homeModern").style.display="block";
   document.getElementById("logout").style.display="block";
+};
+document.getElementById("homeSuhu").onclick=function(){
+  document.getElementById("homeModern").style.display="none";
+  document.getElementById("isiSuhu").style.display="block";
+  document.getElementById("logout").style.display="none";
+};
+
+document.getElementById("tutupSuhu").onclick=function(){
+  document.getElementById("isiSuhu").style.display="none";
+  document.getElementById("homeModern").style.display="block";
+  document.getElementById("logout").style.display="block";
+};
+document.getElementById("simpanSuhu").onclick=async function(){
+
+  var tanggal=document.getElementById("tanggalSuhu").value;
+  var jam=document.getElementById("jamSuhu").value;
+  var petugas=document.getElementById("petugasSuhu").value;
+  var area=document.getElementById("areaSuhu").value;
+  var suhu=document.getElementById("nilaiSuhu").value;
+  var kelembaban=document.getElementById("kelembabanSuhu").value;
+  var catatan=document.getElementById("catatanSuhu").value;
+
+  if(!tanggal || !jam || !petugas ||
+     !area || !suhu || !kelembaban){
+
+    document.getElementById("pesanSuhu").innerText=
+      "Lengkapi data suhu dan kelembaban terlebih dahulu.";
+    return;
+  }
+
+  var monitoring={
+    tanggal:tanggal,
+    jam:jam,
+    petugas:petugas,
+    area:area,
+    suhu:suhu,
+    kelembaban:kelembaban,
+    catatan:catatan
+  };
+
+  try{
+
+    monitoring.dibuatPada=serverTimestamp();
+
+    monitoring.userId=firebaseAuth.currentUser
+      ? firebaseAuth.currentUser.uid
+      : penggunaAktif.username;
+
+    await addDoc(
+      collection(firebaseDb,"monitoringLingkungan"),
+      monitoring
+    );
+
+    document.getElementById("pesanSuhu").innerText=
+      "✓ Monitoring suhu & kelembaban berhasil disimpan.";
+
+    document.getElementById("tanggalSuhu").value="";
+    document.getElementById("jamSuhu").value="";
+    document.getElementById("areaSuhu").value="";
+    document.getElementById("nilaiSuhu").value="";
+    document.getElementById("kelembabanSuhu").value="";
+    document.getElementById("catatanSuhu").value="";
+
+  }catch(error){
+
+    console.log(error);
+
+    document.getElementById("pesanSuhu").innerText=
+      "Monitoring gagal disimpan: "+error.code;
+  }
+
+};
+document.getElementById("riwayatSuhu").onclick=async function(){
+
+  var hasilRiwayat=
+    document.getElementById("hasilRiwayatSuhu");
+
+  if(hasilRiwayat.style.display==="block"){
+    hasilRiwayat.style.display="none";
+    return;
+  }
+
+  hasilRiwayat.style.display="block";
+  hasilRiwayat.innerHTML=
+    "Memuat riwayat suhu & kelembaban...";
+
+  try{
+
+    var qSuhu=query(
+      collection(firebaseDb,"monitoringLingkungan"),
+      orderBy("dibuatPada","desc")
+    );
+
+    var dataSuhu=await getDocs(qSuhu);
+
+    hasilRiwayat.innerHTML="";
+    var jumlahRiwayatSuhuPribadi=0;
+
+    dataSuhu.forEach(function(dokumen){
+
+      var data=dokumen.data();
+
+      if(data.petugas!==penggunaAktif.nama){
+        return;
+      }
+
+      jumlahRiwayatSuhuPribadi++;
+
+      var kartu=document.createElement("div");
+
+      kartu.style.background=
+        "linear-gradient(145deg,#ffffff,#fff7ed)";
+      kartu.style.border="1px solid #f2dfc4";
+      kartu.style.borderRadius="18px";
+      kartu.style.padding="18px";
+      kartu.style.marginBottom="14px";
+      kartu.style.boxShadow=
+        "0 5px 16px rgba(170,110,55,.08)";
+
+      var judul=document.createElement("strong");
+      judul.textContent="🌡️ "+data.area;
+      judul.style.display="block";
+      judul.style.fontSize="17px";
+      judul.style.color="#9a6736";
+      judul.style.marginBottom="6px";
+
+      var waktu=document.createElement("p");
+      waktu.textContent=data.tanggal+" • "+data.jam;
+      waktu.style.fontSize="13px";
+      waktu.style.color="#96785c";
+      waktu.style.margin="4px 0 14px";
+
+      var nilai=document.createElement("div");
+
+      nilai.innerHTML=
+        "<strong>Suhu:</strong> "+data.suhu+"<br>"+
+        "<strong>Kelembaban:</strong> "+data.kelembaban;
+
+      nilai.style.background="#fff3e4";
+      nilai.style.border="1px solid #f2dfc4";
+      nilai.style.padding="11px 12px";
+      nilai.style.borderRadius="11px";
+      nilai.style.color="#805a37";
+      nilai.style.fontSize="13px";
+      nilai.style.lineHeight="1.7";
+
+      var petugas=document.createElement("p");
+      petugas.textContent="Petugas CSSD: "+data.petugas;
+      petugas.style.margin="12px 0 4px";
+      petugas.style.fontSize="13px";
+      petugas.style.color="#805a37";
+      petugas.style.fontWeight="600";
+
+      kartu.appendChild(judul);
+      kartu.appendChild(waktu);
+      kartu.appendChild(nilai);
+      kartu.appendChild(petugas);
+
+      if(data.catatan){
+
+        var catatan=document.createElement("p");
+
+        catatan.textContent="Catatan: "+data.catatan;
+        catatan.style.background="#fffaf4";
+        catatan.style.borderLeft="3px solid #dda86d";
+        catatan.style.padding="9px 11px";
+        catatan.style.borderRadius="8px";
+        catatan.style.fontSize="12px";
+        catatan.style.color="#80664e";
+        catatan.style.margin="10px 0 0";
+
+        kartu.appendChild(catatan);
+      }
+
+      hasilRiwayat.appendChild(kartu);
+
+    });
+
+    if(jumlahRiwayatSuhuPribadi===0){
+      hasilRiwayat.innerHTML=
+        "Belum ada riwayat suhu & kelembaban Anda.";
+    }
+
+  }catch(error){
+
+    console.log(error);
+
+    hasilRiwayat.innerHTML=
+      "Riwayat suhu & kelembaban gagal dimuat.";
+  }
+
 };
 
 document.getElementById("btnKelolaAkun").onclick=function(){
