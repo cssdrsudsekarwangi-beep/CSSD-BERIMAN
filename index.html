@@ -2105,6 +2105,179 @@ overflow:hidden;
 </button>
 
 </div>
+<div id="isiReuse" style="display:none;margin-top:25px">
+
+  <h3>🔄 Monitoring Reuse Alat Medis</h3>
+  <p>Pemantauan penggunaan ulang alat medis single-use reuse.</p>
+
+  <label>Tanggal</label>
+  <input id="tanggalReuse" type="date">
+
+  <label>Jam</label>
+  <input id="jamReuse" type="time">
+
+  <label>Petugas CSSD</label>
+  <input id="petugasReuse"
+         type="text"
+         readonly>
+
+  <label>Nama Alat / Set (dan Reuse Ke- / Kode Warna)</label>
+  <select id="alatReuse">
+    <option value="">Pilih nama alat &amp; reuse ke- / kode warna</option>
+    <optgroup label="PEN CAUTER (OKA - MAKS. 5X)">
+      <option>Pen cauter - R1 (Hijau)</option>
+      <option>Pen cauter - R2 (Biru)</option>
+      <option>Pen cauter - R3 (Kuning)</option>
+      <option>Pen cauter - R4 (Merah)</option>
+      <option>Pen cauter - R5 (Hitam)</option>
+    </optgroup>
+    <optgroup label="GUIDE WIRE (OKA - MAKS. 4X)">
+      <option>Guide wire - R1 (Hijau)</option>
+      <option>Guide wire - R2 (Biru)</option>
+      <option>Guide wire - R3 (Kuning)</option>
+      <option>Guide wire - R4 (Merah)</option>
+    </optgroup>
+    <optgroup label="CUTTING LOOP (OKA - MAKS. 3X)">
+      <option>Cutting loop - R1 (Hijau)</option>
+      <option>Cutting loop - R2 (Biru)</option>
+      <option>Cutting loop - R3 (Kuning)</option>
+    </optgroup>
+    <optgroup label="URETER CATETER (OKA - MAKS. 2X)">
+      <option>Ureter cateter - R1 (Hijau)</option>
+      <option>Ureter cateter - R2 (Biru)</option>
+    </optgroup>
+    <optgroup label="DIALIZER (HEMODIALISA - MAKS. 7X)">
+      <option>Dializer - R1 (Hijau)</option>
+      <option>Dializer - R2 (Biru)</option>
+      <option>Dializer - R3 (Kuning)</option>
+      <option>Dializer - R4 (Merah)</option>
+      <option>Dializer - R5 (Hitam)</option>
+      <option>Dializer - R6 (Merah Muda)</option>
+      <option>Dializer - R7</option>
+    </optgroup>
+    <optgroup label="LMA SUPRAIME (ANESTESI - MAKS. 5X)">
+      <option>LMA supraime - R1 (Hijau)</option>
+      <option>LMA supraime - R2 (Biru)</option>
+      <option>LMA supraime - R3 (Kuning)</option>
+      <option>LMA supraime - R4 (Merah)</option>
+      <option>LMA supraime - R5 (Hitam)</option>
+    </optgroup>
+    <optgroup label="LMA FASTEK (ANESTESI - SAMPAI RUSAK)">
+      <option>LMA fastek - R1 (Hijau)</option>
+      <option>LMA fastek - R2 (Biru)</option>
+      <option>LMA fastek - R3 (Kuning)</option>
+      <option>LMA fastek - R4 (Merah)</option>
+      <option>LMA fastek - R5 (Hitam)</option>
+      <option>LMA fastek - R6 (Merah Muda)</option>
+    </optgroup>
+    <optgroup label="LMA BIASA (ANESTESI - MAKS. 2X)">
+      <option>LMA biasa - R1 (Hijau)</option>
+      <option>LMA biasa - R2 (Biru)</option>
+    </optgroup>
+    <optgroup label="ETT NON KINGKING (ANESTESI - MAKS. 5X)">
+      <option>ETT non kingking - R1 (Hijau)</option>
+      <option>ETT non kingking - R2 (Biru)</option>
+      <option>ETT non kingking - R3 (Kuning)</option>
+      <option>ETT non kingking - R4 (Merah)</option>
+      <option>ETT non kingking - R5 (Hitam)</option>
+    </optgroup>
+    <optgroup label="HAND PRESURE (RADIOLOGI - MAKS. 3X)">
+      <option>Hand presure - R1 (Hijau)</option>
+      <option>Hand presure - R2 (Biru)</option>
+      <option>Hand presure - R3 (Kuning)</option>
+    </optgroup>
+    <optgroup label="SIRKUIT VENTILATOR (NICU - MAKS. 3X)">
+      <option>Sirkuit ventilator - R1 (Hijau)</option>
+      <option>Sirkuit ventilator - R2 (Biru)</option>
+      <option>Sirkuit ventilator - R3 (Kuning)</option>
+    </optgroup>
+    <optgroup label="SIRKUIT CPAP (NICU - MAKS. 3X)">
+      <option>Sirkuit CPAP - R1 (Hijau)</option>
+      <option>Sirkuit CPAP - R2 (Biru)</option>
+      <option>Sirkuit CPAP - R3 (Kuning)</option>
+    </optgroup>
+    <optgroup label="NASAL TUBING (NICU - MAKS. 3X)">
+      <option>Nasal tubing - R1 (Hijau)</option>
+      <option>Nasal tubing - R2 (Biru)</option>
+      <option>Nasal tubing - R3 (Kuning)</option>
+    </optgroup>
+    <optgroup label="NASAL PRONG (NICU - MAKS. 3X)">
+      <option>Nasal prong - R1 (Hijau)</option>
+      <option>Nasal prong - R2 (Biru)</option>
+      <option>Nasal prong - R3 (Kuning)</option>
+    </optgroup>
+    <optgroup label="ALAT REUSE LAINNYA (MAKS. R9)">
+      <option>Alat reuse lainnya - R1 (Hijau)</option>
+      <option>Alat reuse lainnya - R2 (Biru)</option>
+      <option>Alat reuse lainnya - R3 (Kuning)</option>
+      <option>Alat reuse lainnya - R4 (Merah)</option>
+      <option>Alat reuse lainnya - R5 (Hitam)</option>
+      <option>Alat reuse lainnya - R6 (Merah Muda)</option>
+      <option>Alat reuse lainnya - R7</option>
+      <option>Alat reuse lainnya - R8</option>
+      <option>Alat reuse lainnya - R9</option>
+    </optgroup>
+  </select>
+
+  <label>Jumlah</label>
+  <input id="jumlahReuse"
+         type="number"
+         min="1"
+         placeholder="Masukkan jumlah">
+
+  <div id="daftarAlatReuseTambahan"></div>
+
+  <button class="primary"
+          id="tambahAlatReuse"
+          type="button">
+    + Tambah Alat / Set
+  </button>
+
+  <label>Unit / Ruangan Asal</label>
+  <select id="ruangReuse">
+    <option value="">Pilih unit / ruangan</option>
+  </select>
+
+  <label>Kondisi / Kelayakan</label>
+  <select id="kondisiReuse">
+    <option value="">Pilih kondisi / kelayakan</option>
+    <option>Layak proses reuse</option>
+    <option>Mendekati / mencapai batas reuse</option>
+    <option>Tidak layak / usul penghapusan</option>
+  </select>
+
+  <label>Catatan</label>
+  <textarea id="catatanReuse"
+            rows="4"
+            placeholder="Masukkan catatan monitoring reuse"></textarea>
+
+  <button class="primary"
+          id="simpanReuse"
+          type="button">
+    Simpan Monitoring Reuse
+  </button>
+
+  <div id="pesanReuse"
+       style="margin-top:15px;color:#b97838;font-weight:bold">
+  </div>
+
+  <button class="primary"
+          id="riwayatReuse"
+          type="button">
+    📋 Riwayat Monitoring Reuse
+  </button>
+
+  <div id="hasilRiwayatReuse"
+       style="display:none;margin-top:15px">
+  </div>
+
+  <button class="logout"
+          id="tutupReuse"
+          type="button">
+    Kembali ke Menu Utama
+  </button>
+
+</div>
 
 
   </div>
@@ -2187,6 +2360,32 @@ alatSterilisasi.innerHTML=alatAsal.innerHTML;
 alatSterilisasi.options[0].text="Pilih nama alat / set";
 var daftarAlatSterilisasiTambahan=
   document.getElementById("daftarAlatSterilisasiTambahan");
+var ruangReuse=document.getElementById("ruangReuse");
+ruangReuse.innerHTML=unitAsal.innerHTML;
+ruangReuse.options[0].text="Pilih unit / ruangan";
+
+var alatReuseSelect=document.getElementById("alatReuse");
+var daftarAlatReuseTambahan=document.getElementById("daftarAlatReuseTambahan");
+var tombolTambahAlatReuse=document.getElementById("tambahAlatReuse");
+
+tombolTambahAlatReuse.onclick=function(){
+  var item=document.createElement("div");
+  item.style.marginTop="12px";
+  item.innerHTML=
+    '<label>Nama Alat / Set (dan Reuse Ke- / Kode Warna)</label>'+
+    '<select class="alatReuseTambahan">'+
+      alatReuseSelect.innerHTML+
+    '</select>'+
+    '<label>Jumlah</label>'+
+    '<input class="jumlahReuseTambahan" type="number" min="1" placeholder="Masukkan jumlah">'+
+    '<button type="button" class="hapusAlatReuse" style="margin-top:8px;border:0;border-radius:10px;background:#fde9e5;color:#8a544b;padding:8px 12px;font-weight:bold">Hapus</button>';
+
+  item.querySelector(".hapusAlatReuse").onclick=function(){
+    item.remove();
+  };
+
+  daftarAlatReuseTambahan.appendChild(item);
+};
 
 var tombolTambahAlatSterilisasi=
   document.getElementById("tambahAlatSterilisasi");
@@ -2506,6 +2705,7 @@ document.getElementById("petugasSterilisasi").value=
   penggunaAktif.nama;
 document.getElementById("petugasSuhu").value=
   penggunaAktif.nama;
+document.getElementById("petugasReuse").value=penggunaAktif.nama;
 
   var badge=document.querySelector(".badge");
   var sapaan=document.querySelector(".panel > h2 + p");
@@ -2663,6 +2863,203 @@ document.getElementById("tutupSuhu").onclick=function(){
   document.getElementById("isiSuhu").style.display="none";
   document.getElementById("homeModern").style.display="block";
   document.getElementById("logout").style.display="block";
+document.getElementById("homeReuse").onclick=function(){
+  document.getElementById("homeModern").style.display="none";
+  document.getElementById("isiReuse").style.display="block";
+  document.getElementById("logout").style.display="none";
+};
+
+document.getElementById("tutupReuse").onclick=function(){
+  document.getElementById("isiReuse").style.display="none";
+  document.getElementById("homeModern").style.display="block";
+  document.getElementById("logout").style.display="block";
+};
+
+document.getElementById("simpanReuse").onclick=async function(){
+  var tanggal=document.getElementById("tanggalReuse").value;
+  var jam=document.getElementById("jamReuse").value;
+  var petugas=document.getElementById("petugasReuse").value;
+  var alat=document.getElementById("alatReuse").value;
+  var jumlah=document.getElementById("jumlahReuse").value;
+  var ruang=document.getElementById("ruangReuse").value;
+  var kondisi=document.getElementById("kondisiReuse").value;
+  var catatan=document.getElementById("catatanReuse").value;
+
+  var items=[];
+  if(alat && jumlah){
+    items.push({
+      alat:alat,
+      jumlah:Number(jumlah)
+    });
+  }
+
+  var alatTambahan=document.querySelectorAll("#daftarAlatReuseTambahan > div");
+  alatTambahan.forEach(function(item){
+    var nama=item.querySelector(".alatReuseTambahan").value;
+    var banyak=item.querySelector(".jumlahReuseTambahan").value;
+    if(nama && banyak){
+      items.push({
+        alat:nama,
+        jumlah:Number(banyak)
+      });
+    }
+  });
+
+  if(!tanggal || !jam || !petugas || !ruang || !kondisi || items.length===0){
+    document.getElementById("pesanReuse").innerText=
+      "Lengkapi data monitoring reuse dan minimal 1 alat beserta jumlahnya.";
+    return;
+  }
+
+  var dataReuse={
+    tanggal:tanggal,
+    jam:jam,
+    petugas:petugas,
+    ruang:ruang,
+    kondisi:kondisi,
+    catatan:catatan,
+    items:items,
+    dibuatPada:serverTimestamp(),
+    userId:firebaseAuth.currentUser
+      ? firebaseAuth.currentUser.uid
+      : penggunaAktif.username
+  };
+
+  try{
+    await addDoc(collection(firebaseDb,"monitoringReuse"),dataReuse);
+
+    document.getElementById("pesanReuse").innerText=
+      "✓ Monitoring reuse berhasil disimpan.";
+
+    document.getElementById("tanggalReuse").value="";
+    document.getElementById("jamReuse").value="";
+    document.getElementById("alatReuse").value="";
+    document.getElementById("jumlahReuse").value="";
+    document.getElementById("ruangReuse").value="";
+    document.getElementById("kondisiReuse").value="";
+    document.getElementById("catatanReuse").value="";
+    daftarAlatReuseTambahan.innerHTML="";
+  }catch(error){
+    console.log(error);
+    document.getElementById("pesanReuse").innerText=
+      "Monitoring reuse gagal disimpan: "+error.code;
+  }
+};
+
+document.getElementById("riwayatReuse").onclick=async function(){
+  var hasilRiwayat=document.getElementById("hasilRiwayatReuse");
+
+  if(hasilRiwayat.style.display==="block"){
+    hasilRiwayat.style.display="none";
+    return;
+  }
+
+  hasilRiwayat.style.display="block";
+  hasilRiwayat.innerHTML="Memuat riwayat monitoring reuse...";
+
+  try{
+    var qReuse=query(
+      collection(firebaseDb,"monitoringReuse"),
+      orderBy("dibuatPada","desc")
+    );
+
+    var snapshotReuse=await getDocs(qReuse);
+    hasilRiwayat.innerHTML="";
+    var jumlahPribadi=0;
+
+    snapshotReuse.forEach(function(dokumen){
+      var data=dokumen.data();
+
+      if(data.petugas!==penggunaAktif.nama){
+        return;
+      }
+
+      jumlahPribadi++;
+
+      var kartu=document.createElement("div");
+      kartu.style.background="linear-gradient(145deg,#ffffff,#fff7ed)";
+      kartu.style.border="1px solid #f2dfc4";
+      kartu.style.borderRadius="18px";
+      kartu.style.padding="18px";
+      kartu.style.marginBottom="14px";
+      kartu.style.boxShadow="0 5px 16px rgba(170,110,55,.08)";
+
+      var judul=document.createElement("strong");
+      judul.textContent="🔄 "+(data.ruang || "Monitoring Reuse");
+      judul.style.display="block";
+      judul.style.fontSize="16px";
+      judul.style.color="#9a6736";
+      judul.style.marginBottom="6px";
+
+      var waktu=document.createElement("p");
+      waktu.textContent=data.tanggal+" • "+data.jam;
+      waktu.style.fontSize="13px";
+      waktu.style.color="#96785c";
+      waktu.style.margin="4px 0 12px";
+
+      var daftar=document.createElement("div");
+      (data.items || []).forEach(function(item){
+        var baris=document.createElement("div");
+        baris.textContent="• "+item.alat+" — Jumlah: "+item.jumlah;
+        baris.style.background="#fff3e4";
+        baris.style.border="1px solid #f2dfc4";
+        baris.style.padding="9px 11px";
+        baris.style.borderRadius="10px";
+        baris.style.marginBottom="6px";
+        baris.style.color="#805a37";
+        baris.style.fontSize="13px";
+        daftar.appendChild(baris);
+      });
+
+      var kondisi=document.createElement("p");
+      kondisi.textContent="Kondisi / Kelayakan: "+data.kondisi;
+      kondisi.style.display="inline-block";
+      kondisi.style.margin="8px 0 4px";
+      kondisi.style.padding="6px 10px";
+      kondisi.style.background="#fff0dc";
+      kondisi.style.color="#9a6736";
+      kondisi.style.borderRadius="999px";
+      kondisi.style.fontSize="12px";
+      kondisi.style.fontWeight="700";
+
+      var petugas=document.createElement("p");
+      petugas.textContent="Petugas CSSD: "+data.petugas;
+      petugas.style.margin="10px 0 4px";
+      petugas.style.fontSize="13px";
+      petugas.style.color="#805a37";
+      petugas.style.fontWeight="600";
+
+      kartu.appendChild(judul);
+      kartu.appendChild(waktu);
+      kartu.appendChild(daftar);
+      kartu.appendChild(kondisi);
+      kartu.appendChild(petugas);
+
+      if(data.catatan){
+        var catatan=document.createElement("p");
+        catatan.textContent="Catatan: "+data.catatan;
+        catatan.style.background="#fffaf4";
+        catatan.style.borderLeft="3px solid #dda86d";
+        catatan.style.padding="9px 11px";
+        catatan.style.borderRadius="8px";
+        catatan.style.fontSize="12px";
+        catatan.style.color="#80664e";
+        catatan.style.margin="10px 0 0";
+        kartu.appendChild(catatan);
+      }
+
+      hasilRiwayat.appendChild(kartu);
+    });
+
+    if(jumlahPribadi===0){
+      hasilRiwayat.innerHTML="Belum ada riwayat monitoring reuse Anda.";
+    }
+  }catch(error){
+    console.log(error);
+    hasilRiwayat.innerHTML="Riwayat monitoring reuse gagal dimuat.";
+  }
+};
+  
 };
 document.getElementById("simpanSuhu").onclick=async function(){
 
