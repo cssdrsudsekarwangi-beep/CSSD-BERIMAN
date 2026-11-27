@@ -502,7 +502,7 @@ input{
   border:1px solid #a96c31 !important;
 }
 
-/* ===== MUTU & TINDAK LANJUT - DISAMAKAN DENGAN SUHU & KELEMBABAN ===== */
+/* ===== MUTU & TINDAK LANJUT - OYEN MODERN ===== */
 #isiMutu{
   background:#fffaf4;
   border:1px solid #f2dfc4;
@@ -599,8 +599,7 @@ input{
 }
 
 #isiMaster input,
-#isiMaster select,
-#isiMaster textarea{
+#isiMaster select{
   width:100%;
   background:#ffffff;
   border:1px solid #f0dfca;
@@ -611,14 +610,13 @@ input{
 }
 
 #isiMaster input:focus,
-#isiMaster select:focus,
-#isiMaster textarea:focus{
+#isiMaster select:focus{
   outline:none;
   border-color:#dda86d;
   box-shadow:0 0 0 3px rgba(221,168,109,.15);
 }
 
-.master-filter-box{
+.master-box{
   background:#fff5e8;
   border:1px solid #f2dfc4;
   border-radius:16px;
@@ -626,18 +624,49 @@ input{
   margin-top:14px;
 }
 
-.master-group-title{
-  background:#fff0dc;
-  color:#9a6736;
-  border:1px solid #f2dfc4;
+#btnCariMaster{
+  width:100%;
+  margin-top:10px;
+  border:0;
   border-radius:12px;
-  padding:10px 14px;
-  font-size:14px;
-  font-weight:700;
-  margin:18px 0 10px;
+  background:#d99552;
+  color:#ffffff;
+  font-weight:bold;
+  padding:12px 16px;
+  font-size:15px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+#btnCariMaster:active{
+  transform:scale(.985);
+}
+
+.master-item-buttons{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  margin-top:10px;
+}
+
+.master-item-btn{
+  border:1px solid #e6c7a1;
+  border-radius:12px;
+  background:#ffffff;
+  color:#805a37;
+  font-weight:700;
+  font-size:13px;
+  padding:11px 10px;
+  text-align:center;
+  line-height:1.3;
+}
+
+.master-item-btn.aktif{
+  background:#d99552;
+  color:#ffffff;
+  border-color:#d99552;
 }
 
 .master-card{
@@ -688,7 +717,7 @@ input{
   display:flex;
   justify-content:space-between;
   gap:10px;
-  padding:4px 0;
+  padding:5px 0;
   border-bottom:1px dashed #edd3b2;
 }
 
@@ -704,13 +733,6 @@ input{
   border-radius:8px;
   font-size:12px;
   color:#80664e;
-}
-
-#toggleFormMaster,
-#tambahKomponenMaster,
-#simpanMaster{
-  background:#d99552 !important;
-  color:#ffffff !important;
 }
 
 #tutupMaster{
@@ -2014,29 +2036,16 @@ hr{
       <h3>🗂️ Master Data Alat &amp; Set</h3>
       <p>Informasi standar alat, linen, kassa &amp; rincian isi set CSSD.</p>
 
-      <div class="master-filter-box">
+      <div class="master-box">
         <label for="cariMaster" style="margin-top:0">Cari Alat / Set / Isi Komponen</label>
         <input id="cariMaster" type="text" placeholder="Ketik nama set, alat, kassa, atau pinset...">
+        <button id="btnCariMaster" type="button">🔍 Cari</button>
+      </div>
 
-        <label for="filterKategoriMaster">Kelompok / Kategori</label>
+      <div class="master-box">
+        <label for="filterKategoriMaster" style="margin-top:0">Kelompok / Kategori</label>
         <select id="filterKategoriMaster">
-          <option value="">Semua Kelompok</option>
-          <option>KASSA</option>
-          <option>LINEN</option>
-          <option>SET INSTRUMEN</option>
-          <option>SET INSTRUMEN LAINNYA</option>
-          <option>BARANG LAINNYA</option>
-          <option>POLI RAWAT JALAN SATUAN</option>
-          <option>ALAT LAINNYA</option>
-        </select>
-      </div>
-
-      <button class="primary" id="toggleFormMaster" type="button">+ Tambah Informasi Alat / Set</button>
-
-      <div id="formTambahMaster" style="display:none;margin-top:14px;background:#ffffff;border:1px solid #f2dfc4;border-radius:16px;padding:16px">
-        <label for="kategoriMasterBaru" style="margin-top:0">Kategori / Kelompok</label>
-        <select id="kategoriMasterBaru">
-          <option value="">Pilih kategori / kelompok</option>
+          <option value="">Pilih kelompok / kategori</option>
           <option>KASSA</option>
           <option>LINEN</option>
           <option>SET INSTRUMEN</option>
@@ -2046,33 +2055,16 @@ hr{
           <option>ALAT LAINNYA</option>
         </select>
 
-        <label for="namaMasterBaru">Nama Alat / Set</label>
-        <input id="namaMasterBaru" type="text" placeholder="Contoh: SET GV atau LINEN 1 SET">
-
-        <label for="satuanMasterBaru">Satuan</label>
-        <select id="satuanMasterBaru">
-          <option value="Set">Set</option>
-          <option value="Pcs / Lembar">Pcs / Lembar</option>
-          <option value="Pack / Bungkus">Pack / Bungkus</option>
-        </select>
-
-        <label>Rincian Isi / Komponen (Opsional)</label>
-        <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:8px">
-          <input id="kompNamaAwal" type="text" placeholder="Nama item / instrumen">
-          <input id="kompJumlahAwal" type="text" placeholder="Jumlah (cth: 1 pcs / 5 lembar)">
+        <div id="areaPilihanItemMaster" style="display:none;margin-top:14px">
+          <label for="pilihItemMaster" style="margin-top:0">Pilihan Alat / Set dalam Kelompok</label>
+          <select id="pilihItemMaster">
+            <option value="">Pilih alat / set</option>
+          </select>
+          <div id="tombolItemMaster" class="master-item-buttons"></div>
         </div>
-
-        <div id="daftarKomponenMasterTambahan"></div>
-        <button class="primary" id="tambahKomponenMaster" type="button" style="margin-top:10px">+ Tambah Baris Isi</button>
-
-        <label for="catatanMasterBaru">Catatan Informasi</label>
-        <textarea id="catatanMasterBaru" rows="3" placeholder="Catatan standar atau keterangan tambahan"></textarea>
-
-        <button class="primary" id="simpanMaster" type="button">Simpan ke Master Data</button>
-        <div id="pesanMaster" style="margin-top:12px;color:#b97838;font-weight:bold"></div>
       </div>
 
-      <div id="hasilDaftarMaster" style="margin-top:14px"></div>
+      <div id="hasilDetailMaster" style="margin-top:14px"></div>
 
       <button class="logout" id="tutupMaster" type="button">Kembali ke menu</button>
     </div>
@@ -2271,25 +2263,13 @@ ruangReuse.innerHTML = unitAsal.innerHTML;
 ruangReuse.options[0].text = "Pilih unit / ruangan";
 
 /* ===== DATA INFORMASI MASTER DATA ALAT & SET ===== */
-var MASTER_INFO_BAWAAN = [
-  {
-    id: "lap-linen-1set",
-    kategori: "LINEN",
-    nama: "Linen 1 Set (Standar Lapangan)",
-    satuan: "Set",
-    catatan: "Acuan standar isi 1 set linen di lapangan.",
-    komponen: [
-      { nama: "Duk samping", jumlah: "5 pcs" },
-      { nama: "Duk Bolong Besar", jumlah: "1 pcs" },
-      { nama: "Jas Oprasi", jumlah: "3 pcs" }
-    ]
-  },
+var MASTER_INFO_DATA = [
   {
     id: "lap-kassa-5cm",
     kategori: "KASSA",
     nama: "Kassa 5 cm",
     satuan: "Pcs / Lembar",
-    catatan: "1 pcs berisi 10 lembar kassa.",
+    catatan: "Standar satuan lapangan: 1 pcs berisi 10 lembar kassa.",
     komponen: [
       { nama: "Isi per 1 pcs", jumlah: "10 lembar" }
     ]
@@ -2299,9 +2279,41 @@ var MASTER_INFO_BAWAAN = [
     kategori: "KASSA",
     nama: "Kassa 7,5 cm",
     satuan: "Pcs / Lembar",
-    catatan: "1 pcs berisi 10 lembar kassa.",
+    catatan: "Standar satuan lapangan: 1 pcs berisi 10 lembar kassa.",
     komponen: [
       { nama: "Isi per 1 pcs", jumlah: "10 lembar" }
+    ]
+  },
+  {
+    id: "kassa-bigkassa",
+    kategori: "KASSA",
+    nama: "Bigkassa",
+    satuan: "Kassa",
+    catatan: "Kategori kassa CSSD (tambahkan catatan rincian kemasan/lembar jika ada perubahan di lapangan).",
+    komponen: [
+      { nama: "Jenis Item", jumlah: "Bigkassa" }
+    ]
+  },
+  {
+    id: "kassa-tampon",
+    kategori: "KASSA",
+    nama: "Tampon",
+    satuan: "Kassa",
+    catatan: "Kategori kassa CSSD (tambahkan catatan rincian ukuran/jumlah jika ada perubahan di lapangan).",
+    komponen: [
+      { nama: "Jenis Item", jumlah: "Tampon" }
+    ]
+  },
+  {
+    id: "lap-linen-1set",
+    kategori: "LINEN",
+    nama: "Linen 1 Set",
+    satuan: "Set",
+    catatan: "Acuan standar isi 1 set linen di lapangan (total 9 pcs).",
+    komponen: [
+      { nama: "Duk samping", jumlah: "5 pcs" },
+      { nama: "Duk Bolong Besar", jumlah: "1 pcs" },
+      { nama: "Jas Oprasi", jumlah: "3 pcs" }
     ]
   },
   {
@@ -2309,7 +2321,7 @@ var MASTER_INFO_BAWAAN = [
     kategori: "SET INSTRUMEN LAINNYA",
     nama: "SET GV",
     satuan: "Set",
-    catatan: "Pemakaian lapangan: memakai Kassa 5 cm : 1 pcs (10 lembar). Rincian instrumen dari daftar amprahan.",
+    catatan: "Catatan lapangan: memakai Kassa 5 cm : 1 pcs (10 lembar). Rincian instrumen dari daftar amprahan.",
     komponen: [
       { nama: "Bak Instrumen Sedang + Tutup", jumlah: "1" },
       { nama: "Pinset Anatomis", jumlah: "1" },
@@ -2324,7 +2336,7 @@ var MASTER_INFO_BAWAAN = [
     kategori: "SET INSTRUMEN LAINNYA",
     nama: "SET PARTUS",
     satuan: "Set",
-    catatan: "Pemakaian lapangan: memakai Kassa 5 cm : 5 lembar (0,5 pcs). Rincian instrumen dari daftar amprahan.",
+    catatan: "Catatan lapangan: memakai Kassa 5 cm : 5 lembar (0,5 pcs). Rincian instrumen dari daftar amprahan.",
     komponen: [
       { nama: "Bak Instrumen Sedang + Tutup", jumlah: "1" },
       { nama: "Pinset anatomis", jumlah: "1" },
@@ -2344,7 +2356,7 @@ var MASTER_INFO_BAWAAN = [
     kategori: "SET INSTRUMEN LAINNYA",
     nama: "SET KURET",
     satuan: "Set",
-    catatan: "Pemakaian lapangan: memakai Kassa 5 cm : 5 lembar (0,5 pcs). Rincian instrumen dari daftar amprahan.",
+    catatan: "Catatan lapangan: memakai Kassa 5 cm : 5 lembar (0,5 pcs). Rincian instrumen dari daftar amprahan.",
     komponen: [
       { nama: "Sendok kuret", jumlah: "6" },
       { nama: "Sim", jumlah: "2" },
@@ -2360,7 +2372,7 @@ var MASTER_INFO_BAWAAN = [
     kategori: "SET INSTRUMEN LAINNYA",
     nama: "SET CVC",
     satuan: "Set",
-    catatan: "Pemakaian lapangan: memakai Kassa 5 cm : 1 pcs (10 lembar). Rincian instrumen dari daftar amprahan.",
+    catatan: "Catatan lapangan: memakai Kassa 5 cm : 1 pcs (10 lembar). Rincian instrumen dari daftar amprahan.",
     komponen: [
       { nama: "Bak Intrumen Besar + Tutup", jumlah: "1" },
       { nama: "Scalpel", jumlah: "1" },
@@ -2929,36 +2941,120 @@ var MASTER_INFO_BAWAAN = [
   }
 ];
 
-var daftarMasterGabungan = MASTER_INFO_BAWAAN.slice();
+function buatKartuDetailMaster(item){
+  var card = document.createElement("div");
+  card.className = "master-card";
 
-function tambahKeSemuaDropdownAlat(namaAlatBaru){
-  if(!namaAlatBaru) return;
-  var targets = [alatAsal, alatDistribusi, alatPenerimaan, alatDekontaminasi, alatPacking, alatSterilisasi];
-  targets.forEach(function(sel){
-    if(!sel) return;
-    var sudahAda = Array.from(sel.options).some(function(opt){
-      return opt.value.trim().toLowerCase() === namaAlatBaru.trim().toLowerCase();
+  var head = document.createElement("div");
+  head.className = "master-card-head";
+  head.innerHTML =
+    '<div class="master-card-title">' + item.nama + '</div>' +
+    '<span class="master-badge">' + (item.kategori || item.satuan || "Info") + '</span>';
+  card.appendChild(head);
+
+  if(item.komponen && item.komponen.length > 0){
+    var kompBox = document.createElement("div");
+    kompBox.className = "master-komp-list";
+    item.komponen.forEach(function(k){
+      var row = document.createElement("div");
+      row.className = "master-komp-row";
+      row.innerHTML = '<span>' + k.nama + '</span><strong>' + k.jumlah + '</strong>';
+      kompBox.appendChild(row);
     });
-    if(!sudahAda){
-      var opt = document.createElement("option");
-      opt.value = namaAlatBaru;
-      opt.textContent = namaAlatBaru;
-      sel.appendChild(opt);
-    }
+    card.appendChild(kompBox);
+  }
+
+  if(item.catatan){
+    var cat = document.createElement("div");
+    cat.className = "master-catatan";
+    cat.textContent = item.catatan;
+    card.appendChild(cat);
+  }
+
+  return card;
+}
+
+function tampilkanDetailItemMaster(itemId){
+  var detailBox = document.getElementById("hasilDetailMaster");
+  if(!detailBox) return;
+
+  if(!itemId){
+    detailBox.innerHTML = "";
+    return;
+  }
+
+  var item = MASTER_INFO_DATA.find(function(x){ return x.id === itemId; });
+  if(!item){
+    detailBox.innerHTML = "";
+    return;
+  }
+
+  detailBox.innerHTML = "";
+  detailBox.appendChild(buatKartuDetailMaster(item));
+
+  document.querySelectorAll(".master-item-btn").forEach(function(btn){
+    btn.classList.toggle("aktif", btn.dataset.id === itemId);
   });
 }
 
-function renderMasterInfo(){
-  var container = document.getElementById("hasilDaftarMaster");
-  if(!container) return;
+function isiPilihanItemDariKategori(){
+  var kategori = document.getElementById("filterKategoriMaster").value;
+  var areaItem = document.getElementById("areaPilihanItemMaster");
+  var selectItem = document.getElementById("pilihItemMaster");
+  var tombolGrid = document.getElementById("tombolItemMaster");
+  var detailBox = document.getElementById("hasilDetailMaster");
 
+  detailBox.innerHTML = "";
+  tombolGrid.innerHTML = "";
+  selectItem.innerHTML = '<option value="">Pilih alat / set</option>';
+
+  if(!kategori){
+    areaItem.style.display = "none";
+    return;
+  }
+
+  var items = MASTER_INFO_DATA.filter(function(x){ return x.kategori === kategori; });
+  areaItem.style.display = "block";
+
+  if(items.length === 0){
+    detailBox.innerHTML = '<div class="master-card" style="text-align:center;color:#8b7562">Belum ada rincian informasi pada kelompok ' + kategori + '.</div>';
+    return;
+  }
+
+  items.forEach(function(item){
+    var opt = document.createElement("option");
+    opt.value = item.id;
+    opt.textContent = item.nama;
+    selectItem.appendChild(opt);
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "master-item-btn";
+    btn.dataset.id = item.id;
+    btn.textContent = item.nama;
+    btn.onclick = function(){
+      selectItem.value = item.id;
+      tampilkanDetailItemMaster(item.id);
+    };
+    tombolGrid.appendChild(btn);
+  });
+}
+
+function jalankanPencarianMaster(){
   var kataKunci = (document.getElementById("cariMaster").value || "").trim().toLowerCase();
-  var kategoriDipilih = document.getElementById("filterKategoriMaster").value || "";
+  var detailBox = document.getElementById("hasilDetailMaster");
+  var areaItem = document.getElementById("areaPilihanItemMaster");
 
-  var tersaring = daftarMasterGabungan.filter(function(item){
-    if(kategoriDipilih && item.kategori !== kategoriDipilih) return false;
-    if(!kataKunci) return true;
+  document.getElementById("filterKategoriMaster").value = "";
+  areaItem.style.display = "none";
+  detailBox.innerHTML = "";
 
+  if(!kataKunci){
+    detailBox.innerHTML = '<div class="master-card" style="text-align:center;color:#8b7562">Ketik nama alat, set, atau isi komponen lalu tekan 🔍 Cari, atau pilih Kelompok / Kategori di atas.</div>';
+    return;
+  }
+
+  var hasil = MASTER_INFO_DATA.filter(function(item){
     var cocokNama = (item.nama || "").toLowerCase().includes(kataKunci);
     var cocokKat = (item.kategori || "").toLowerCase().includes(kataKunci);
     var cocokCatatan = (item.catatan || "").toLowerCase().includes(kataKunci);
@@ -2968,187 +3064,26 @@ function renderMasterInfo(){
     return cocokNama || cocokKat || cocokCatatan || cocokKomp;
   });
 
-  if(tersaring.length === 0){
-    container.innerHTML = '<div class="master-card" style="text-align:center;color:#8b7562">Tidak ada informasi alat atau set yang sesuai pencarian/kelompok.</div>';
+  if(hasil.length === 0){
+    detailBox.innerHTML = '<div class="master-card" style="text-align:center;color:#8b7562">Tidak ditemukan informasi untuk "' + document.getElementById("cariMaster").value + '".</div>';
     return;
   }
 
-  var urutanKategori = [
-    "LINEN",
-    "KASSA",
-    "SET INSTRUMEN LAINNYA",
-    "SET INSTRUMEN",
-    "BARANG LAINNYA",
-    "POLI RAWAT JALAN SATUAN",
-    "ALAT LAINNYA"
-  ];
-
-  var kelompokMap = {};
-  tersaring.forEach(function(item){
-    var kat = item.kategori || "ALAT LAINNYA";
-    if(!kelompokMap[kat]) kelompokMap[kat] = [];
-    kelompokMap[kat].push(item);
-  });
-
-  var semuaKat = urutanKategori.filter(function(k){ return kelompokMap[k]; }).concat(
-    Object.keys(kelompokMap).filter(function(k){ return urutanKategori.indexOf(k) === -1; })
-  );
-
-  container.innerHTML = "";
-  semuaKat.forEach(function(kat){
-    var listItem = kelompokMap[kat];
-    var header = document.createElement("div");
-    header.className = "master-group-title";
-    header.innerHTML = '<span>' + kat + '</span><span>' + listItem.length + ' item</span>';
-    container.appendChild(header);
-
-    listItem.forEach(function(item){
-      var card = document.createElement("div");
-      card.className = "master-card";
-
-      var head = document.createElement("div");
-      head.className = "master-card-head";
-      head.innerHTML =
-        '<div class="master-card-title">' + item.nama + '</div>' +
-        '<span class="master-badge">' + (item.satuan || "Set") + '</span>';
-      card.appendChild(head);
-
-      if(item.komponen && item.komponen.length > 0){
-        var kompBox = document.createElement("div");
-        kompBox.className = "master-komp-list";
-        item.komponen.forEach(function(k){
-          var row = document.createElement("div");
-          row.className = "master-komp-row";
-          row.innerHTML = '<span>' + k.nama + '</span><strong>' + k.jumlah + '</strong>';
-          kompBox.appendChild(row);
-        });
-        card.appendChild(kompBox);
-      }
-
-      if(item.catatan){
-        var cat = document.createElement("div");
-        cat.className = "master-catatan";
-        cat.textContent = item.catatan;
-        card.appendChild(cat);
-      }
-
-      container.appendChild(card);
-    });
+  hasil.forEach(function(item){
+    detailBox.appendChild(buatKartuDetailMaster(item));
   });
 }
 
-async function muatMasterDariFirestore(){
-  try{
-    var qMaster = query(collection(firebaseDb, "masterAlatSet"), orderBy("dibuatPada", "desc"));
-    var snap = await getDocs(qMaster);
-    var dariDb = [];
-    snap.forEach(function(doc){
-      dariDb.push(doc.data());
-    });
-
-    var petaId = {};
-    var hasil = [];
-    MASTER_INFO_BAWAAN.forEach(function(item){
-      petaId[item.id] = true;
-      hasil.push(item);
-    });
-
-    dariDb.forEach(function(item){
-      var key = item.id || ((item.kategori || "") + "|" + (item.nama || ""));
-      if(!petaId[key]){
-        petaId[key] = true;
-        hasil.push(item);
-      }
-      if(item.nama) tambahKeSemuaDropdownAlat(item.nama);
-    });
-
-    daftarMasterGabungan = hasil;
-    renderMasterInfo();
-  }catch(err){
-    console.log("Info master Firestore:", err);
-    daftarMasterGabungan = MASTER_INFO_BAWAAN.slice();
-    renderMasterInfo();
+document.getElementById("btnCariMaster").onclick = jalankanPencarianMaster;
+document.getElementById("cariMaster").onkeydown = function(e){
+  if(e.key === "Enter"){
+    e.preventDefault();
+    jalankanPencarianMaster();
   }
-}
-
-var daftarKomponenMasterTambahan = document.getElementById("daftarKomponenMasterTambahan");
-document.getElementById("tambahKomponenMaster").onclick = function(){
-  var row = document.createElement("div");
-  row.style.marginTop = "10px";
-  row.innerHTML =
-    '<div style="display:grid;grid-template-columns:1.6fr 1fr;gap:8px">' +
-      '<input class="kompNamaTambahan" type="text" placeholder="Nama item / instrumen">' +
-      '<input class="kompJumlahTambahan" type="text" placeholder="Jumlah (cth: 1 pcs)">' +
-    '</div>' +
-    '<button type="button" class="hapusKompMaster" style="margin-top:6px;border:0;border-radius:10px;background:#fde9e5;color:#8a544b;padding:7px 11px;font-weight:bold">Hapus baris</button>';
-
-  row.querySelector(".hapusKompMaster").onclick = function(){
-    row.remove();
-  };
-  daftarKomponenMasterTambahan.appendChild(row);
 };
-
-document.getElementById("toggleFormMaster").onclick = function(){
-  var formBox = document.getElementById("formTambahMaster");
-  formBox.style.display = (formBox.style.display === "block") ? "none" : "block";
-};
-
-document.getElementById("cariMaster").oninput = renderMasterInfo;
-document.getElementById("filterKategoriMaster").onchange = renderMasterInfo;
-
-document.getElementById("simpanMaster").onclick = async function(){
-  var kategori = document.getElementById("kategoriMasterBaru").value;
-  var nama = document.getElementById("namaMasterBaru").value.trim();
-  var satuan = document.getElementById("satuanMasterBaru").value;
-  var catatan = document.getElementById("catatanMasterBaru").value.trim();
-
-  if(!kategori || !nama){
-    document.getElementById("pesanMaster").innerText = "Lengkapi kategori dan nama alat / set terlebih dahulu.";
-    return;
-  }
-
-  var komponen = [];
-  var kompAwalNama = document.getElementById("kompNamaAwal").value.trim();
-  var kompAwalJumlah = document.getElementById("kompJumlahAwal").value.trim();
-  if(kompAwalNama){
-    komponen.push({ nama: kompAwalNama, jumlah: kompAwalJumlah || "-" });
-  }
-
-  document.querySelectorAll("#daftarKomponenMasterTambahan > div").forEach(function(row){
-    var n = row.querySelector(".kompNamaTambahan").value.trim();
-    var j = row.querySelector(".kompJumlahTambahan").value.trim();
-    if(n){
-      komponen.push({ nama: n, jumlah: j || "-" });
-    }
-  });
-
-  var itemBaru = {
-    id: "custom-" + Date.now(),
-    kategori: kategori,
-    nama: nama,
-    satuan: satuan,
-    komponen: komponen,
-    catatan: catatan,
-    dibuatOleh: penggunaAktif ? penggunaAktif.nama : "Petugas",
-    dibuatPada: serverTimestamp()
-  };
-
-  try{
-    await addDoc(collection(firebaseDb, "masterAlatSet"), itemBaru);
-    tambahKeSemuaDropdownAlat(nama);
-    await muatMasterDariFirestore();
-
-    document.getElementById("pesanMaster").innerText = "✓ Informasi master data berhasil disimpan.";
-    document.getElementById("kategoriMasterBaru").value = "";
-    document.getElementById("namaMasterBaru").value = "";
-    document.getElementById("kompNamaAwal").value = "";
-    document.getElementById("kompJumlahAwal").value = "";
-    document.getElementById("catatanMasterBaru").value = "";
-    daftarKomponenMasterTambahan.innerHTML = "";
-  }catch(error){
-    console.log(error);
-    document.getElementById("pesanMaster").innerText = "Gagal menyimpan master data: " + error.code;
-  }
+document.getElementById("filterKategoriMaster").onchange = isiPilihanItemDariKategori;
+document.getElementById("pilihItemMaster").onchange = function(){
+  tampilkanDetailItemMaster(this.value);
 };
 
 /* ===== TOMBOL TAMBAH ALAT DINAMIS ===== */
@@ -3364,8 +3299,6 @@ form.onsubmit = async function(e){
     profil[2].value = penggunaAktif.username;
     profil[3].value = "Aktif";
   }
-
-  muatMasterDariFirestore();
 };
 
 document.getElementById("logout").onclick = async function(){
@@ -3480,8 +3413,10 @@ document.getElementById("homeMaster").onclick = function(){
   document.getElementById("homeModern").style.display = "none";
   document.getElementById("isiMaster").style.display = "block";
   document.getElementById("logout").style.display = "none";
-  renderMasterInfo();
-  muatMasterDariFirestore();
+  document.getElementById("cariMaster").value = "";
+  document.getElementById("filterKategoriMaster").value = "";
+  document.getElementById("areaPilihanItemMaster").style.display = "none";
+  document.getElementById("hasilDetailMaster").innerHTML = "";
 };
 
 document.getElementById("tutupMaster").onclick = function(){
