@@ -1237,22 +1237,6 @@ hr{
   white-space:nowrap;
 }
 
-.rekap-item-sub{
-  font-size:12px;
-  color:#8b7562;
-  margin-bottom:6px;
-}
-
-.rekap-item-body{
-  font-size:12px;
-  color:#65482f;
-  line-height:1.6;
-  background:#fff5e8;
-  border:1px solid #f2dfc4;
-  border-radius:10px;
-  padding:9px 11px;
-}
-
 #tutupLaporan{
   display:block;
   width:100%;
@@ -1679,9 +1663,6 @@ hr{
             <option>Dwi Pangestu</option>
           </select>
         </div>
-
-        <label for="cariItemRekap">Filter Kata Kunci (Nama Alat / Set / Kassa / Linen / Ruang)</label>
-        <input id="cariItemRekap" type="text" placeholder="Contoh: NAS LT 1, KASSA 7,5 CM, LINEN, SET GV...">
 
         <label style="margin-top:14px">Bentuk Diagram</label>
         <div class="rekap-chart-selector" id="selectorBentukDiagram">
@@ -4719,7 +4700,6 @@ document.getElementById("btnTampilkanRekap").onclick = async function(){
   var prosesDipilih = document.getElementById("pilihProsesRekap").value;
   var pendukungDipilih = document.getElementById("pilihPendukungRekap").value;
   var petugasDipilih = document.getElementById("petugasLaporan").value;
-  var kataKunci = (document.getElementById("cariItemRekap").value || "").trim().toLowerCase();
   var pj = document.getElementById("pjLaporan").value || (penggunaAktif ? penggunaAktif.nama : "-");
 
   if(kategoriRekap === "PETUGAS" && !petugasDipilih){
@@ -4780,14 +4760,6 @@ document.getElementById("btnTampilkanRekap").onclick = async function(){
         if(pendukungDipilih !== "SEMUA_PENDUKUNG" && r.kategori !== pendukungDipilih) return false;
       }else if(kategoriRekap === "PETUGAS"){
         if(r.petugas !== petugasDipilih) return false;
-      }
-
-      if(kataKunci){
-        var gabung = [
-          r.labelKategori, r.petugas, r.unit, r.status, r.catatan, r.ringkasan,
-          (r.items || []).map(function(i){ return i.alat; }).join(" ")
-        ].join(" ").toLowerCase();
-        if(!gabung.includes(kataKunci)) return false;
       }
 
       return true;
@@ -4862,8 +4834,7 @@ document.getElementById("btnTampilkanRekap").onclick = async function(){
             { label: "Kassa Langsung (lbr)", value: statKL.totalLembarKassaLangsung, color: "#e5a967" },
             { label: "Linen Keluar (set/pcs)", value: statKL.totalQtyLinen, color: "#9c6234" }
           ]
-        ) +
-        renderDaftarRincianHtml(filtered, periode);
+        );
       return;
     }
 
@@ -4934,8 +4905,7 @@ document.getElementById("btnTampilkanRekap").onclick = async function(){
           })
         ) +
         '<div style="margin-top:14px;font-size:14px;font-weight:700;color:#805a37">🏥 Rincian Pemakaian per Ruangan</div>' +
-        ruangCardsHtml +
-        renderDaftarRincianHtml(filtered, periode);
+        ruangCardsHtml;
       return;
     }
 
@@ -5032,36 +5002,13 @@ document.getElementById("btnTampilkanRekap").onclick = async function(){
           { label: "Menu Pendukung (Suhu/Mutu/Reuse)", value: pendukungQty, color: "#eab277" }
         ]
       ) +
-      rekapItemBoxHtml +
-      renderDaftarRincianHtml(filtered, periode);
+      rekapItemBoxHtml;
 
   }catch(error){
     console.log(error);
     hasilBox.innerHTML = '<div class="rekap-item-card" style="text-align:center;color:#805a37">Gagal memuat data rekapan dari database.</div>';
   }
 };
-
-function renderDaftarRincianHtml(records, periode){
-  if(!records || records.length === 0){
-    return '<div class="rekap-item-card" style="text-align:center;color:#8b7562;margin-top:12px">Belum ada rincian transaksi pada periode ' + periode + '.</div>';
-  }
-  return (
-    '<div style="margin-top:14px;font-size:14px;font-weight:700;color:#805a37">📋 Rincian Transaksi (' + records.length + ')</div>' +
-    records.map(function(r){
-      return (
-        '<div class="rekap-item-card">' +
-          '<div class="rekap-item-head">' +
-            '<div class="rekap-item-title">' + r.labelKategori + '</div>' +
-            '<span class="rekap-item-badge">' + r.status + '</span>' +
-          '</div>' +
-          '<div class="rekap-item-sub">' + (r.tanggal || "-") + (r.jam ? ' • ' + r.jam : '') + ' • Petugas: ' + r.petugas + '</div>' +
-          '<div class="rekap-item-body">' + r.ringkasan +
-          (r.catatan ? '<br><em>Catatan: ' + r.catatan + '</em>' : '') + '</div>' +
-        '</div>'
-      );
-    }).join("")
-  );
-}
 
 document.getElementById("btnProfil").onclick = function(){
   var tombol = document.getElementById("btnProfil");
@@ -5295,11 +5242,7 @@ document.getElementById("simpanPenerimaan").onclick = async function(){
   var menyerahkan = document.getElementById("petugasMenyerahkan").value;
   var catatan = document.getElementById("catatanPenerimaan").value;
 
-  var items = [];
-  if(alat && jumlah && kondisi){
-    items.push({ alat: alat, jumlah: Number(jumlah), kondisi: kondisi });
-  }
-
+  var items = [{ alat: alat, jumlah: Number(jumlah), kondisi: kondisi }];
   var alatTambahan = document.querySelectorAll("#daftarAlatPenerimaanTambahan > div");
   alatTambahan.forEach(function(item){
     var nama = item.querySelector(".alatPenerimaanTambahan").value;
@@ -5310,9 +5253,8 @@ document.getElementById("simpanPenerimaan").onclick = async function(){
     }
   });
 
-  if(!tanggal || !jam || !ruang || !petugas || !menyerahkan || items.length === 0){
-    document.getElementById("pesanPenerimaan").innerText =
-      "Lengkapi data penerimaan dan minimal 1 alat beserta jumlah serta kondisinya.";
+  if(!tanggal || !jam || !ruang || !alat || !jumlah || !kondisi || !petugas || !menyerahkan){
+    document.getElementById("pesanPenerimaan").innerText = "Lengkapi data penerimaan terlebih dahulu.";
     return;
   }
 
@@ -5367,12 +5309,12 @@ document.getElementById("riwayatPenerimaan").onclick = async function(){
       jumlahRiwayatPribadi++;
 
       var kartu = document.createElement("div");
-      kartu.style.background = "linear-gradient(145deg,#ffffff,#fdf6f4)";
-      kartu.style.border = "1px solid #eed8d3";
+      kartu.style.background = "linear-gradient(145deg,#ffffff,#fff7f5)";
+      kartu.style.border = "1px solid #f0d8d3";
       kartu.style.borderRadius = "18px";
       kartu.style.padding = "18px";
       kartu.style.marginBottom = "14px";
-      kartu.style.boxShadow = "0 5px 16px rgba(138,84,75,.06)";
+      kartu.style.boxShadow = "0 5px 16px rgba(168,95,85,.08)";
 
       var judul = document.createElement("strong");
       judul.textContent = "🧺 " + data.ruang;
@@ -5384,27 +5326,27 @@ document.getElementById("riwayatPenerimaan").onclick = async function(){
       var waktu = document.createElement("p");
       waktu.textContent = data.tanggal + " • " + data.jam;
       waktu.style.fontSize = "13px";
-      waktu.style.color = "#9b7b75";
+      waktu.style.color = "#a17d77";
       waktu.style.margin = "4px 0 14px";
 
       var daftar = document.createElement("div");
       (data.items || []).forEach(function(item){
         var baris = document.createElement("div");
-        baris.textContent = "• " + item.alat + " — Jumlah: " + item.jumlah + " (" + item.kondisi + ")";
-        baris.style.background = "#faece8";
+        baris.textContent = "• " + item.alat + " — Jumlah: " + item.jumlah + " • Kondisi: " + item.kondisi;
+        baris.style.background = "#fde9e5";
         baris.style.padding = "9px 11px";
         baris.style.borderRadius = "10px";
         baris.style.marginBottom = "6px";
-        baris.style.color = "#7a4c44";
+        baris.style.color = "#8a544b";
         baris.style.fontSize = "13px";
         daftar.appendChild(baris);
       });
 
       var petugas = document.createElement("p");
-      petugas.textContent = "Petugas CSSD: " + data.petugas + " • Penyerah: " + data.menyerahkan;
+      petugas.textContent = "Petugas CSSD: " + data.petugas + " • Menyerahkan: " + data.menyerahkan;
       petugas.style.margin = "12px 0 4px";
       petugas.style.fontSize = "13px";
-      petugas.style.color = "#7c544d";
+      petugas.style.color = "#8a544b";
       petugas.style.fontWeight = "600";
 
       kartu.appendChild(judul);
@@ -5415,12 +5357,12 @@ document.getElementById("riwayatPenerimaan").onclick = async function(){
       if(data.catatan){
         var catatan = document.createElement("p");
         catatan.textContent = "Catatan: " + data.catatan;
-        catatan.style.background = "#fcf7f6";
+        catatan.style.background = "#fff8f6";
         catatan.style.borderLeft = "3px solid #a85f55";
         catatan.style.padding = "9px 11px";
         catatan.style.borderRadius = "8px";
         catatan.style.fontSize = "12px";
-        catatan.style.color = "#7a615c";
+        catatan.style.color = "#8b6963";
         catatan.style.margin = "10px 0 0";
         kartu.appendChild(catatan);
       }
@@ -5446,11 +5388,7 @@ document.getElementById("simpanDekontaminasi").onclick = async function(){
   var metode = document.getElementById("metodeDekontaminasi").value;
   var catatan = document.getElementById("catatanDekontaminasi").value;
 
-  var items = [];
-  if(alat && jumlah){
-    items.push({ alat: alat, jumlah: Number(jumlah) });
-  }
-
+  var items = [{ alat: alat, jumlah: Number(jumlah) }];
   var alatTambahan = document.querySelectorAll("#daftarAlatDekontaminasiTambahan > div");
   alatTambahan.forEach(function(item){
     var nama = item.querySelector(".alatDekontaminasiTambahan").value;
@@ -5460,9 +5398,8 @@ document.getElementById("simpanDekontaminasi").onclick = async function(){
     }
   });
 
-  if(!tanggal || !jam || !petugas || !metode || items.length === 0){
-    document.getElementById("pesanDekontaminasi").innerText =
-      "Lengkapi data dekontaminasi dan minimal 1 alat beserta jumlahnya.";
+  if(!tanggal || !jam || !petugas || !alat || !jumlah || !metode){
+    document.getElementById("pesanDekontaminasi").innerText = "Lengkapi data dekontaminasi terlebih dahulu.";
     return;
   }
 
@@ -5514,12 +5451,12 @@ document.getElementById("riwayatDekontaminasi").onclick = async function(){
       jumlahRiwayatPribadi++;
 
       var kartu = document.createElement("div");
-      kartu.style.background = "linear-gradient(145deg,#ffffff,#fdf6f4)";
-      kartu.style.border = "1px solid #eed8d3";
+      kartu.style.background = "linear-gradient(145deg,#ffffff,#fff7f5)";
+      kartu.style.border = "1px solid #f0d8d3";
       kartu.style.borderRadius = "18px";
       kartu.style.padding = "18px";
       kartu.style.marginBottom = "14px";
-      kartu.style.boxShadow = "0 5px 16px rgba(138,84,75,.06)";
+      kartu.style.boxShadow = "0 5px 16px rgba(168,95,85,.08)";
 
       var judul = document.createElement("strong");
       judul.textContent = "🧼 " + data.metode;
@@ -5531,18 +5468,18 @@ document.getElementById("riwayatDekontaminasi").onclick = async function(){
       var waktu = document.createElement("p");
       waktu.textContent = data.tanggal + " • " + data.jam;
       waktu.style.fontSize = "13px";
-      waktu.style.color = "#9b7b75";
+      waktu.style.color = "#a17d77";
       waktu.style.margin = "4px 0 14px";
 
       var daftar = document.createElement("div");
       (data.items || []).forEach(function(item){
         var baris = document.createElement("div");
         baris.textContent = "• " + item.alat + " — Jumlah: " + item.jumlah;
-        baris.style.background = "#faece8";
+        baris.style.background = "#fde9e5";
         baris.style.padding = "9px 11px";
         baris.style.borderRadius = "10px";
         baris.style.marginBottom = "6px";
-        baris.style.color = "#7a4c44";
+        baris.style.color = "#8a544b";
         baris.style.fontSize = "13px";
         daftar.appendChild(baris);
       });
@@ -5551,7 +5488,7 @@ document.getElementById("riwayatDekontaminasi").onclick = async function(){
       petugas.textContent = "Petugas CSSD: " + data.petugas;
       petugas.style.margin = "12px 0 4px";
       petugas.style.fontSize = "13px";
-      petugas.style.color = "#7c544d";
+      petugas.style.color = "#8a544b";
       petugas.style.fontWeight = "600";
 
       kartu.appendChild(judul);
@@ -5562,12 +5499,12 @@ document.getElementById("riwayatDekontaminasi").onclick = async function(){
       if(data.catatan){
         var catatan = document.createElement("p");
         catatan.textContent = "Catatan: " + data.catatan;
-        catatan.style.background = "#fcf7f6";
+        catatan.style.background = "#fff8f6";
         catatan.style.borderLeft = "3px solid #a85f55";
         catatan.style.padding = "9px 11px";
         catatan.style.borderRadius = "8px";
         catatan.style.fontSize = "12px";
-        catatan.style.color = "#7a615c";
+        catatan.style.color = "#8b6963";
         catatan.style.margin = "10px 0 0";
         kartu.appendChild(catatan);
       }
@@ -5596,17 +5533,14 @@ document.getElementById("simpanPacking").onclick = async function(){
   var indikatorRendah = document.getElementById("indikatorRendahPacking").value;
   var catatan = document.getElementById("catatanPacking").value;
 
-  var items = [];
-  if(alat && jumlah && kondisi && kemasan && indikatorTinggi && indikatorRendah){
-    items.push({
-      alat: alat,
-      jumlah: Number(jumlah),
-      kondisi: kondisi,
-      kemasan: kemasan,
-      indikatorTinggi: indikatorTinggi,
-      indikatorRendah: indikatorRendah
-    });
-  }
+  var items = [{
+    alat: alat,
+    jumlah: Number(jumlah),
+    kondisi: kondisi,
+    kemasan: kemasan,
+    indikatorTinggi: indikatorTinggi,
+    indikatorRendah: indikatorRendah
+  }];
 
   var alatTambahan = document.querySelectorAll("#daftarAlatPackingTambahan > div");
   alatTambahan.forEach(function(item){
@@ -5628,9 +5562,8 @@ document.getElementById("simpanPacking").onclick = async function(){
     }
   });
 
-  if(!tanggal || !waktu || !petugas || items.length === 0){
-    document.getElementById("pesanPacking").innerText =
-      "Lengkapi data packing dan minimal 1 alat beserta jumlah, kondisi, kemasan, serta indikatornya.";
+  if(!tanggal || !waktu || !petugas || !alat || !jumlah || !kondisi || !kemasan || !indikatorTinggi || !indikatorRendah){
+    document.getElementById("pesanPacking").innerText = "Lengkapi data packing terlebih dahulu.";
     return;
   }
 
@@ -5684,39 +5617,40 @@ document.getElementById("riwayatPacking").onclick = async function(){
       jumlahRiwayatPribadi++;
 
       var kartu = document.createElement("div");
-      kartu.style.background = "linear-gradient(145deg,#ffffff,#f4f8fd)";
+      kartu.style.background = "linear-gradient(145deg,#ffffff,#f4f8fc)";
       kartu.style.border = "1px solid #d5e6f7";
       kartu.style.borderRadius = "18px";
       kartu.style.padding = "18px";
       kartu.style.marginBottom = "14px";
-      kartu.style.boxShadow = "0 5px 16px rgba(82,122,160,.07)";
+      kartu.style.boxShadow = "0 5px 16px rgba(82,122,160,.08)";
 
       var judul = document.createElement("strong");
-      judul.textContent = "📋 Packing";
+      judul.textContent = "📋 Packing (" + data.items.length + " item)";
       judul.style.display = "block";
       judul.style.fontSize = "17px";
-      judul.style.color = "#527aa0";
+      judul.style.color = "#456d91";
       judul.style.marginBottom = "6px";
 
       var waktu = document.createElement("p");
       waktu.textContent = data.tanggal + " • " + data.waktu;
       waktu.style.fontSize = "13px";
-      waktu.style.color = "#7f9bb5";
+      waktu.style.color = "#7c99b3";
       waktu.style.margin = "4px 0 14px";
 
       var daftar = document.createElement("div");
       (data.items || []).forEach(function(item){
         var baris = document.createElement("div");
-        baris.textContent = "• " + item.alat + " — Jumlah: " + item.jumlah +
-          " (" + item.kondisi + ", " + item.kemasan +
-          ", Indikator Suhu Tinggi: " + item.indikatorTinggi +
-          ", Indikator Suhu Rendah: " + item.indikatorRendah + ")";
-        baris.style.background = "#e9f2fb";
-        baris.style.padding = "9px 11px";
-        baris.style.borderRadius = "10px";
-        baris.style.marginBottom = "6px";
-        baris.style.color = "#456b8e";
+        baris.innerHTML =
+          "<strong>" + item.alat + "</strong> — Jumlah: " + item.jumlah + "<br>" +
+          "Kondisi: " + item.kondisi + " • Kemasan: " + item.kemasan + "<br>" +
+          "Indikator Suhu Tinggi: " + item.indikatorTinggi + " • Indikator Suhu Rendah: " + item.indikatorRendah;
+        baris.style.background = "#e7f1fb";
+        baris.style.padding = "10px 12px";
+        baris.style.borderRadius = "11px";
+        baris.style.marginBottom = "8px";
+        baris.style.color = "#456d91";
         baris.style.fontSize = "13px";
+        baris.style.lineHeight = "1.6";
         daftar.appendChild(baris);
       });
 
@@ -5724,7 +5658,7 @@ document.getElementById("riwayatPacking").onclick = async function(){
       petugas.textContent = "Petugas CSSD: " + data.petugas;
       petugas.style.margin = "12px 0 4px";
       petugas.style.fontSize = "13px";
-      petugas.style.color = "#4e7496";
+      petugas.style.color = "#456d91";
       petugas.style.fontWeight = "600";
 
       kartu.appendChild(judul);
@@ -5735,12 +5669,12 @@ document.getElementById("riwayatPacking").onclick = async function(){
       if(data.catatan){
         var catatan = document.createElement("p");
         catatan.textContent = "Catatan: " + data.catatan;
-        catatan.style.background = "#f5f9fe";
+        catatan.style.background = "#f5f9ff";
         catatan.style.borderLeft = "3px solid #5f89b0";
         catatan.style.padding = "9px 11px";
         catatan.style.borderRadius = "8px";
         catatan.style.fontSize = "12px";
-        catatan.style.color = "#617e99";
+        catatan.style.color = "#5c7b96";
         catatan.style.margin = "10px 0 0";
         kartu.appendChild(catatan);
       }
@@ -5768,11 +5702,7 @@ document.getElementById("simpanSterilisasi").onclick = async function(){
   var validasiIndikatorKimia = document.getElementById("validasiIndikatorKimia").value;
   var catatan = document.getElementById("catatanSterilisasi").value;
 
-  var items = [];
-  if(alat && jumlah){
-    items.push({ alat: alat, jumlah: Number(jumlah) });
-  }
-
+  var items = [{ alat: alat, jumlah: Number(jumlah) }];
   var alatTambahan = document.querySelectorAll("#daftarAlatSterilisasiTambahan > div");
   alatTambahan.forEach(function(item){
     var nama = item.querySelector(".alatSterilisasiTambahan").value;
@@ -5782,9 +5712,8 @@ document.getElementById("simpanSterilisasi").onclick = async function(){
     }
   });
 
-  if(!tanggal || !jam || !petugas || !metode || !validasiPrintout || !validasiIndikatorKimia || items.length === 0){
-    document.getElementById("pesanSterilisasi").innerText =
-      "Lengkapi data sterilisasi, validasi, dan minimal 1 alat beserta jumlahnya.";
+  if(!tanggal || !jam || !petugas || !alat || !jumlah || !metode || !validasiPrintout || !validasiIndikatorKimia){
+    document.getElementById("pesanSterilisasi").innerText = "Lengkapi data sterilisasi terlebih dahulu.";
     return;
   }
 
@@ -5840,56 +5769,57 @@ document.getElementById("riwayatSterilisasi").onclick = async function(){
       jumlahRiwayatPribadi++;
 
       var kartu = document.createElement("div");
-      kartu.style.background = "linear-gradient(145deg,#ffffff,#f4f8fd)";
+      kartu.style.background = "linear-gradient(145deg,#ffffff,#f4f8fc)";
       kartu.style.border = "1px solid #d5e6f7";
       kartu.style.borderRadius = "18px";
       kartu.style.padding = "18px";
       kartu.style.marginBottom = "14px";
-      kartu.style.boxShadow = "0 5px 16px rgba(82,122,160,.07)";
+      kartu.style.boxShadow = "0 5px 16px rgba(82,122,160,.08)";
 
       var judul = document.createElement("strong");
-      judul.textContent = "♨️ " + data.metode;
+      judul.textContent = "♨️ Sterilisasi (" + data.metode + ")";
       judul.style.display = "block";
       judul.style.fontSize = "17px";
-      judul.style.color = "#527aa0";
+      judul.style.color = "#456d91";
       judul.style.marginBottom = "6px";
 
       var waktu = document.createElement("p");
       waktu.textContent = data.tanggal + " • " + data.jam;
       waktu.style.fontSize = "13px";
-      waktu.style.color = "#7f9bb5";
+      waktu.style.color = "#7c99b3";
       waktu.style.margin = "4px 0 14px";
 
       var daftar = document.createElement("div");
       (data.items || []).forEach(function(item){
         var baris = document.createElement("div");
         baris.textContent = "• " + item.alat + " — Jumlah: " + item.jumlah;
-        baris.style.background = "#e9f2fb";
+        baris.style.background = "#e7f1fb";
         baris.style.padding = "9px 11px";
         baris.style.borderRadius = "10px";
         baris.style.marginBottom = "6px";
-        baris.style.color = "#456b8e";
+        baris.style.color = "#456d91";
         baris.style.fontSize = "13px";
         daftar.appendChild(baris);
       });
 
-      var validasi = document.createElement("p");
-      validasi.textContent = "Validasi — Printout / Parameter Mesin: " + data.validasiPrintout +
-        " • Indikator Kimia: " + data.validasiIndikatorKimia;
-      validasi.style.display = "inline-block";
-      validasi.style.margin = "8px 0 4px";
-      validasi.style.padding = "6px 10px";
-      validasi.style.background = "#e3effa";
-      validasi.style.color = "#456b8e";
+      var validasi = document.createElement("div");
+      validasi.innerHTML =
+        "<strong>Printout / Parameter Mesin:</strong> " + data.validasiPrintout + "<br>" +
+        "<strong>Indikator Kimia:</strong> " + data.validasiIndikatorKimia;
+      validasi.style.background = "#eef5fc";
+      validasi.style.border = "1px solid #d5e6f7";
+      validasi.style.padding = "10px 12px";
       validasi.style.borderRadius = "10px";
-      validasi.style.fontSize = "12px";
-      validasi.style.fontWeight = "700";
+      validasi.style.color = "#456d91";
+      validasi.style.fontSize = "13px";
+      validasi.style.marginTop = "10px";
+      validasi.style.lineHeight = "1.6";
 
       var petugas = document.createElement("p");
       petugas.textContent = "Petugas CSSD: " + data.petugas;
       petugas.style.margin = "12px 0 4px";
       petugas.style.fontSize = "13px";
-      petugas.style.color = "#4e7496";
+      petugas.style.color = "#456d91";
       petugas.style.fontWeight = "600";
 
       kartu.appendChild(judul);
@@ -5901,12 +5831,12 @@ document.getElementById("riwayatSterilisasi").onclick = async function(){
       if(data.catatan){
         var catatan = document.createElement("p");
         catatan.textContent = "Catatan: " + data.catatan;
-        catatan.style.background = "#f5f9fe";
+        catatan.style.background = "#f5f9ff";
         catatan.style.borderLeft = "3px solid #5f89b0";
         catatan.style.padding = "9px 11px";
         catatan.style.borderRadius = "8px";
         catatan.style.fontSize = "12px";
-        catatan.style.color = "#617e99";
+        catatan.style.color = "#5c7b96";
         catatan.style.margin = "10px 0 0";
         kartu.appendChild(catatan);
       }
@@ -5922,109 +5852,6 @@ document.getElementById("riwayatSterilisasi").onclick = async function(){
     hasilRiwayat.innerHTML = "Riwayat sterilisasi gagal dimuat.";
   }
 };
-
-document.getElementById("lihatRiwayat").onclick = async function(){
-  var riwayat = document.getElementById("riwayatAktivitas");
-
-  if(!riwayat){
-    riwayat = document.createElement("div");
-    riwayat.id = "riwayatAktivitas";
-    riwayat.style.marginTop = "20px";
-    document.getElementById("isiAktivitas").appendChild(riwayat);
-  }
-
-  riwayat.innerHTML = "Memuat riwayat aktivitas...";
-
-  try{
-    var q = query(collection(firebaseDb, "aktivitas"), orderBy("dibuatPada", "desc"));
-    var dataAktivitas = await getDocs(q);
-    riwayat.innerHTML = "";
-    var jumlahRiwayatPribadi = 0;
-
-    dataAktivitas.forEach(function(dokumen){
-      var data = dokumen.data();
-      if(data.petugas !== penggunaAktif.nama) return;
-      jumlahRiwayatPribadi++;
-
-      var kartu = document.createElement("div");
-      kartu.style.background = "linear-gradient(145deg,#ffffff,#f4faf7)";
-      kartu.style.border = "1px solid #d9eae3";
-      kartu.style.borderRadius = "18px";
-      kartu.style.padding = "18px";
-      kartu.style.marginBottom = "14px";
-      kartu.style.boxShadow = "0 5px 16px rgba(55,95,85,.06)";
-
-      var judul = document.createElement("strong");
-      judul.textContent = "🔄 " + data.jenis;
-      judul.style.display = "block";
-      judul.style.fontSize = "17px";
-      judul.style.color = "#2f5d52";
-      judul.style.marginBottom = "6px";
-
-      var waktu = document.createElement("p");
-      waktu.textContent = data.tanggal + " • " + data.jam;
-      waktu.style.fontSize = "13px";
-      waktu.style.color = "#7b918b";
-      waktu.style.margin = "4px 0 14px";
-
-      var infoAlat = document.createElement("div");
-      infoAlat.textContent = "• " + data.alat + " — Jumlah: " + data.jumlah + " (" + data.kondisi + ")";
-      infoAlat.style.background = "#e9f4ef";
-      infoAlat.style.padding = "9px 11px";
-      infoAlat.style.borderRadius = "10px";
-      infoAlat.style.color = "#325c51";
-      infoAlat.style.fontSize = "13px";
-      infoAlat.style.marginBottom = "10px";
-
-      var status = document.createElement("p");
-      status.textContent = "Status: " + data.status;
-      status.style.display = "inline-block";
-      status.style.margin = "4px 0";
-      status.style.padding = "6px 10px";
-      status.style.background = "#e1f1eb";
-      status.style.color = "#35685c";
-      status.style.borderRadius = "999px";
-      status.style.fontSize = "12px";
-      status.style.fontWeight = "700";
-
-      var petugasUnit = document.createElement("p");
-      petugasUnit.textContent = "Petugas: " + data.petugas + " • Unit: " + data.unit;
-      petugasUnit.style.margin = "12px 0 4px";
-      petugasUnit.style.fontSize = "13px";
-      petugasUnit.style.color = "#45685f";
-      petugasUnit.style.fontWeight = "600";
-
-      kartu.appendChild(judul);
-      kartu.appendChild(waktu);
-      kartu.appendChild(infoAlat);
-      kartu.appendChild(status);
-      kartu.appendChild(petugasUnit);
-
-      if(data.catatan){
-        var catatan = document.createElement("p");
-        catatan.textContent = "Catatan: " + data.catatan;
-        catatan.style.background = "#f6faf8";
-        catatan.style.borderLeft = "3px solid #79ad9d";
-        catatan.style.padding = "9px 11px";
-        catatan.style.borderRadius = "8px";
-        catatan.style.fontSize = "12px";
-        catatan.style.color = "#5a736c";
-        catatan.style.margin = "10px 0 0";
-        kartu.appendChild(catatan);
-      }
-
-      riwayat.appendChild(kartu);
-    });
-
-    if(jumlahRiwayatPribadi === 0){
-      riwayat.innerHTML = "Belum ada riwayat aktivitas Anda.";
-    }
-  }catch(error){
-    console.log(error);
-    riwayat.innerHTML = "Riwayat aktivitas gagal dimuat.";
-  }
-};
 </script>
-
 </body>
 </html>
