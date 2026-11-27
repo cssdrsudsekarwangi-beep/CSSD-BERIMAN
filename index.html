@@ -537,6 +537,77 @@ input{
   color:#ffffff !important;
   border:1px solid #a96c31 !important;
 }
+/* ===== MONITORING REUSE ALAT MEDIS ===== */
+#isiReuse{
+  background:#fffaf4;
+  border:1px solid #f2dfc4;
+  border-radius:20px;
+  padding:20px;
+}
+
+#isiReuse > h3{
+  background:#fff0dc;
+  color:#9a6736;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:8px;
+  text-align:center;
+}
+
+#isiReuse > p{
+  text-align:center;
+  color:#8b7562;
+}
+
+#isiReuse input,
+#isiReuse select,
+#isiReuse textarea{
+  width:100%;
+  background:#ffffff;
+  border:1px solid #f0dfca;
+  border-radius:12px;
+  padding:13px;
+  color:#65482f;
+  font-size:15px;
+}
+
+#isiReuse input:focus,
+#isiReuse select:focus,
+#isiReuse textarea:focus{
+  outline:none;
+  border-color:#dda86d;
+  box-shadow:0 0 0 3px rgba(221,168,109,.15);
+}
+
+#tambahAlatReuse{
+  background:#d99552 !important;
+  color:#ffffff !important;
+}
+
+#simpanReuse{
+  background:#d99552 !important;
+  color:#ffffff !important;
+}
+
+#riwayatReuse{
+  width:100%;
+  margin-top:12px;
+  text-align:center;
+  background:#d99552 !important;
+  color:#ffffff !important;
+}
+
+#tutupReuse{
+  display:block;
+  width:100%;
+  margin-top:12px;
+  padding:13px 16px;
+  text-align:center;
+  border-radius:14px;
+  background:#b97838 !important;
+  color:#ffffff !important;
+  border:1px solid #a96c31 !important;
+}
 
 #isiBeranda{
   background:#f7fbf9;
@@ -2863,6 +2934,12 @@ document.getElementById("tutupSuhu").onclick=function(){
   document.getElementById("isiSuhu").style.display="none";
   document.getElementById("homeModern").style.display="block";
   document.getElementById("logout").style.display="block";
+  document.getElementById("tutupSuhu").onclick=function(){
+  document.getElementById("isiSuhu").style.display="none";
+  document.getElementById("homeModern").style.display="block";
+  document.getElementById("logout").style.display="block";
+};
+
 document.getElementById("homeReuse").onclick=function(){
   document.getElementById("homeModern").style.display="none";
   document.getElementById("isiReuse").style.display="block";
