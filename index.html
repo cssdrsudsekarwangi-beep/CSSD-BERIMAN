@@ -182,25 +182,10 @@ input{
   margin-top:10px;
 }
 
-.panel > .primary:nth-of-type(2){
-  background:#eaf7f6;
-  color:#36736f;
-}
-
-.panel > .primary:nth-of-type(3){
-  background:#eef5fb;
-  color:#4c718e;
-}
-
-.panel > .primary:nth-of-type(4){
-  background:#edf7f2;
-  color:#487565;
-}
-
-.panel > .primary:nth-of-type(5){
-  background:#f1f5f7;
-  color:#5d737c;
-}
+.panel > .primary:nth-of-type(2){ background:#eaf7f6; color:#36736f; }
+.panel > .primary:nth-of-type(3){ background:#eef5fb; color:#4c718e; }
+.panel > .primary:nth-of-type(4){ background:#edf7f2; color:#487565; }
+.panel > .primary:nth-of-type(5){ background:#f1f5f7; color:#5d737c; }
 
 /* Form Aktivitas */
 #isiAktivitas{
@@ -271,9 +256,7 @@ input{
   padding:20px;
 }
 #isiDistribusi > h3,
-#isiDistribusi > p{
-  text-align:center;
-}
+#isiDistribusi > p{ text-align:center; }
 #isiDistribusi > h3{
   background:#e5f3ee;
   color:#3f7166;
@@ -302,9 +285,7 @@ input{
   padding:20px;
 }
 #isiPenerimaan > h3,
-#isiPenerimaan > p{
-  text-align:center;
-}
+#isiPenerimaan > p{ text-align:center; }
 #isiPenerimaan > h3{
   background:#fde9e5;
   color:#8a544b;
@@ -344,9 +325,7 @@ input{
   padding:20px;
 }
 #isiDekontaminasi > h3,
-#isiDekontaminasi > p{
-  text-align:center;
-}
+#isiDekontaminasi > p{ text-align:center; }
 #isiDekontaminasi > h3{
   background:#fde9e5;
   color:#8a544b;
@@ -385,9 +364,7 @@ input{
   padding:20px;
 }
 #isiPacking > h3,
-#isiPacking > p{
-  text-align:center;
-}
+#isiPacking > p{ text-align:center; }
 #isiPacking > h3{
   background:#e7f1fb;
   color:#527aa0;
@@ -433,9 +410,7 @@ input{
   margin-bottom:8px;
   text-align:center;
 }
-#isiSterilisasi > p{
-  text-align:center;
-}
+#isiSterilisasi > p{ text-align:center; }
 #tambahAlatSterilisasi,
 #simpanSterilisasi{
   background:#5f89b0 !important;
@@ -549,9 +524,7 @@ input{
   color:#8b7562;
 }
 
-#isiMutu label{
-  color:#65482f;
-}
+#isiMutu label{ color:#65482f; }
 
 #isiMutu input,
 #isiMutu select,
@@ -590,6 +563,160 @@ input{
   display:block;
   width:100%;
   margin-top:12px;
+  padding:13px 16px;
+  text-align:center;
+  border-radius:14px;
+  background:#b97838 !important;
+  color:#ffffff !important;
+  border:1px solid #a96c31 !important;
+}
+
+/* ===== MASTER DATA ALAT & SET - OYEN MODERN ===== */
+#isiMaster{
+  background:#fffaf4;
+  border:1px solid #f2dfc4;
+  border-radius:20px;
+  padding:20px;
+}
+
+#isiMaster > h3{
+  background:#fff0dc;
+  color:#9a6736;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:8px;
+  text-align:center;
+}
+
+#isiMaster > p{
+  text-align:center;
+  color:#8b7562;
+  margin-top:0;
+}
+
+#isiMaster label{
+  color:#65482f;
+}
+
+#isiMaster input,
+#isiMaster select,
+#isiMaster textarea{
+  width:100%;
+  background:#ffffff;
+  border:1px solid #f0dfca;
+  border-radius:12px;
+  padding:13px;
+  color:#65482f;
+  font-size:15px;
+}
+
+#isiMaster input:focus,
+#isiMaster select:focus,
+#isiMaster textarea:focus{
+  outline:none;
+  border-color:#dda86d;
+  box-shadow:0 0 0 3px rgba(221,168,109,.15);
+}
+
+.master-filter-box{
+  background:#fff5e8;
+  border:1px solid #f2dfc4;
+  border-radius:16px;
+  padding:14px;
+  margin-top:14px;
+}
+
+.master-group-title{
+  background:#fff0dc;
+  color:#9a6736;
+  border:1px solid #f2dfc4;
+  border-radius:12px;
+  padding:10px 14px;
+  font-size:14px;
+  font-weight:700;
+  margin:18px 0 10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.master-card{
+  background:linear-gradient(145deg,#ffffff,#fff7ed);
+  border:1px solid #f2dfc4;
+  border-radius:16px;
+  padding:15px;
+  margin-bottom:12px;
+  box-shadow:0 4px 14px rgba(170,110,55,.07);
+}
+
+.master-card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:6px;
+}
+
+.master-card-title{
+  font-size:16px;
+  font-weight:700;
+  color:#805a37;
+}
+
+.master-badge{
+  background:#fff0dc;
+  color:#9a6736;
+  border:1px solid #f2dfc4;
+  border-radius:999px;
+  padding:4px 10px;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.master-komp-list{
+  background:#fff3e4;
+  border:1px solid #f2dfc4;
+  border-radius:11px;
+  padding:10px 12px;
+  margin-top:10px;
+  color:#65482f;
+  font-size:13px;
+}
+
+.master-komp-row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:4px 0;
+  border-bottom:1px dashed #edd3b2;
+}
+
+.master-komp-row:last-child{
+  border-bottom:0;
+}
+
+.master-catatan{
+  margin-top:10px;
+  background:#fffaf4;
+  border-left:3px solid #dda86d;
+  padding:8px 11px;
+  border-radius:8px;
+  font-size:12px;
+  color:#80664e;
+}
+
+#toggleFormMaster,
+#tambahKomponenMaster,
+#simpanMaster{
+  background:#d99552 !important;
+  color:#ffffff !important;
+}
+
+#tutupMaster{
+  display:block;
+  width:100%;
+  margin-top:14px;
   padding:13px 16px;
   text-align:center;
   border-radius:14px;
@@ -1124,7 +1251,7 @@ hr{
         <button class="home-card card-master" id="homeMaster" type="button">
           <span class="home-icon">🗂️</span>
           <strong>Master Data Alat &amp; Set</strong>
-          <small>Data alat dan set CSSD</small>
+          <small>Informasi isi set &amp; standar alat CSSD</small>
         </button>
 
         <button class="home-card card-laporan" id="homeLaporan" type="button">
@@ -1777,23 +1904,18 @@ hr{
       <h3>⚠️ Mutu &amp; Tindak Lanjut</h3>
       <p>Pencatatan temuan mutu, akar masalah &amp; tindak lanjut CSSD.</p>
 
-      <!-- 1. Tanggal -->
       <label for="tanggalMutu">1. Tanggal</label>
       <input id="tanggalMutu" type="date">
 
-      <!-- 2. Jam -->
       <label for="jamMutu">2. Jam</label>
       <input id="jamMutu" type="time">
 
-      <!-- 3. Petugas Pelapor -->
       <label for="petugasMutu">3. Petugas Pelapor</label>
       <input id="petugasMutu" type="text" readonly>
 
-      <!-- 4. Jenis Temuan Mutu -->
       <label for="jenisTemuanMutu">4. Jenis Temuan Mutu</label>
       <select id="jenisTemuanMutu">
         <option value="">Pilih jenis temuan mutu</option>
-
         <optgroup label="A. Point of Use &amp; Penerimaan Alat Kotor">
           <option>Keterlambatan pre-cleaning / kotoran organik mengering pada instrumen</option>
           <option>Instrumen tajam / benda tajam tercampur atau tidak pada wadah khusus</option>
@@ -1802,7 +1924,6 @@ hr{
           <option>Ketidaksesuaian daftar/jumlah set instrumen saat serah terima atau instrumen hilang</option>
           <option>Instrumen pinjaman (loaner) terlambat diterima (&lt;24 jam) atau belum diproses ulang</option>
         </optgroup>
-
         <optgroup label="B. Pembersihan &amp; Disinfeksi">
           <option>Sisa darah/jaringan/protein/debris atau uji residu protein/ATP tidak memenuhi syarat</option>
           <option>Lumen/celah tidak bersih atau pengeringan instrumen tidak optimal</option>
@@ -1811,7 +1932,6 @@ hr{
           <option>Gangguan/kegagalan washer-disinfector atau ultrasonic cleaner (termasuk foil test)</option>
           <option>Kualitas air tidak sesuai standar (TDS tinggi, korosi, atau kerak)</option>
         </optgroup>
-
         <optgroup label="C. Inspeksi, Pelumasan, Perakitan &amp; Pengemasan">
           <option>Instrumen kotor, berkarat, retak, tumpul, atau rusak mekanis lolos ke tahap lanjut</option>
           <option>Pelumasan tidak dilakukan, tidak sesuai IFU, atau pelumas berlebihan</option>
@@ -1819,7 +1939,6 @@ hr{
           <option>Kemasan robek/berlubang, segel pouch tidak rapat, overpacking, atau bahan tidak sesuai</option>
           <option>Indikator kimia internal tidak terpasang atau label/lot/kedaluwarsa tidak lengkap</option>
         </optgroup>
-
         <optgroup label="D. Sterilisasi &amp; Indikator">
           <option>Indikator Biologi (BI) positif (gagal steril)</option>
           <option>Indikator Kimia (CI) eksternal atau internal tidak berubah sesuai target</option>
@@ -1828,19 +1947,16 @@ hr{
           <option>Wet pack (kemasan basah) setelah sterilisasi atau penataan muatan / overloading</option>
           <option>Unloading terlalu cepat sebelum pendinginan optimal atau tanpa verifikasi indikator</option>
         </optgroup>
-
         <optgroup label="E. Penyimpanan Steril &amp; Distribusi">
           <option>Suhu atau kelembapan ruang penyimpanan steril menyimpang dari standar</option>
           <option>Kemasan steril jatuh, basah, sobek, segel terbuka, tertumpuk, atau kedaluwarsa</option>
           <option>Rotasi stok tidak sesuai FIFO/FEFO atau akses zona steril tidak terkendali</option>
           <option>Kemasan rusak saat distribusi, salah kirim unit, terlambat, atau jalur campur alat kotor</option>
         </optgroup>
-
         <optgroup label="F. Pengelolaan Reuse SUD &amp; Resterilisasi">
           <option>Reuse SUD pada alat terlarang/tidak dianjurkan atau tanpa kajian risiko/dokumentasi</option>
           <option>SUD kehilangan integritas steril tidak dikarantina atau label/traceability resterilisasi kurang</option>
         </optgroup>
-
         <optgroup label="G. Lingkungan, Sarana, Utilitas &amp; K3 / Insiden">
           <option>Penyimpangan tata udara/tekanan zona, gangguan utilitas, atau terlambat kalibrasi</option>
           <option>Ketidakpatuhan APD, hand hygiene, atau pemisahan pakaian/alur antar zona</option>
@@ -1849,7 +1965,6 @@ hr{
         </optgroup>
       </select>
 
-      <!-- 5. Akar Masalah -->
       <label for="akarMasalahMutu">5. Akar Masalah</label>
       <select id="akarMasalahMutu">
         <option value="">Pilih akar masalah</option>
@@ -1861,7 +1976,6 @@ hr{
         <option>Lainnya</option>
       </select>
 
-      <!-- 6. Tindakan Masalah -->
       <label for="tindakanMasalahMutu">6. Tindakan Masalah</label>
       <select id="tindakanMasalahMutu">
         <option value="">Pilih tindakan masalah</option>
@@ -1873,7 +1987,6 @@ hr{
         <option>Lainnya</option>
       </select>
 
-      <!-- 7. Rencana Tindakan -->
       <label for="rencanaTindakanMutu">7. Rencana Tindakan</label>
       <select id="rencanaTindakanMutu">
         <option value="">Pilih rencana tindakan</option>
@@ -1885,7 +1998,6 @@ hr{
         <option>Lainnya</option>
       </select>
 
-      <!-- 8. Catatan -->
       <label for="catatanMutu">8. Catatan</label>
       <textarea id="catatanMutu" rows="4" placeholder="Masukkan catatan tambahan"></textarea>
 
@@ -1896,6 +2008,73 @@ hr{
       <div id="hasilRiwayatMutu" style="display:none;margin-top:15px"></div>
 
       <button class="logout" id="tutupMutu" type="button">Kembali ke menu</button>
+    </div>
+
+    <div id="isiMaster" style="display:none;margin-top:25px">
+      <h3>🗂️ Master Data Alat &amp; Set</h3>
+      <p>Informasi standar alat, linen, kassa &amp; rincian isi set CSSD.</p>
+
+      <div class="master-filter-box">
+        <label for="cariMaster" style="margin-top:0">Cari Alat / Set / Isi Komponen</label>
+        <input id="cariMaster" type="text" placeholder="Ketik nama set, alat, kassa, atau pinset...">
+
+        <label for="filterKategoriMaster">Kelompok / Kategori</label>
+        <select id="filterKategoriMaster">
+          <option value="">Semua Kelompok</option>
+          <option>KASSA</option>
+          <option>LINEN</option>
+          <option>SET INSTRUMEN</option>
+          <option>SET INSTRUMEN LAINNYA</option>
+          <option>BARANG LAINNYA</option>
+          <option>POLI RAWAT JALAN SATUAN</option>
+          <option>ALAT LAINNYA</option>
+        </select>
+      </div>
+
+      <button class="primary" id="toggleFormMaster" type="button">+ Tambah Informasi Alat / Set</button>
+
+      <div id="formTambahMaster" style="display:none;margin-top:14px;background:#ffffff;border:1px solid #f2dfc4;border-radius:16px;padding:16px">
+        <label for="kategoriMasterBaru" style="margin-top:0">Kategori / Kelompok</label>
+        <select id="kategoriMasterBaru">
+          <option value="">Pilih kategori / kelompok</option>
+          <option>KASSA</option>
+          <option>LINEN</option>
+          <option>SET INSTRUMEN</option>
+          <option>SET INSTRUMEN LAINNYA</option>
+          <option>BARANG LAINNYA</option>
+          <option>POLI RAWAT JALAN SATUAN</option>
+          <option>ALAT LAINNYA</option>
+        </select>
+
+        <label for="namaMasterBaru">Nama Alat / Set</label>
+        <input id="namaMasterBaru" type="text" placeholder="Contoh: SET GV atau LINEN 1 SET">
+
+        <label for="satuanMasterBaru">Satuan</label>
+        <select id="satuanMasterBaru">
+          <option value="Set">Set</option>
+          <option value="Pcs / Lembar">Pcs / Lembar</option>
+          <option value="Pack / Bungkus">Pack / Bungkus</option>
+        </select>
+
+        <label>Rincian Isi / Komponen (Opsional)</label>
+        <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:8px">
+          <input id="kompNamaAwal" type="text" placeholder="Nama item / instrumen">
+          <input id="kompJumlahAwal" type="text" placeholder="Jumlah (cth: 1 pcs / 5 lembar)">
+        </div>
+
+        <div id="daftarKomponenMasterTambahan"></div>
+        <button class="primary" id="tambahKomponenMaster" type="button" style="margin-top:10px">+ Tambah Baris Isi</button>
+
+        <label for="catatanMasterBaru">Catatan Informasi</label>
+        <textarea id="catatanMasterBaru" rows="3" placeholder="Catatan standar atau keterangan tambahan"></textarea>
+
+        <button class="primary" id="simpanMaster" type="button">Simpan ke Master Data</button>
+        <div id="pesanMaster" style="margin-top:12px;color:#b97838;font-weight:bold"></div>
+      </div>
+
+      <div id="hasilDaftarMaster" style="margin-top:14px"></div>
+
+      <button class="logout" id="tutupMaster" type="button">Kembali ke menu</button>
     </div>
 
     <div id="isiReuse" style="display:none;margin-top:25px">
@@ -2091,9 +2270,891 @@ var ruangReuse = document.getElementById("ruangReuse");
 ruangReuse.innerHTML = unitAsal.innerHTML;
 ruangReuse.options[0].text = "Pilih unit / ruangan";
 
-var alatReuseSelect = document.getElementById("alatReuse");
-var daftarAlatReuseTambahan = document.getElementById("daftarAlatReuseTambahan");
+/* ===== DATA INFORMASI MASTER DATA ALAT & SET ===== */
+var MASTER_INFO_BAWAAN = [
+  {
+    id: "lap-linen-1set",
+    kategori: "LINEN",
+    nama: "Linen 1 Set (Standar Lapangan)",
+    satuan: "Set",
+    catatan: "Acuan standar isi 1 set linen di lapangan.",
+    komponen: [
+      { nama: "Duk samping", jumlah: "5 pcs" },
+      { nama: "Duk Bolong Besar", jumlah: "1 pcs" },
+      { nama: "Jas Oprasi", jumlah: "3 pcs" }
+    ]
+  },
+  {
+    id: "lap-kassa-5cm",
+    kategori: "KASSA",
+    nama: "Kassa 5 cm",
+    satuan: "Pcs / Lembar",
+    catatan: "1 pcs berisi 10 lembar kassa.",
+    komponen: [
+      { nama: "Isi per 1 pcs", jumlah: "10 lembar" }
+    ]
+  },
+  {
+    id: "lap-kassa-7-5cm",
+    kategori: "KASSA",
+    nama: "Kassa 7,5 cm",
+    satuan: "Pcs / Lembar",
+    catatan: "1 pcs berisi 10 lembar kassa.",
+    komponen: [
+      { nama: "Isi per 1 pcs", jumlah: "10 lembar" }
+    ]
+  },
+  {
+    id: "set-gv",
+    kategori: "SET INSTRUMEN LAINNYA",
+    nama: "SET GV",
+    satuan: "Set",
+    catatan: "Pemakaian lapangan: memakai Kassa 5 cm : 1 pcs (10 lembar). Rincian instrumen dari daftar amprahan.",
+    komponen: [
+      { nama: "Bak Instrumen Sedang + Tutup", jumlah: "1" },
+      { nama: "Pinset Anatomis", jumlah: "1" },
+      { nama: "Pinset Sirurgis", jumlah: "1" },
+      { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Kom", jumlah: "1" },
+      { nama: "Kassa 5 cm (catatan lapangan)", jumlah: "1 pcs" }
+    ]
+  },
+  {
+    id: "set-partus",
+    kategori: "SET INSTRUMEN LAINNYA",
+    nama: "SET PARTUS",
+    satuan: "Set",
+    catatan: "Pemakaian lapangan: memakai Kassa 5 cm : 5 lembar (0,5 pcs). Rincian instrumen dari daftar amprahan.",
+    komponen: [
+      { nama: "Bak Instrumen Sedang + Tutup", jumlah: "1" },
+      { nama: "Pinset anatomis", jumlah: "1" },
+      { nama: "Pinset cirurgis", jumlah: "1" },
+      { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Gunting tali pusat", jumlah: "1" },
+      { nama: "Gunting episiotomi", jumlah: "1" },
+      { nama: "Klem", jumlah: "1" },
+      { nama: "1/2 Koher", jumlah: "1" },
+      { nama: "Koher", jumlah: "1" },
+      { nama: "Needle holder", jumlah: "1" },
+      { nama: "Kassa 5 cm (catatan lapangan)", jumlah: "5 lembar" }
+    ]
+  },
+  {
+    id: "set-kuret",
+    kategori: "SET INSTRUMEN LAINNYA",
+    nama: "SET KURET",
+    satuan: "Set",
+    catatan: "Pemakaian lapangan: memakai Kassa 5 cm : 5 lembar (0,5 pcs). Rincian instrumen dari daftar amprahan.",
+    komponen: [
+      { nama: "Sendok kuret", jumlah: "6" },
+      { nama: "Sim", jumlah: "2" },
+      { nama: "Sonde", jumlah: "1" },
+      { nama: "Klem ovum (Foester)", jumlah: "1" },
+      { nama: "Tenakulum", jumlah: "1" },
+      { nama: "Tang abortus", jumlah: "1" },
+      { nama: "Kassa 5 cm (catatan lapangan)", jumlah: "5 lembar" }
+    ]
+  },
+  {
+    id: "set-cvc",
+    kategori: "SET INSTRUMEN LAINNYA",
+    nama: "SET CVC",
+    satuan: "Set",
+    catatan: "Pemakaian lapangan: memakai Kassa 5 cm : 1 pcs (10 lembar). Rincian instrumen dari daftar amprahan.",
+    komponen: [
+      { nama: "Bak Intrumen Besar + Tutup", jumlah: "1" },
+      { nama: "Scalpel", jumlah: "1" },
+      { nama: "Pinset Anatomis", jumlah: "1" },
+      { nama: "Pinset Sirurgis", jumlah: "1" },
+      { nama: "Needle Holder", jumlah: "1" },
+      { nama: "Gunting Jaringan", jumlah: "1" },
+      { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Klem Lurus", jumlah: "2" },
+      { nama: "Klem Bengkok", jumlah: "2" },
+      { nama: "Kocher", jumlah: "1" },
+      { nama: "Bowel", jumlah: "1" },
+      { nama: "Duklamp", jumlah: "2" },
+      { nama: "Kassa 5 cm (catatan lapangan)", jumlah: "1 pcs" }
+    ]
+  },
+  {
+    id: "set-hecting",
+    kategori: "SET INSTRUMEN LAINNYA",
+    nama: "SET HECTING",
+    satuan: "Set",
+    catatan: "Sumber: Daftar amprahan instrumen ruangan.",
+    komponen: [
+      { nama: "Bak Instrumen Sedang + Tutup", jumlah: "1" },
+      { nama: "Pinset Anatomis", jumlah: "1" },
+      { nama: "Pinset Sirurgis", jumlah: "1" },
+      { nama: "Needle Holder", jumlah: "1" },
+      { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Klem lurus", jumlah: "2" },
+      { nama: "Klem Bengkok", jumlah: "2" },
+      { nama: "Scalpel", jumlah: "1" }
+    ]
+  },
+  {
+    id: "set-wsd-ruangan",
+    kategori: "SET INSTRUMEN LAINNYA",
+    nama: "SET WSD (RUANGAN)",
+    satuan: "Set",
+    catatan: "Sumber: Daftar amprahan instrumen ruangan.",
+    komponen: [
+      { nama: "Bak Instrumen besar + Tutup", jumlah: "1" },
+      { nama: "Scalpel", jumlah: "1" },
+      { nama: "Pinset Anatomis", jumlah: "1" },
+      { nama: "Pinset Sirurgis", jumlah: "1" },
+      { nama: "Needle Holder", jumlah: "1" },
+      { nama: "Gunting Jaringan", jumlah: "1" },
+      { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Klem Lurus", jumlah: "3" },
+      { nama: "Klem Bengkok", jumlah: "2" },
+      { nama: "Kocher", jumlah: "1" },
+      { nama: "Spongholding(Pencuci)", jumlah: "1" },
+      { nama: "Kom", jumlah: "1" }
+    ]
+  },
+  {
+    id: "set-kardio",
+    kategori: "SET INSTRUMEN LAINNYA",
+    nama: "SET KARDIO",
+    satuan: "Set",
+    catatan: "Sumber: Daftar amprahan instrumen ruangan.",
+    komponen: [
+      { nama: "Bak Instrumen Sedang + Tutup", jumlah: "1" },
+      { nama: "Scalpel", jumlah: "1" },
+      { nama: "Pinset Anatomis", jumlah: "1" },
+      { nama: "Pinset Sirurgis", jumlah: "1" },
+      { nama: "Needle Holder", jumlah: "1" },
+      { nama: "Gunting Jaringan", jumlah: "1" },
+      { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Klem Lurus", jumlah: "2" },
+      { nama: "Klem Bengkok", jumlah: "2" },
+      { nama: "Kom", jumlah: "2" }
+    ]
+  },
+  {
+    id: "set-laminaria",
+    kategori: "SET INSTRUMEN LAINNYA",
+    nama: "SET LAMINARIA",
+    satuan: "Set",
+    catatan: "Sumber: Daftar amprahan instrumen ruangan.",
+    komponen: [
+      { nama: "Sonde", jumlah: "1" },
+      { nama: "Klem Ovum (Foester)", jumlah: "1" },
+      { nama: "Tenakulum", jumlah: "1" },
+      { nama: "Cocor bebek", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-bedah-mikro",
+    kategori: "SET INSTRUMEN",
+    nama: "SET BEDAH MIKRO",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (23 jenis instrumen, total 34).",
+    komponen: [
+      { nama: "Scalpel Handle no.3", jumlah: "1" }, { nama: "Pinset Anatomis Mikro", jumlah: "1" },
+      { nama: "Pinset Sirurgis Mikro", jumlah: "1" }, { nama: "Pinset Anatomis Adson Mikro", jumlah: "1" },
+      { nama: "Pinset Sirurgis Adson Mikro", jumlah: "1" }, { nama: "Langen Back Minor", jumlah: "2" },
+      { nama: "Needle Holder Minor", jumlah: "2" }, { nama: "Gunting Jaringan Mikro", jumlah: "1" },
+      { nama: "Gunting Jaringan Iris Mikro", jumlah: "1" }, { nama: "Gunting Benang Mikro", jumlah: "1" },
+      { nama: "Sent Miller", jumlah: "2" }, { nama: "Pean Haemostatik Curved Minor", jumlah: "5" },
+      { nama: "Pean Haemostatik Straight Minor", jumlah: "2" }, { nama: "Kanul Suction Minor", jumlah: "1" },
+      { nama: "Mixter Minor", jumlah: "1" }, { nama: "Allis Klem Minor", jumlah: "1" },
+      { nama: "Babcohk Minor", jumlah: "1" }, { nama: "Hold Sonde", jumlah: "1" },
+      { nama: "Spongeholding", jumlah: "1" }, { nama: "Kedney Bacin/Bengkok", jumlah: "1" },
+      { nama: "Bowel/Kom", jumlah: "1" }, { nama: "Towel/Duk Klemp", jumlah: "4" },
+      { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-bedah-minor",
+    kategori: "SET INSTRUMEN",
+    nama: "SET BEDAH MINOR",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (18 jenis instrumen, total 32).",
+    komponen: [
+      { nama: "Scalpel Handles no.3", jumlah: "1" }, { nama: "Pinset Anatomis", jumlah: "2" },
+      { nama: "Pinset Cirurgis", jumlah: "1" }, { nama: "Gunting Jaringan", jumlah: "1" },
+      { nama: "Gunting Benang", jumlah: "1" }, { nama: "Needle Holders", jumlah: "2" },
+      { nama: "Pean Hemostatic Curved", jumlah: "5" }, { nama: "Pean Hemostatic Straigh", jumlah: "2" },
+      { nama: "Kocher Hemostatic Forceps", jumlah: "2" }, { nama: "Sent Miller/hak cakar", jumlah: "2" },
+      { nama: "Cottle ½ /Pielum Hak/Cussing", jumlah: "2" }, { nama: "Kidney Bacin/Bengkok", jumlah: "1" },
+      { nama: "Bowel/Kom", jumlah: "1" }, { nama: "Spong Holding Forceps", jumlah: "1" },
+      { nama: "Langen Back Minor", jumlah: "2" }, { nama: "Hold Sonde", jumlah: "1" },
+      { nama: "Towel/Duk Klemp", jumlah: "4" }, { nama: "Bak Instrument", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-bedah-anak",
+    kategori: "SET INSTRUMEN",
+    nama: "SET BEDAH ANAK",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (20 jenis instrumen, total 39).",
+    komponen: [
+      { nama: "Scalpel Handles no.3", jumlah: "1" }, { nama: "Pinset Anatomis", jumlah: "2" },
+      { nama: "Pinset Cirurgis", jumlah: "1" }, { nama: "Gunting Jaringan", jumlah: "1" },
+      { nama: "gunting Benang", jumlah: "1" }, { nama: "Needle Holders", jumlah: "2" },
+      { nama: "Langenback", jumlah: "2" }, { nama: "Langenback Minor", jumlah: "2" },
+      { nama: "kocher Hemostatik forcep", jumlah: "4" }, { nama: "Pean Hemostatik Foecep Curved", jumlah: "8" },
+      { nama: "Pean Hemostatik Forcep Straight", jumlah: "2" }, { nama: "Allis Klemp", jumlah: "1" },
+      { nama: "Babcohk", jumlah: "1" }, { nama: "Poerster", jumlah: "1" },
+      { nama: "Towel/Duk klemp", jumlah: "5" }, { nama: "Bowel/Kom", jumlah: "1" },
+      { nama: "Kidney Bacin/Bengkok", jumlah: "1" }, { nama: "Mixter", jumlah: "1" },
+      { nama: "Spong Holding Forceps", jumlah: "1" }, { nama: "Bak Instrument", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-bedah-umum",
+    kategori: "SET INSTRUMEN",
+    nama: "SET BEDAH UMUM",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (20 jenis instrumen, total 38).",
+    komponen: [
+      { nama: "Scalpel Hendles no.4", jumlah: "1" }, { nama: "Scalpel Hendles no.3", jumlah: "1" },
+      { nama: "Pinset Anatomis", jumlah: "2" }, { nama: "Pinset Cirurgis", jumlah: "1" },
+      { nama: "Gunting Jaringan", jumlah: "1" }, { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Needel Holder", jumlah: "2" }, { nama: "Langen Back", jumlah: "2" },
+      { nama: "Kocher Hemostatic Forceps", jumlah: "4" }, { nama: "Pean Hemostatic Forceps Curved", jumlah: "8" },
+      { nama: "Pean Hemostatic Forceps Stright", jumlah: "2" }, { nama: "Allis Klemp", jumlah: "1" },
+      { nama: "Babcohk", jumlah: "1" }, { nama: "Poerster", jumlah: "1" },
+      { nama: "Towel/Duk Klemp", jumlah: "5" }, { nama: "Bowel/Kom", jumlah: "1" },
+      { nama: "Kidney Bacin/Bengkok", jumlah: "1" }, { nama: "Spongholding", jumlah: "1" },
+      { nama: "Mixster", jumlah: "1" }, { nama: "Bak Instrument", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-bedah-laparatomy",
+    kategori: "SET INSTRUMEN",
+    nama: "SET BEDAH LAPARATOMY",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (22 jenis instrumen, total 42).",
+    komponen: [
+      { nama: "Scalpel Handles no.3", jumlah: "1" }, { nama: "Scalpel Handles no.4", jumlah: "1" },
+      { nama: "Pinset Anatomis", jumlah: "2" }, { nama: "Pinset Cirurgis", jumlah: "1" },
+      { nama: "Gunting Jaringan", jumlah: "1" }, { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Needle Holders", jumlah: "2" }, { nama: "Langenback", jumlah: "2" },
+      { nama: "Poerster", jumlah: "1" }, { nama: "Pean Hemostatic Straight", jumlah: "2" },
+      { nama: "Pean Hemostatic Forceps Curved", jumlah: "8" }, { nama: "Kocher Hemostatic Forceps", jumlah: "4" },
+      { nama: "Babcohk", jumlah: "1" }, { nama: "Richadson Easman", jumlah: "1" },
+      { nama: "Deaver Retraktor", jumlah: "3" }, { nama: "Allis Klemp", jumlah: "1" },
+      { nama: "Kidney bacin/Bengkok", jumlah: "1" }, { nama: "Bowel/Kom", jumlah: "1" },
+      { nama: "Towel/Duk klemp", jumlah: "5" }, { nama: "Spong Holding", jumlah: "1" },
+      { nama: "Mixster", jumlah: "1" }, { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-bedah-apendiktomy",
+    kategori: "SET INSTRUMEN",
+    nama: "SET BEDAH APENDIKTOMY",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (26 jenis instrumen, total 51).",
+    komponen: [
+      { nama: "Scalpel Handles No.3", jumlah: "1" }, { nama: "Scalpel Handles No.4", jumlah: "1" },
+      { nama: "Pinset Anatomis", jumlah: "5" }, { nama: "Pinset Sirurgis", jumlah: "2" },
+      { nama: "Adenoid Recractor", jumlah: "2" }, { nama: "Babcohk", jumlah: "1" },
+      { nama: "Kidney Bacin/Bengkok", jumlah: "2" }, { nama: "Bengkok Recractor", jumlah: "1" },
+      { nama: "Bowel/Kom", jumlah: "1" }, { nama: "Kanul Suction", jumlah: "1" },
+      { nama: "Doyen Elevator", jumlah: "2" }, { nama: "Towel/Duk Klemp", jumlah: "5" },
+      { nama: "Ellis Klemp", jumlah: "1" }, { nama: "Gelas Ukur", jumlah: "1" },
+      { nama: "Gunting Benang", jumlah: "1" }, { nama: "Gunting Jaringan", jumlah: "1" },
+      { nama: "Mixter", jumlah: "1" }, { nama: "Kocher Haemostatic Forceps", jumlah: "4" },
+      { nama: "Langenback", jumlah: "2" }, { nama: "Needle Holder", jumlah: "2" },
+      { nama: "Pean Hemostatic Curved", jumlah: "6" }, { nama: "Pean Hemostatic Straight", jumlah: "4" },
+      { nama: "Poester", jumlah: "1" }, { nama: "Spongholding", jumlah: "1" },
+      { nama: "Tenaculum Forcep 3 gigi", jumlah: "1" }, { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-bedah-mayor-snnt",
+    kategori: "SET INSTRUMEN",
+    nama: "SET BEDAH MAYOR SNNT",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (24 jenis instrumen, total 51).",
+    komponen: [
+      { nama: "Scalpel Handles No.3", jumlah: "1" }, { nama: "Scalpel Handles No.4", jumlah: "1" },
+      { nama: "Pinset Anatomis", jumlah: "3" }, { nama: "Pinset Sirurgis", jumlah: "2" },
+      { nama: "Doyen Elevator", jumlah: "1" }, { nama: "Towel/Duk Klemp", jumlah: "4" },
+      { nama: "Ellis Klamp", jumlah: "1" }, { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Kocher Hemostatic Forceps", jumlah: "4" }, { nama: "Bowel/Kom", jumlah: "1" },
+      { nama: "Langenback", jumlah: "4" }, { nama: "Gunting Jaringan", jumlah: "2" },
+      { nama: "Kidney Bacin/Bengkok", jumlah: "1" }, { nama: "Needle Holder", jumlah: "3" },
+      { nama: "Pean Hemostatic Curved", jumlah: "8" }, { nama: "Mixter", jumlah: "2" },
+      { nama: "Pean Hemostatic Straight", jumlah: "2" }, { nama: "Cottle ½ /Pielum Hak/Cussing", jumlah: "2" },
+      { nama: "Gelas Ukur", jumlah: "1" }, { nama: "Sent Miller", jumlah: "2" },
+      { nama: "Hak Cakar", jumlah: "2" }, { nama: "SpongHolding", jumlah: "1" },
+      { nama: "Poester", jumlah: "1" }, { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-bedah-laparaskopik",
+    kategori: "SET INSTRUMEN",
+    nama: "SET BEDAH LAPARASKOPIK",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (16 jenis instrumen, total 36).",
+    komponen: [
+      { nama: "Scalpel Handle no. 3", jumlah: "1" }, { nama: "Scalpel Handle no. 4", jumlah: "1" },
+      { nama: "Pinset Anatomis", jumlah: "2" }, { nama: "Pinset Sirurgis", jumlah: "2" },
+      { nama: "Needle Holder", jumlah: "2" }, { nama: "Gunting Jaringan", jumlah: "1" },
+      { nama: "Gunting Benang", jumlah: "1" }, { nama: "Pean Haemostatic Curved", jumlah: "5" },
+      { nama: "Pean Haemostatic Straight", jumlah: "2" }, { nama: "kocher Haemostatic Stright", jumlah: "4" },
+      { nama: "Langenback Minor", jumlah: "2" }, { nama: "Langenback", jumlah: "2" },
+      { nama: "Bowel/Kom", jumlah: "1" }, { nama: "Kedney Bacin/Bengkok", jumlah: "1" },
+      { nama: "Spongeholding", jumlah: "1" }, { nama: "Towel/Duk Klemp", jumlah: "7" },
+      { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-urologi-minor",
+    kategori: "SET INSTRUMEN",
+    nama: "SET BEDAH UROLOGI MINOR",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (25 jenis instrumen, total 40).",
+    komponen: [
+      { nama: "Scalpel Handle no.3", jumlah: "1" }, { nama: "Pinset Anatomis Mikro", jumlah: "1" },
+      { nama: "Pinset sirurgis Mikro", jumlah: "1" }, { nama: "Pinset Anatomis Adson Mikro", jumlah: "1" },
+      { nama: "Pinset Sirurgis Adson Mikro", jumlah: "1" }, { nama: "Langenback Minor", jumlah: "2" },
+      { nama: "Needle Holder Minor", jumlah: "2" }, { nama: "Gunting Jaringan Iris Mikro", jumlah: "1" },
+      { nama: "Gunting Jaringan Minor", jumlah: "1" }, { nama: "Gunting Benang Minor", jumlah: "1" },
+      { nama: "Sent Miller/ Hak Cakar", jumlah: "2" }, { nama: "Pean Hemostatic Curved Minor", jumlah: "8" },
+      { nama: "Pean Hemostatic Straight Minor", jumlah: "2" }, { nama: "Kanul Suction Minor", jumlah: "2" },
+      { nama: "Kocher Forceps Straight", jumlah: "1" }, { nama: "Babcohk Minor", jumlah: "1" },
+      { nama: "Mixter Minor", jumlah: "1" }, { nama: "Poester Minor", jumlah: "1" },
+      { nama: "Jarum Pean Cauter", jumlah: "1" }, { nama: "Allis Klemp", jumlah: "1" },
+      { nama: "Spongeholding", jumlah: "1" }, { nama: "Bowel/Kom", jumlah: "1" },
+      { nama: "Kidney Bacin/Bengkok", jumlah: "1" }, { nama: "Towel/Duk Klemp", jumlah: "4" },
+      { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-urologi-besar",
+    kategori: "SET INSTRUMEN",
+    nama: "SET BEDAH UROLOGI BESAR",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (30 jenis instrumen, total 57).",
+    komponen: [
+      { nama: "Scalpel Handle no 3L", jumlah: "1" }, { nama: "Scalpel Handle no 4", jumlah: "1" },
+      { nama: "Pinset Anatomis", jumlah: "2" }, { nama: "Pinset Cirurgis", jumlah: "2" },
+      { nama: "Gunting Jaringan", jumlah: "1" }, { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Needle Holder", jumlah: "2" }, { nama: "Rocheester Pean (Krom)", jumlah: "5" },
+      { nama: "Pean Hemostatic Curved", jumlah: "3" }, { nama: "kocher hemostatic Forceps", jumlah: "4" },
+      { nama: "Allis Klemp", jumlah: "1" }, { nama: "Babcohk", jumlah: "1" },
+      { nama: "Poester", jumlah: "2" }, { nama: "Langenback", jumlah: "2" },
+      { nama: "Cottle ½ /Pielum Hak/Cussing", jumlah: "2" }, { nama: "Mixter", jumlah: "2" },
+      { nama: "Towel/Duk klemp", jumlah: "5" }, { nama: "Spongholding", jumlah: "1" },
+      { nama: "Richadson Easman", jumlah: "2" }, { nama: "Hak Otomatis Besar", jumlah: "1" },
+      { nama: "Bowel/Kom", jumlah: "1" }, { nama: "Kedney Bacin/Bengkok", jumlah: "1" },
+      { nama: "Satinsky Klemp", jumlah: "1" }, { nama: "Hemoroid Idem", jumlah: "1" },
+      { nama: "Klem Ginjak/klem L", jumlah: "1" }, { nama: "Gunting Costa Wire", jumlah: "1" },
+      { nama: "Zanleer", jumlah: "1" }, { nama: "Yankuer", jumlah: "1" },
+      { nama: "Deaver Hak", jumlah: "1" }, { nama: "Randal/Stunetang", jumlah: "7" }
+    ]
+  },
+  {
+    id: "oka-saraf-minor",
+    kategori: "SET INSTRUMEN",
+    nama: "SET BEDAH SARAF MINOR",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (23 jenis instrumen, total 40).",
+    komponen: [
+      { nama: "Scalpel Handle No.3", jumlah: "1" }, { nama: "Pinset Anatomis Mikro", jumlah: "2" },
+      { nama: "Pinset Sirurgis Mikro", jumlah: "1" }, { nama: "Pinset Adson Anatomis", jumlah: "1" },
+      { nama: "Pinset Adson Sirurgis", jumlah: "1" }, { nama: "Gunting Jaringan Mikro", jumlah: "1" },
+      { nama: "Gunting Jaringan Iris Mikro", jumlah: "1" }, { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Needle Holder", jumlah: "2" }, { nama: "Sent Miller/Hak Cakar", jumlah: "2" },
+      { nama: "Cottle ½ /Hak Peilum/Cussing", jumlah: "2" }, { nama: "Pean Hemostatic Curved", jumlah: "5" },
+      { nama: "Pean Hemostatic Straight", jumlah: "2" }, { nama: "Kocher Hemostatic Forceps", jumlah: "2" },
+      { nama: "Langenback", jumlah: "2" }, { nama: "Langenback Minor", jumlah: "2" },
+      { nama: "Kanul Suction", jumlah: "2" }, { nama: "Probe Sonde", jumlah: "1" },
+      { nama: "Bowel/Kom", jumlah: "1" }, { nama: "Kydney Bacin/Bengkok", jumlah: "1" },
+      { nama: "Towel/Duk Klamp", jumlah: "5" }, { nama: "Spongholding", jumlah: "1" },
+      { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-saraf-besar",
+    kategori: "SET INSTRUMEN",
+    nama: "SET BEDAH SARAF BESAR",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (25 jenis instrumen, total 55).",
+    komponen: [
+      { nama: "Scalpel Handle No.3", jumlah: "1" }, { nama: "Scalpel Handle No. 4", jumlah: "1" },
+      { nama: "Pinset Anatomis", jumlah: "2" }, { nama: "Pinset Sirurgis", jumlah: "2" },
+      { nama: "Pinset Adson Anatomis", jumlah: "1" }, { nama: "Pinset Adson Sirurgis", jumlah: "1" },
+      { nama: "Gunting Jaringan", jumlah: "1" }, { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Needle Holder", jumlah: "2" }, { nama: "Sent Miller/Hak Cakar", jumlah: "2" },
+      { nama: "Pean Hemostatic Curved", jumlah: "8" }, { nama: "Pean Hemostatic Straight", jumlah: "6" },
+      { nama: "Kocher Hemostatic Forceps", jumlah: "8" }, { nama: "Langen Back Minor", jumlah: "2" },
+      { nama: "Raspatorium", jumlah: "1" }, { nama: "Kanul Suction", jumlah: "2" },
+      { nama: "Probe Sonde", jumlah: "1" }, { nama: "Bowel/Kom", jumlah: "1" },
+      { nama: "Bowel/Kom Kecil", jumlah: "2" }, { nama: "Kydney Bacin/Bengkok", jumlah: "1" },
+      { nama: "Knable Tang", jumlah: "1" }, { nama: "Towel/Duk Klamp", jumlah: "5" },
+      { nama: "Mixter", jumlah: "1" }, { nama: "Spongholding", jumlah: "1" },
+      { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-ortopedi-mikro",
+    kategori: "SET INSTRUMEN",
+    nama: "SET ORTOPEDI MIKRO",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (28 jenis instrumen, total 43).",
+    komponen: [
+      { nama: "scalpel no.3", jumlah: "1" }, { nama: "pinset anatomis", jumlah: "2" },
+      { nama: "pinset sirurgis", jumlah: "1" }, { nama: "Pinset Adson Anatomis", jumlah: "1" },
+      { nama: "Pinset Adson Sirurgis", jumlah: "1" }, { nama: "gunting Jaringan", jumlah: "1" },
+      { nama: "Gunting Iris Jaringan", jumlah: "1" }, { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "needle holder", jumlah: "2" }, { nama: "Pean Hemostatic Curved", jumlah: "5" },
+      { nama: "Pean Hemostatic Straight", jumlah: "2" }, { nama: "Kocher Hemostatic Forcefs", jumlah: "2" },
+      { nama: "Hold Sonde", jumlah: "1" }, { nama: "Hak Cakar gigi 3", jumlah: "2" },
+      { nama: "Hak Cakar gigi 4", jumlah: "2" }, { nama: "Langen Back Minor", jumlah: "2" },
+      { nama: "Flathead", jumlah: "1" }, { nama: "Retraktor Bedah", jumlah: "1" },
+      { nama: "Retraktor Tulang", jumlah: "1" }, { nama: "Bone Wire Cutting", jumlah: "1" },
+      { nama: "Depth Gauge (Micrometers)", jumlah: "1" }, { nama: "Kanul Suction Kecil", jumlah: "2" },
+      { nama: "Allis Klemp", jumlah: "1" }, { nama: "Towel/Duk Lamp", jumlah: "4" },
+      { nama: "Bowel/Kom", jumlah: "1" }, { nama: "Kidney Bacin/Bengkok", jumlah: "1" },
+      { nama: "Spongholding", jumlah: "1" }, { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-ortopedi-minor",
+    kategori: "SET INSTRUMEN",
+    nama: "SET ORTOPEDI MINOR",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (39 jenis instrumen, total 69).",
+    komponen: [
+      { nama: "Scalpel Handle No.3", jumlah: "1" }, { nama: "Scalpel Handle No.4", jumlah: "1" },
+      { nama: "Pinset Anatomis", jumlah: "3" }, { nama: "Pinset Sirurgis", jumlah: "1" },
+      { nama: "Gunting Jaringan Mazembum", jumlah: "1" }, { nama: "Gunting Jaringan Mayo", jumlah: "1" },
+      { nama: "Gunting Benang", jumlah: "1" }, { nama: "Needle Holder", jumlah: "2" },
+      { nama: "Kocher Haemostatic Forceps", jumlah: "4" }, { nama: "Pean Hemostatic Curved", jumlah: "8" },
+      { nama: "Pean Hemostatic Straight", jumlah: "2" }, { nama: "Pean Hemostatic Straight Minor", jumlah: "2" },
+      { nama: "Allis Klemp", jumlah: "1" }, { nama: "Spongeholding", jumlah: "1" },
+      { nama: "Towel/Duk Klemp", jumlah: "5" }, { nama: "Bowel/Kom", jumlah: "1" },
+      { nama: "Kidney Bacin/Bengkok", jumlah: "1" }, { nama: "Kocher Langenback ( Hak L )", jumlah: "2" },
+      { nama: "Retractor Volkman ( Hak 1 Gigi )", jumlah: "2" }, { nama: "Retracror Cakar ( Hak 3 Gigi)", jumlah: "2" },
+      { nama: "Retraktor Koerte ( Hak 6 Gigi )", jumlah: "2" }, { nama: "Bone Wire Forceps", jumlah: "1" },
+      { nama: "Bone Wire Cutting", jumlah: "1" }, { nama: "Gums Scissors/Gunting Gums", jumlah: "1" },
+      { nama: "Dental Tang", jumlah: "1" }, { nama: "Depth Gauge (Micrometers)", jumlah: "1" },
+      { nama: "Screw Drivers (obeng)", jumlah: "2" }, { nama: "Screw Drivers Tanpa Handle", jumlah: "1" },
+      { nama: "Periosteal Elevators", jumlah: "1" }, { nama: "Adson Elevators", jumlah: "1" },
+      { nama: "Jansen Elevators", jumlah: "1" }, { nama: "Bone Livers", jumlah: "3" },
+      { nama: "Bone Plates", jumlah: "2" }, { nama: "Bone Rounger Besar", jumlah: "1" },
+      { nama: "Bone Rounger Kecil", jumlah: "1" }, { nama: "Bone Holding Sequestrum Forceps", jumlah: "2" },
+      { nama: "Bone Holding Self Centering", jumlah: "2" }, { nama: "Bone Holding Reduction", jumlah: "2" },
+      { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-ortopedi-besar",
+    kategori: "SET INSTRUMEN",
+    nama: "SET ORTOPEDI BESAR",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (32 jenis instrumen, total 50).",
+    komponen: [
+      { nama: "Scalpel Handle No.4", jumlah: "1" }, { nama: "Pinset Anatomis", jumlah: "2" },
+      { nama: "Pinset Sirurgis", jumlah: "2" }, { nama: "Gunting Jaringan", jumlah: "2" },
+      { nama: "Gunting Benang", jumlah: "1" }, { nama: "Needle Holder", jumlah: "2" },
+      { nama: "Kocher Haemostatic Forceps", jumlah: "2" }, { nama: "Pean Haemostatic Curved", jumlah: "3" },
+      { nama: "Langen Back ½", jumlah: "2" }, { nama: "Hak Cakar Gigi 6", jumlah: "2" },
+      { nama: "Pahat Bedah", jumlah: "1" }, { nama: "Pahat Tulang", jumlah: "1" },
+      { nama: "Pahat Lengkung", jumlah: "1" }, { nama: "Kikir Logam", jumlah: "1" },
+      { nama: "Screw Drivers (Obeng)", jumlah: "3" }, { nama: "Scoop Spatula", jumlah: "1" },
+      { nama: "Depth Gauge (Micrometers)", jumlah: "1" }, { nama: "Hammer/Palu", jumlah: "1" },
+      { nama: "Retractor Bedah Presisi", jumlah: "2" }, { nama: "Artery Klemp", jumlah: "1" },
+      { nama: "Bone Holding Klemp", jumlah: "2" }, { nama: "Bone Dental Holding Klemp", jumlah: "4" },
+      { nama: "Rounger", jumlah: "1" }, { nama: "Bone Wire Cutting", jumlah: "1" },
+      { nama: "Hook Retractor", jumlah: "1" }, { nama: "Elevator Dental", jumlah: "2" },
+      { nama: "Bone Plate", jumlah: "2" }, { nama: "Bowel/Kom", jumlah: "1" },
+      { nama: "Kidney Bacin/Bengkok", jumlah: "1" }, { nama: "Poester", jumlah: "1" },
+      { nama: "Spongholding", jumlah: "1" }, { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-tht-tonsil",
+    kategori: "SET INSTRUMEN",
+    nama: "SET THT TONSIL",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (27 jenis instrumen, total 32).",
+    komponen: [
+      { nama: "Scalpel Handle No 3", jumlah: "1" }, { nama: "Pinset Anatomis", jumlah: "2" },
+      { nama: "Pinset Sirugis", jumlah: "1" }, { nama: "Needle Holder", jumlah: "2" },
+      { nama: "Gunting Jaringan", jumlah: "1" }, { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Pean Hemostatic Curved", jumlah: "1" }, { nama: "Mixter", jumlah: "1" },
+      { nama: "Poester", jumlah: "1" }, { nama: "Spongholding", jumlah: "1" },
+      { nama: "Alis Klamp", jumlah: "2" }, { nama: "Towel/Duk Klamp", jumlah: "3" },
+      { nama: "Kanul suction", jumlah: "1" }, { nama: "Pean Hemostatic Straight", jumlah: "1" },
+      { nama: "Tongue Spatel", jumlah: "1" }, { nama: "Tongue Depr Boyle 92 mm", jumlah: "1" },
+      { nama: "Mouth Gag Boyle", jumlah: "1" }, { nama: "Tongue Gepr Boyle 62 mm", jumlah: "1" },
+      { nama: "Tongue Depr Boyle 75 mm", jumlah: "1" }, { nama: "Dissector", jumlah: "1" },
+      { nama: "Guide Needle", jumlah: "1" }, { nama: "Adenoid ForcepS", jumlah: "1" },
+      { nama: "Elevator Periosteal", jumlah: "1" }, { nama: "Beaver Blade", jumlah: "1" },
+      { nama: "Bowel/Kom", jumlah: "1" }, { nama: "Kidney bacin/Bengkok", jumlah: "1" },
+      { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-tht-sinus",
+    kategori: "SET INSTRUMEN",
+    nama: "SET THT SINUS",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (16 jenis instrumen, total 16).",
+    komponen: [
+      { nama: "Bowel/Kom", jumlah: "1" }, { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Kidney Bachin/Bengkok", jumlah: "1" }, { nama: "Mixter", jumlah: "1" },
+      { nama: "Gunting Jaringan", jumlah: "1" }, { nama: "Pinset Anatomis", jumlah: "1" },
+      { nama: "Pean hemostatic forcep curved 14cm", jumlah: "1" }, { nama: "Pean hemostatic forcep curved 19cm", jumlah: "1" },
+      { nama: "Spongeholding", jumlah: "1" }, { nama: "Speculum Nasal 12cm", jumlah: "1" },
+      { nama: "Speculum Nasal 14cm", jumlah: "1" }, { nama: "Scapel handles no 3", jumlah: "1" },
+      { nama: "Towel/Duk Klemp", jumlah: "1" }, { nama: "Trocar 19cm", jumlah: "1" },
+      { nama: "Bak Instrumen", jumlah: "1" }, { nama: "Kanul Suction", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-obgin-sc",
+    kategori: "SET INSTRUMEN",
+    nama: "SET OBGIN SC",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (18 jenis instrumen, total 32).",
+    komponen: [
+      { nama: "Scalpel Handles No.4", jumlah: "1" }, { nama: "Pinset Anatamis", jumlah: "2" },
+      { nama: "Pinset Sirurgis", jumlah: "1" }, { nama: "Gunting Jaringan", jumlah: "1" },
+      { nama: "Gunting Bayi", jumlah: "1" }, { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Needle Holder", jumlah: "2" }, { nama: "Richardson Eastman", jumlah: "1" },
+      { nama: "big hak/Doyen", jumlah: "1" }, { nama: "Kocher Hemostatic Forceps", jumlah: "4" },
+      { nama: "Pean Hemostatic Stright", jumlah: "2" }, { nama: "Pean Hemostatic Curved", jumlah: "1" },
+      { nama: "Poester", jumlah: "5" }, { nama: "Kidney Bacin/Bengkok", jumlah: "1" },
+      { nama: "Bowel/Kom", jumlah: "1" }, { nama: "Towel/Duk klemp", jumlah: "5" },
+      { nama: "Spongholding", jumlah: "1" }, { nama: "Bak Instrume", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-obgin-laparatomy",
+    kategori: "SET INSTRUMEN",
+    nama: "SET OBGIN LAPARATOMY",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (19 jenis instrumen, total 37).",
+    komponen: [
+      { nama: "Scalpel Handles no.4", jumlah: "1" }, { nama: "Pinset Anatomis", jumlah: "2" },
+      { nama: "Pinset Sirurgis", jumlah: "2" }, { nama: "Gunting Jaringan", jumlah: "1" },
+      { nama: "Gunting Benang", jumlah: "1" }, { nama: "Needle Holder", jumlah: "2" },
+      { nama: "Richardson Eastman", jumlah: "1" }, { nama: "Big Hak/Doyen", jumlah: "1" },
+      { nama: "Kocher Hemostatic Forceps", jumlah: "4" }, { nama: "Pean Hemostatic Strigh", jumlah: "2" },
+      { nama: "Rocheester Pean (Krom)", jumlah: "5" }, { nama: "Poester", jumlah: "5" },
+      { nama: "Hak Laparatomy", jumlah: "1" }, { nama: "Kidney bacin/Bengkok", jumlah: "1" },
+      { nama: "Bowel/Kom", jumlah: "1" }, { nama: "Towel/Duk klemp", jumlah: "5" },
+      { nama: "Spongholding", jumlah: "1" }, { nama: "Miom Bor", jumlah: "1" },
+      { nama: "Bak instrume", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-obgin-histerektomy",
+    kategori: "SET INSTRUMEN",
+    nama: "SET OBGIN HISTER EKTOMY",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (23 jenis instrumen, total 48).",
+    komponen: [
+      { nama: "Scalpel No. 4", jumlah: "1" }, { nama: "Pinset Anatomis", jumlah: "2" },
+      { nama: "Pinset Sirurgis", jumlah: "2" }, { nama: "Gunting Jaringan", jumlah: "2" },
+      { nama: "Gunting Benang", jumlah: "1" }, { nama: "Needle Holder", jumlah: "2" },
+      { nama: "Langen Back Minor", jumlah: "2" }, { nama: "Hook Retraktor", jumlah: "2" },
+      { nama: "Big Hak/Doyen", jumlah: "1" }, { nama: "Hak L-Shape", jumlah: "1" },
+      { nama: "Hak Ladle", jumlah: "1" }, { nama: "Miom Bor", jumlah: "1" },
+      { nama: "Rocheester Pean (Krom)", jumlah: "8" }, { nama: "Kocher Hemostatic Forceps", jumlah: "4" },
+      { nama: "Pean Hemostatic Straight", jumlah: "2" }, { nama: "Poester", jumlah: "5" },
+      { nama: "Babcohk", jumlah: "1" }, { nama: "Mixter", jumlah: "1" },
+      { nama: "Towel/Duk Lamp", jumlah: "5" }, { nama: "Bowel/Kom", jumlah: "1" },
+      { nama: "Kidney Bacin/Bengkok", jumlah: "1" }, { nama: "Spongholding", jumlah: "1" },
+      { nama: "Bak instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-post-partum",
+    kategori: "SET INSTRUMEN",
+    nama: "SET POST PARTUM",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (10 jenis instrumen, total 11).",
+    komponen: [
+      { nama: "Bak Instrumen", jumlah: "1" }, { nama: "Pinset Anatomis", jumlah: "1" },
+      { nama: "Pinset Sirugis", jumlah: "1" }, { nama: "Specula Vaginal", jumlah: "1" },
+      { nama: "Needle Holder", jumlah: "1" }, { nama: "Gunting Jaringan", jumlah: "1" },
+      { nama: "Gunting Benang", jumlah: "1" }, { nama: "Poester", jumlah: "1" },
+      { nama: "SIMS", jumlah: "2" }, { nama: "Spongholding", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-tracheostomy",
+    kategori: "SET INSTRUMEN",
+    nama: "SET TRACKHEOSTOMY",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (13 jenis instrumen, total 15).",
+    komponen: [
+      { nama: "Scalpel Handle No. 3", jumlah: "1" }, { nama: "Pinset Anatomis", jumlah: "1" },
+      { nama: "Pinset Sirugis", jumlah: "1" }, { nama: "Gunting Jaringan", jumlah: "1" },
+      { nama: "Needle Holder", jumlah: "1" }, { nama: "Pean Hemostatic Curved", jumlah: "3" },
+      { nama: "Kocher Hemostatic Forceps", jumlah: "1" }, { nama: "Langenback 1/2", jumlah: "1" },
+      { nama: "Mixter", jumlah: "1" }, { nama: "Hak Cakar", jumlah: "1" },
+      { nama: "Bowel/Kom", jumlah: "1" }, { nama: "Rekraktor Mandibulla", jumlah: "1" },
+      { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-biopsi",
+    kategori: "SET INSTRUMEN",
+    nama: "SET BIOPSI OKA",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (5 jenis instrumen, total 6).",
+    komponen: [
+      { nama: "Bak Instrumen", jumlah: "1" }, { nama: "SIMS", jumlah: "2" },
+      { nama: "Specula Vaginal", jumlah: "1" }, { nama: "Aligator", jumlah: "1" },
+      { nama: "Spongholding", jumlah: "1" }
+    ]
+  },
+  {
+    id: "oka-wsd",
+    kategori: "SET INSTRUMEN",
+    nama: "SET WSD OKA",
+    satuan: "Set",
+    catatan: "Inventaris Instrumen OKA (14 jenis instrumen, total 18).",
+    komponen: [
+      { nama: "Scalpel Handle No.3", jumlah: "1" }, { nama: "Pinset Anatomis", jumlah: "1" },
+      { nama: "Pinset Sirugis", jumlah: "1" }, { nama: "Needle Holder", jumlah: "1" },
+      { nama: "Gunting Jaringan", jumlah: "1" }, { nama: "Gunting Benang", jumlah: "1" },
+      { nama: "Pean Hemostatic Curved", jumlah: "2" }, { nama: "Pean Hemostatic Straight", jumlah: "3" },
+      { nama: "Kocher Hemostatic Forceps", jumlah: "1" }, { nama: "Langenback", jumlah: "2" },
+      { nama: "Trocart", jumlah: "1" }, { nama: "Spongholding", jumlah: "1" },
+      { nama: "Bowel/Kom", jumlah: "1" }, { nama: "Bak Instrumen", jumlah: "1" }
+    ]
+  }
+];
+
+var daftarMasterGabungan = MASTER_INFO_BAWAAN.slice();
+
+function tambahKeSemuaDropdownAlat(namaAlatBaru){
+  if(!namaAlatBaru) return;
+  var targets = [alatAsal, alatDistribusi, alatPenerimaan, alatDekontaminasi, alatPacking, alatSterilisasi];
+  targets.forEach(function(sel){
+    if(!sel) return;
+    var sudahAda = Array.from(sel.options).some(function(opt){
+      return opt.value.trim().toLowerCase() === namaAlatBaru.trim().toLowerCase();
+    });
+    if(!sudahAda){
+      var opt = document.createElement("option");
+      opt.value = namaAlatBaru;
+      opt.textContent = namaAlatBaru;
+      sel.appendChild(opt);
+    }
+  });
+}
+
+function renderMasterInfo(){
+  var container = document.getElementById("hasilDaftarMaster");
+  if(!container) return;
+
+  var kataKunci = (document.getElementById("cariMaster").value || "").trim().toLowerCase();
+  var kategoriDipilih = document.getElementById("filterKategoriMaster").value || "";
+
+  var tersaring = daftarMasterGabungan.filter(function(item){
+    if(kategoriDipilih && item.kategori !== kategoriDipilih) return false;
+    if(!kataKunci) return true;
+
+    var cocokNama = (item.nama || "").toLowerCase().includes(kataKunci);
+    var cocokKat = (item.kategori || "").toLowerCase().includes(kataKunci);
+    var cocokCatatan = (item.catatan || "").toLowerCase().includes(kataKunci);
+    var cocokKomp = (item.komponen || []).some(function(k){
+      return (k.nama || "").toLowerCase().includes(kataKunci) || (k.jumlah || "").toLowerCase().includes(kataKunci);
+    });
+    return cocokNama || cocokKat || cocokCatatan || cocokKomp;
+  });
+
+  if(tersaring.length === 0){
+    container.innerHTML = '<div class="master-card" style="text-align:center;color:#8b7562">Tidak ada informasi alat atau set yang sesuai pencarian/kelompok.</div>';
+    return;
+  }
+
+  var urutanKategori = [
+    "LINEN",
+    "KASSA",
+    "SET INSTRUMEN LAINNYA",
+    "SET INSTRUMEN",
+    "BARANG LAINNYA",
+    "POLI RAWAT JALAN SATUAN",
+    "ALAT LAINNYA"
+  ];
+
+  var kelompokMap = {};
+  tersaring.forEach(function(item){
+    var kat = item.kategori || "ALAT LAINNYA";
+    if(!kelompokMap[kat]) kelompokMap[kat] = [];
+    kelompokMap[kat].push(item);
+  });
+
+  var semuaKat = urutanKategori.filter(function(k){ return kelompokMap[k]; }).concat(
+    Object.keys(kelompokMap).filter(function(k){ return urutanKategori.indexOf(k) === -1; })
+  );
+
+  container.innerHTML = "";
+  semuaKat.forEach(function(kat){
+    var listItem = kelompokMap[kat];
+    var header = document.createElement("div");
+    header.className = "master-group-title";
+    header.innerHTML = '<span>' + kat + '</span><span>' + listItem.length + ' item</span>';
+    container.appendChild(header);
+
+    listItem.forEach(function(item){
+      var card = document.createElement("div");
+      card.className = "master-card";
+
+      var head = document.createElement("div");
+      head.className = "master-card-head";
+      head.innerHTML =
+        '<div class="master-card-title">' + item.nama + '</div>' +
+        '<span class="master-badge">' + (item.satuan || "Set") + '</span>';
+      card.appendChild(head);
+
+      if(item.komponen && item.komponen.length > 0){
+        var kompBox = document.createElement("div");
+        kompBox.className = "master-komp-list";
+        item.komponen.forEach(function(k){
+          var row = document.createElement("div");
+          row.className = "master-komp-row";
+          row.innerHTML = '<span>' + k.nama + '</span><strong>' + k.jumlah + '</strong>';
+          kompBox.appendChild(row);
+        });
+        card.appendChild(kompBox);
+      }
+
+      if(item.catatan){
+        var cat = document.createElement("div");
+        cat.className = "master-catatan";
+        cat.textContent = item.catatan;
+        card.appendChild(cat);
+      }
+
+      container.appendChild(card);
+    });
+  });
+}
+
+async function muatMasterDariFirestore(){
+  try{
+    var qMaster = query(collection(firebaseDb, "masterAlatSet"), orderBy("dibuatPada", "desc"));
+    var snap = await getDocs(qMaster);
+    var dariDb = [];
+    snap.forEach(function(doc){
+      dariDb.push(doc.data());
+    });
+
+    var petaId = {};
+    var hasil = [];
+    MASTER_INFO_BAWAAN.forEach(function(item){
+      petaId[item.id] = true;
+      hasil.push(item);
+    });
+
+    dariDb.forEach(function(item){
+      var key = item.id || ((item.kategori || "") + "|" + (item.nama || ""));
+      if(!petaId[key]){
+        petaId[key] = true;
+        hasil.push(item);
+      }
+      if(item.nama) tambahKeSemuaDropdownAlat(item.nama);
+    });
+
+    daftarMasterGabungan = hasil;
+    renderMasterInfo();
+  }catch(err){
+    console.log("Info master Firestore:", err);
+    daftarMasterGabungan = MASTER_INFO_BAWAAN.slice();
+    renderMasterInfo();
+  }
+}
+
+var daftarKomponenMasterTambahan = document.getElementById("daftarKomponenMasterTambahan");
+document.getElementById("tambahKomponenMaster").onclick = function(){
+  var row = document.createElement("div");
+  row.style.marginTop = "10px";
+  row.innerHTML =
+    '<div style="display:grid;grid-template-columns:1.6fr 1fr;gap:8px">' +
+      '<input class="kompNamaTambahan" type="text" placeholder="Nama item / instrumen">' +
+      '<input class="kompJumlahTambahan" type="text" placeholder="Jumlah (cth: 1 pcs)">' +
+    '</div>' +
+    '<button type="button" class="hapusKompMaster" style="margin-top:6px;border:0;border-radius:10px;background:#fde9e5;color:#8a544b;padding:7px 11px;font-weight:bold">Hapus baris</button>';
+
+  row.querySelector(".hapusKompMaster").onclick = function(){
+    row.remove();
+  };
+  daftarKomponenMasterTambahan.appendChild(row);
+};
+
+document.getElementById("toggleFormMaster").onclick = function(){
+  var formBox = document.getElementById("formTambahMaster");
+  formBox.style.display = (formBox.style.display === "block") ? "none" : "block";
+};
+
+document.getElementById("cariMaster").oninput = renderMasterInfo;
+document.getElementById("filterKategoriMaster").onchange = renderMasterInfo;
+
+document.getElementById("simpanMaster").onclick = async function(){
+  var kategori = document.getElementById("kategoriMasterBaru").value;
+  var nama = document.getElementById("namaMasterBaru").value.trim();
+  var satuan = document.getElementById("satuanMasterBaru").value;
+  var catatan = document.getElementById("catatanMasterBaru").value.trim();
+
+  if(!kategori || !nama){
+    document.getElementById("pesanMaster").innerText = "Lengkapi kategori dan nama alat / set terlebih dahulu.";
+    return;
+  }
+
+  var komponen = [];
+  var kompAwalNama = document.getElementById("kompNamaAwal").value.trim();
+  var kompAwalJumlah = document.getElementById("kompJumlahAwal").value.trim();
+  if(kompAwalNama){
+    komponen.push({ nama: kompAwalNama, jumlah: kompAwalJumlah || "-" });
+  }
+
+  document.querySelectorAll("#daftarKomponenMasterTambahan > div").forEach(function(row){
+    var n = row.querySelector(".kompNamaTambahan").value.trim();
+    var j = row.querySelector(".kompJumlahTambahan").value.trim();
+    if(n){
+      komponen.push({ nama: n, jumlah: j || "-" });
+    }
+  });
+
+  var itemBaru = {
+    id: "custom-" + Date.now(),
+    kategori: kategori,
+    nama: nama,
+    satuan: satuan,
+    komponen: komponen,
+    catatan: catatan,
+    dibuatOleh: penggunaAktif ? penggunaAktif.nama : "Petugas",
+    dibuatPada: serverTimestamp()
+  };
+
+  try{
+    await addDoc(collection(firebaseDb, "masterAlatSet"), itemBaru);
+    tambahKeSemuaDropdownAlat(nama);
+    await muatMasterDariFirestore();
+
+    document.getElementById("pesanMaster").innerText = "✓ Informasi master data berhasil disimpan.";
+    document.getElementById("kategoriMasterBaru").value = "";
+    document.getElementById("namaMasterBaru").value = "";
+    document.getElementById("kompNamaAwal").value = "";
+    document.getElementById("kompJumlahAwal").value = "";
+    document.getElementById("catatanMasterBaru").value = "";
+    daftarKomponenMasterTambahan.innerHTML = "";
+  }catch(error){
+    console.log(error);
+    document.getElementById("pesanMaster").innerText = "Gagal menyimpan master data: " + error.code;
+  }
+};
+
+/* ===== TOMBOL TAMBAH ALAT DINAMIS ===== */
 var tombolTambahAlatReuse = document.getElementById("tambahAlatReuse");
+var daftarAlatReuseTambahan = document.getElementById("daftarAlatReuseTambahan");
+var alatReuseSelect = document.getElementById("alatReuse");
 
 tombolTambahAlatReuse.onclick = function(){
   var item = document.createElement("div");
@@ -2105,9 +3166,7 @@ tombolTambahAlatReuse.onclick = function(){
     '<input class="jumlahReuseTambahan" type="number" min="1" placeholder="Masukkan jumlah">' +
     '<button type="button" class="hapusAlatReuse" style="margin-top:8px;border:0;border-radius:10px;background:#fde9e5;color:#8a544b;padding:8px 12px;font-weight:bold">Hapus</button>';
 
-  item.querySelector(".hapusAlatReuse").onclick = function(){
-    item.remove();
-  };
+  item.querySelector(".hapusAlatReuse").onclick = function(){ item.remove(); };
   daftarAlatReuseTambahan.appendChild(item);
 };
 
@@ -2121,9 +3180,7 @@ tombolTambahAlatSterilisasi.onclick = function(){
     '<input class="jumlahSterilisasiTambahan" type="number" min="1" placeholder="Masukkan jumlah">' +
     '<button type="button" class="hapusAlatSterilisasi">Hapus</button>';
 
-  item.querySelector(".hapusAlatSterilisasi").onclick = function(){
-    item.remove();
-  };
+  item.querySelector(".hapusAlatSterilisasi").onclick = function(){ item.remove(); };
   daftarAlatSterilisasiTambahan.appendChild(item);
 };
 
@@ -2147,9 +3204,7 @@ tombolTambahAlatPacking.onclick = function(){
     '<button type="button" class="hapusAlatPacking">Hapus</button>';
 
   daftarAlatPackingTambahan.appendChild(item);
-  item.querySelector(".hapusAlatPacking").onclick = function(){
-    item.remove();
-  };
+  item.querySelector(".hapusAlatPacking").onclick = function(){ item.remove(); };
 };
 
 var daftarAlatTambahan = document.getElementById("daftarAlatTambahan");
@@ -2174,9 +3229,7 @@ tombolTambahAlatDekontaminasi.onclick = function(){
     '<button type="button" class="hapusAlatDekontaminasi">Hapus</button>';
 
   daftarAlatDekontaminasiTambahan.appendChild(item);
-  item.querySelector(".hapusAlatDekontaminasi").onclick = function(){
-    item.remove();
-  };
+  item.querySelector(".hapusAlatDekontaminasi").onclick = function(){ item.remove(); };
 };
 
 var daftarAlatPenerimaanTambahan = document.getElementById("daftarAlatPenerimaanTambahan");
@@ -2193,9 +3246,7 @@ tombolTambahAlatPenerimaan.onclick = function(){
     '<button type="button" class="hapusAlatPenerimaan">Hapus</button>';
 
   daftarAlatPenerimaanTambahan.appendChild(item);
-  item.querySelector(".hapusAlatPenerimaan").onclick = function(){
-    item.remove();
-  };
+  item.querySelector(".hapusAlatPenerimaan").onclick = function(){ item.remove(); };
 };
 
 tombolTambahAlat.onclick = function(){
@@ -2208,9 +3259,7 @@ tombolTambahAlat.onclick = function(){
     '<button type="button" class="hapusAlatDistribusi">Hapus</button>';
 
   daftarAlatTambahan.appendChild(item);
-  item.querySelector(".hapusAlatDistribusi").onclick = function(){
-    item.remove();
-  };
+  item.querySelector(".hapusAlatDistribusi").onclick = function(){ item.remove(); };
 };
 
 show.onclick = function(){
@@ -2278,6 +3327,7 @@ form.onsubmit = async function(e){
   document.getElementById("isiKelolaAkun").style.display = "none";
   document.getElementById("isiLaporan").style.display = "none";
   document.getElementById("isiProfil").style.display = "none";
+  document.getElementById("isiMaster").style.display = "none";
   msg.innerText = "";
 
   document.getElementById("petugasAktivitas").value = penggunaAktif.nama;
@@ -2314,6 +3364,8 @@ form.onsubmit = async function(e){
     profil[2].value = penggunaAktif.username;
     profil[3].value = "Aktif";
   }
+
+  muatMasterDariFirestore();
 };
 
 document.getElementById("logout").onclick = async function(){
@@ -2423,6 +3475,21 @@ document.getElementById("tutupSuhu").onclick = function(){
   document.getElementById("logout").style.display = "block";
 };
 
+/* ===== MASTER DATA ALAT & SET ===== */
+document.getElementById("homeMaster").onclick = function(){
+  document.getElementById("homeModern").style.display = "none";
+  document.getElementById("isiMaster").style.display = "block";
+  document.getElementById("logout").style.display = "none";
+  renderMasterInfo();
+  muatMasterDariFirestore();
+};
+
+document.getElementById("tutupMaster").onclick = function(){
+  document.getElementById("isiMaster").style.display = "none";
+  document.getElementById("homeModern").style.display = "block";
+  document.getElementById("logout").style.display = "block";
+};
+
 /* ===== MUTU & TINDAK LANJUT ===== */
 document.getElementById("homeMutu").onclick = function(){
   document.getElementById("homeModern").style.display = "none";
@@ -2470,10 +3537,7 @@ document.getElementById("simpanMutu").onclick = async function(){
 
   try{
     await addDoc(collection(firebaseDb, "mutuTindakLanjut"), dataMutu);
-
-    document.getElementById("pesanMutu").innerText =
-      "✓ Data mutu & tindak lanjut berhasil disimpan.";
-
+    document.getElementById("pesanMutu").innerText = "✓ Data mutu & tindak lanjut berhasil disimpan.";
     document.getElementById("tanggalMutu").value = "";
     document.getElementById("jamMutu").value = "";
     document.getElementById("jenisTemuanMutu").value = "";
@@ -2483,39 +3547,28 @@ document.getElementById("simpanMutu").onclick = async function(){
     document.getElementById("catatanMutu").value = "";
   }catch(error){
     console.log(error);
-    document.getElementById("pesanMutu").innerText =
-      "Data mutu & tindak lanjut gagal disimpan: " + error.code;
+    document.getElementById("pesanMutu").innerText = "Data mutu & tindak lanjut gagal disimpan: " + error.code;
   }
 };
 
 document.getElementById("riwayatMutu").onclick = async function(){
   var hasilRiwayat = document.getElementById("hasilRiwayatMutu");
-
   if(hasilRiwayat.style.display === "block"){
     hasilRiwayat.style.display = "none";
     return;
   }
-
   hasilRiwayat.style.display = "block";
   hasilRiwayat.innerHTML = "Memuat riwayat mutu & tindak lanjut...";
 
   try{
-    var qMutu = query(
-      collection(firebaseDb, "mutuTindakLanjut"),
-      orderBy("dibuatPada", "desc")
-    );
-
+    var qMutu = query(collection(firebaseDb, "mutuTindakLanjut"), orderBy("dibuatPada", "desc"));
     var snapshotMutu = await getDocs(qMutu);
     hasilRiwayat.innerHTML = "";
     var jumlahPribadi = 0;
 
     snapshotMutu.forEach(function(dokumen){
       var data = dokumen.data();
-
-      if(data.petugasPelapor !== penggunaAktif.nama){
-        return;
-      }
-
+      if(data.petugasPelapor !== penggunaAktif.nama) return;
       jumlahPribadi++;
 
       var kartu = document.createElement("div");
