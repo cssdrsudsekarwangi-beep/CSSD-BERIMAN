@@ -644,31 +644,6 @@ input{
   transform:scale(.985);
 }
 
-.master-item-buttons{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:8px;
-  margin-top:10px;
-}
-
-.master-item-btn{
-  border:1px solid #e6c7a1;
-  border-radius:12px;
-  background:#ffffff;
-  color:#805a37;
-  font-weight:700;
-  font-size:13px;
-  padding:11px 10px;
-  text-align:center;
-  line-height:1.3;
-}
-
-.master-item-btn.aktif{
-  background:#d99552;
-  color:#ffffff;
-  border-color:#d99552;
-}
-
 .master-card{
   background:linear-gradient(145deg,#ffffff,#fff7ed);
   border:1px solid #f2dfc4;
@@ -2060,7 +2035,6 @@ hr{
           <select id="pilihItemMaster">
             <option value="">Pilih alat / set</option>
           </select>
-          <div id="tombolItemMaster" class="master-item-buttons"></div>
         </div>
       </div>
 
@@ -2991,21 +2965,15 @@ function tampilkanDetailItemMaster(itemId){
 
   detailBox.innerHTML = "";
   detailBox.appendChild(buatKartuDetailMaster(item));
-
-  document.querySelectorAll(".master-item-btn").forEach(function(btn){
-    btn.classList.toggle("aktif", btn.dataset.id === itemId);
-  });
 }
 
 function isiPilihanItemDariKategori(){
   var kategori = document.getElementById("filterKategoriMaster").value;
   var areaItem = document.getElementById("areaPilihanItemMaster");
   var selectItem = document.getElementById("pilihItemMaster");
-  var tombolGrid = document.getElementById("tombolItemMaster");
   var detailBox = document.getElementById("hasilDetailMaster");
 
   detailBox.innerHTML = "";
-  tombolGrid.innerHTML = "";
   selectItem.innerHTML = '<option value="">Pilih alat / set</option>';
 
   if(!kategori){
@@ -3026,17 +2994,6 @@ function isiPilihanItemDariKategori(){
     opt.value = item.id;
     opt.textContent = item.nama;
     selectItem.appendChild(opt);
-
-    var btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "master-item-btn";
-    btn.dataset.id = item.id;
-    btn.textContent = item.nama;
-    btn.onclick = function(){
-      selectItem.value = item.id;
-      tampilkanDetailItemMaster(item.id);
-    };
-    tombolGrid.appendChild(btn);
   });
 }
 
@@ -3084,6 +3041,7 @@ document.getElementById("cariMaster").onkeydown = function(e){
 document.getElementById("filterKategoriMaster").onchange = isiPilihanItemDariKategori;
 document.getElementById("pilihItemMaster").onchange = function(){
   tampilkanDetailItemMaster(this.value);
+  this.blur();
 };
 
 /* ===== TOMBOL TAMBAH ALAT DINAMIS ===== */
