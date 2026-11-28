@@ -1725,7 +1725,7 @@ table.suhu-data-table th{
     </form>
 
     <div class="qr-sim-box">
-      <div class="qr-sim-title">📲 Akses Cepat / Simulasi Scan QR Ruangan (32 Unit)</div>
+      <div class="qr-sim-title">📲 Akses Cepat / Simulasi Scan QR Ruangan</div>
       <div class="qr-sim-row">
         <select id="simulasiPilihUnit"></select>
         <button type="button" class="btn-qr-scan" id="btnSimulasiScanQr">Scan QR</button>
@@ -1922,13 +1922,13 @@ table.suhu-data-table th{
         <button class="home-card card-master" id="homeMaster" type="button">
           <span class="home-icon">🗂️</span>
           <strong>Master Data Alat &amp; Set</strong>
-          <small>Informasi isi set, linen, kassa &amp; standar alat CSSD</small>
+          <small>Siap disusun ulang sesuai alur utama</small>
         </button>
 
         <button class="home-card card-qr-admin" id="homeKartuQr" type="button" style="display:none;">
           <span class="home-icon">🖨️</span>
           <strong>Kartu QR Ruangan</strong>
-          <small>Cetak / cetak ulang QR 32 unit &amp; poli</small>
+          <small>Cetak / cetak ulang QR unit aktif</small>
         </button>
 
         <button class="home-card card-laporan" id="homeLaporan" type="button">
@@ -2182,91 +2182,6 @@ table.suhu-data-table th{
       <label>Nama Alat / Set Instrumen</label>
       <select id="namaAlat">
         <option value="">Pilih nama alat / set</option>
-        <optgroup label="KASSA">
-          <option>KASSA 5 CM</option>
-          <option>KASSA 7,5 CM</option>
-          <option>BIGKASSA</option>
-          <option>TAMPON</option>
-        </optgroup>
-        <optgroup label="LINEN">
-          <option>SET LINEN OPRASI</option>
-          <option>SET LINEN MATA</option>
-          <option>SET LINEN CATHLAB</option>
-          <option>DUK BOLONG KECIL SATUAN</option>
-          <option>JAS KOAN SATUAN</option>
-          <option>JAS CATHLAB SATUAN</option>
-        </optgroup>
-        <optgroup label="SET INSTRUMEN">
-          <option>SET BEDAH MIKRO</option>
-          <option>SET BEDAH MINOR</option>
-          <option>SET BEDAH ANAK</option>
-          <option>SET BEDAH UMUM</option>
-          <option>SET BEDAH LAPARATOMY</option>
-          <option>SET BEDAH APENDIKTOMY</option>
-          <option>SET BEDAH MAYOR SNNT</option>
-          <option>SET BEDAH LAPARASKOPIK</option>
-          <option>SET BEDAH UROLOGI MINOR</option>
-          <option>SET BEDAH UROLOGI BESAR</option>
-          <option>SET BEDAH SARAF MINOR</option>
-          <option>SET BEDAH SARAF BESAR</option>
-          <option>SET ORTOPEDI MIKRO</option>
-          <option>SET ORTOPEDI MINOR</option>
-          <option>SET ORTOPEDI BESAR</option>
-          <option>SET THT TONSIL</option>
-          <option>SET THT SINUS</option>
-          <option>SET THT FESS</option>
-          <option>SET OBGIN SC</option>
-          <option>SET OBGIN LAPARATOMY</option>
-          <option>SET OBGIN HISTER ECTOMY</option>
-          <option>SET POST PARTUM</option>
-          <option>SET TRACKHEOSTOMY</option>
-          <option>SET BIOPSI OKA</option>
-          <option>SET WSD OKA</option>
-          <option>SET LABIOPLASTY</option>
-          <option>SET ALAT MATA</option>
-          <option>ALAT SATUAN LAPARASKOPIK</option>
-          <option>ALAT SATUAN ENDO UROLOGI</option>
-          <option>ALAT SATUAN BEDAH SARAF</option>
-          <option>ALAT SATUAN LAINNYA</option>
-        </optgroup>
-        <optgroup label="SET INSTRUMEN LAINNYA">
-          <option>SET GV</option>
-          <option>SET HECTING</option>
-          <option>SET ORAL</option>
-          <option>SET WSD</option>
-          <option>SET CVC</option>
-          <option>SET PARTUS</option>
-          <option>SET KURET</option>
-          <option>SET LAMINARIA</option>
-          <option>BENGKOK SATUAN</option>
-          <option>KOM SATUAN</option>
-          <option>ALAT SATUAN PONEK</option>
-          <option>ALAT SATUAN LAINNYA</option>
-        </optgroup>
-        <optgroup label="BARANG LAINNYA">
-          <option>SET VENTILATOR</option>
-          <option>SET CPAP</option>
-          <option>AMUBAG</option>
-          <option>MANDREIN</option>
-          <option>SELANG SUCTION</option>
-          <option>BARANG SATUAN LAINNYA</option>
-        </optgroup>
-        <optgroup label="POLI RAWAT JALAN SATUAN">
-          <option>ALAT SATUAN POLI EDELWEIS</option>
-          <option>ALAT SATUAN POLI OBGIN</option>
-          <option>ALAT SATUAN POLI BEDAH</option>
-          <option>ALAT SATUAN POLI UROLOGI</option>
-          <option>ALAT SATUAN POLI GIGI UMUM</option>
-          <option>ALAT SATUAN POLI GIGI SP</option>
-          <option>ALAT SATUAN POLI THT</option>
-          <option>ALAT SATUAN POLI BEDAH SARAF</option>
-          <option>ALAT SATUAN POLI VASKULER</option>
-          <option>ALAT SATUAN POLI ORTOPEDI</option>
-          <option>ALAT SATUAN POLI LAINNYA</option>
-        </optgroup>
-        <optgroup label="ALAT LAINNYA">
-          <option>LAINNYA</option>
-        </optgroup>
       </select>
       <label>Jumlah</label>
       <input id="jumlahAlat" type="number" min="1" placeholder="Masukkan jumlah">
@@ -2627,22 +2542,14 @@ table.suhu-data-table th{
       <p>Pantau parstok siap pakai dan sesuaikan jumlah parstok hasil proses sterilisasi.</p>
       <div class="subcard-head" style="margin-bottom:12px;">
         <select id="filterKategoriGudang" onchange="renderParstokCssd()" style="padding:8px 12px;border-radius:10px;border:1px solid #cbd5e1;font-weight:700;">
-          <option value="ALL">Semua Kategori Master Alat &amp; Set</option>
-          <option value="KASSA">KASSA</option>
-          <option value="LINEN">LINEN</option>
-          <option value="SET INSTRUMEN">SET INSTRUMEN</option>
-          <option value="SET INSTRUMEN LAINNYA">SET INSTRUMEN LAINNYA</option>
-          <option value="BARANG LAINNYA">BARANG LAINNYA</option>
-          <option value="POLI RAWAT JALAN SATUAN">POLI RAWAT JALAN SATUAN</option>
-          <option value="ALAT LAINNYA">ALAT LAINNYA</option>
+          <option value="ALL">Semua Kategori</option>
         </select>
-        <button type="button" class="btn-ui btn-ui-outline btn-ui-sm" onclick="resetMasterGudangKeAwal()">↻ Reset Parstok ke Master Awal</button>
       </div>
       <div id="gridParstokCssd" class="stock-grid"></div>
       <button class="logout" id="tutupGudangSteril" type="button">Kembali ke Menu Utama</button>
     </div>
 
-    <!-- ==================== MENU PENDUKUNG (TIDAK DIUBAH) ==================== -->
+    <!-- ==================== MENU PENDUKUNG (SUHU, MUTU, REUSE TIDAK DIGANGGU) ==================== -->
     <div id="isiSuhu" style="display:none;margin-top:25px">
       <h3>🌡️ Suhu &amp; Kelembaban</h3>
       <p>Monitoring suhu dan kelembaban area CSSD.</p>
@@ -2796,25 +2703,18 @@ table.suhu-data-table th{
 
     <div id="isiMaster" style="display:none;margin-top:25px">
       <h3>🗂️ Master Data Alat &amp; Set</h3>
-      <p>Informasi standar alat, linen, kassa &amp; rincian isi set CSSD (Lengkap).</p>
+      <p>Data master alat &amp; set sudah dikosongkan dan siap disusun ulang dari awal.</p>
 
       <div class="master-box">
         <label for="cariMaster" style="margin-top:0">Cari Alat / Set / Isi Komponen</label>
-        <input id="cariMaster" type="text" placeholder="Ketik nama set, alat, kassa, atau pinset...">
+        <input id="cariMaster" type="text" placeholder="Ketik kata kunci pencarian...">
         <button id="btnCariMaster" type="button">🔍 Cari</button>
       </div>
 
       <div class="master-box">
         <label for="filterKategoriMaster" style="margin-top:0">Kelompok / Kategori</label>
         <select id="filterKategoriMaster">
-          <option value="">Pilih kelompok / kategori</option>
-          <option>KASSA</option>
-          <option>LINEN</option>
-          <option>SET INSTRUMEN</option>
-          <option>SET INSTRUMEN LAINNYA</option>
-          <option>BARANG LAINNYA</option>
-          <option>POLI RAWAT JALAN SATUAN</option>
-          <option>ALAT LAINNYA</option>
+          <option value="">Belum ada kategori master (siap disusun ulang)</option>
         </select>
 
         <div id="areaPilihanItemMaster" style="display:none;margin-top:14px">
@@ -2833,12 +2733,12 @@ table.suhu-data-table th{
       <div class="subcard-ui">
         <div class="subcard-head no-print">
           <div>
-            <h3 style="margin:0;color:#12372e">🖨️ Kartu QR Ruangan (32 Unit / Poli)</h3>
-            <div class="muted-ui">Cetak semua atau cetak ulang kartu QR ruangan jika rusak, kebasahan, atau hilang.</div>
+            <h3 style="margin:0;color:#12372e">🖨️ Kartu QR Ruangan</h3>
+            <div class="muted-ui">Cetak semua atau cetak ulang kartu QR ruangan aktif (tanpa Poli &amp; OKA).</div>
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
             <select id="qrFilterSelect" onchange="renderKartuQrAdmin()" style="padding:8px 10px;border-radius:8px;border:1px solid #cbd5e1;">
-              <option value="ALL">Semua Ruangan (32 Unit)</option>
+              <option value="ALL">Semua Ruangan Aktif</option>
             </select>
             <input type="text" id="qrSearchInput" oninput="renderKartuQrAdmin()" placeholder="Cari ruangan..." style="padding:8px 10px;border-radius:8px;border:1px solid #cbd5e1;width:auto;" />
             <button type="button" class="btn-ui btn-ui-primary" onclick="window.print()">🖨️ Cetak Kartu</button>
@@ -2998,7 +2898,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 const firebaseAuth = getAuth(firebaseApp);
 const firebaseDb = getFirestore(firebaseApp);
 
-/* ===== DAFTAR 32 UNIT / RUANGAN & POLI ===== */
+/* ===== DAFTAR UNIT / RUANGAN AKTIF (POLI & OKA DIHAPUS) ===== */
 const UNIT_QR_LIST = [
   { unit: "CUT MUTIA", token: "CSSD-CUTMUTIA-4821" },
   { unit: "CND", token: "CSSD-CND-5934" },
@@ -3016,717 +2916,28 @@ const UNIT_QR_LIST = [
   { unit: "FTW 1", token: "CSSD-FTW1-8240" },
   { unit: "FTW 2", token: "CSSD-FTW2-9351" },
   { unit: "ICU", token: "CSSD-ICU-1462" },
-  { unit: "IBS/OKA", token: "CSSD-IBSOKA-2573" },
   { unit: "CATHLAB", token: "CSSD-CATHLAB-3684" },
   { unit: "HD", token: "CSSD-HD-4795" },
   { unit: "IGD", token: "CSSD-IGD-5806" },
   { unit: "WK", token: "CSSD-WK-6917" },
   { unit: "PONEK", token: "CSSD-PONEK-7028" },
-  { unit: "POLI BEDAH", token: "CSSD-POLIBEDAH-8139" },
-  { unit: "POLI BEDAH SARAF", token: "CSSD-POLISARAF-9240" },
-  { unit: "POLI UROLOGI", token: "CSSD-POLIUROLOGI-1357" },
-  { unit: "POLI GIGI UMUM", token: "CSSD-POLIGIGIUMUM-2468" },
-  { unit: "POLI GIGI SP", token: "CSSD-POLIGIGISP-3579" },
-  { unit: "POLI OBGYN", token: "CSSD-POLIOBGYN-4680" },
-  { unit: "POLI THT", token: "CSSD-POLITHT-5791" },
-  { unit: "POLI EDELWIES", token: "CSSD-POLIEDELWIES-6802" },
-  { unit: "POLI LAINNYA", token: "CSSD-POLILAINNYA-7913" },
   { unit: "RUANGAN LAINNYA", token: "CSSD-LAINNYA-8024" }
 ];
 
-/* ===== MASTER DATA LENGKAP ALAT & SET CSSD ===== */
-const MASTER_INFO_DATA = [
-  /* KASSA */
-  {
-    id: "lap-kassa-5cm",
-    kategori: "KASSA",
-    nama: "KASSA 5 CM",
-    satuan: "Pcs / Lembar",
-    parstokAwal: 120,
-    wajibKembali: false,
-    catatan: "Standar satuan lapangan: 1 pcs berisi 10 lembar kassa.",
-    komponen: [{ nama: "Isi per 1 pcs", jumlah: "10 lembar" }]
-  },
-  {
-    id: "lap-kassa-7-5cm",
-    kategori: "KASSA",
-    nama: "KASSA 7,5 CM",
-    satuan: "Pcs / Lembar",
-    parstokAwal: 100,
-    wajibKembali: false,
-    catatan: "Standar satuan lapangan: 1 pcs berisi 10 lembar kassa.",
-    komponen: [{ nama: "Isi per 1 pcs", jumlah: "10 lembar" }]
-  },
-  {
-    id: "kassa-bigkassa",
-    kategori: "KASSA",
-    nama: "BIGKASSA",
-    satuan: "Kassa",
-    parstokAwal: 80,
-    wajibKembali: false,
-    catatan: "Kategori kassa CSSD.",
-    komponen: [{ nama: "Jenis Item", jumlah: "Bigkassa" }]
-  },
-  {
-    id: "kassa-tampon",
-    kategori: "KASSA",
-    nama: "TAMPON",
-    satuan: "Kassa",
-    parstokAwal: 80,
-    wajibKembali: false,
-    catatan: "Kategori kassa CSSD.",
-    komponen: [{ nama: "Jenis Item", jumlah: "Tampon" }]
-  },
-
-  /* LINEN */
-  {
-    id: "lap-linen-1set",
-    kategori: "LINEN",
-    nama: "SET LINEN OPRASI",
-    satuan: "Set",
-    parstokAwal: 30,
-    wajibKembali: true,
-    catatan: "Acuan standar isi 1 set linen operasi di lapangan (total 9 pcs).",
-    komponen: [
-      { nama: "Duk samping", jumlah: "5 pcs" },
-      { nama: "Duk Bolong Besar", jumlah: "1 pcs" },
-      { nama: "Jas Oprasi", jumlah: "3 pcs" }
-    ]
-  },
-  {
-    id: "linen-mata",
-    kategori: "LINEN",
-    nama: "SET LINEN MATA",
-    satuan: "Set",
-    parstokAwal: 15,
-    wajibKembali: true,
-    catatan: "Set linen khusus tindakan mata.",
-    komponen: [{ nama: "Set Linen Mata", jumlah: "1 set" }]
-  },
-  {
-    id: "linen-cathlab",
-    kategori: "LINEN",
-    nama: "SET LINEN CATHLAB",
-    satuan: "Set",
-    parstokAwal: 15,
-    wajibKembali: true,
-    catatan: "Set linen khusus tindakan cathlab.",
-    komponen: [{ nama: "Set Linen Cathlab", jumlah: "1 set" }]
-  },
-  {
-    id: "linen-duk-kecil",
-    kategori: "LINEN",
-    nama: "DUK BOLONG KECIL SATUAN",
-    satuan: "Pcs",
-    parstokAwal: 40,
-    wajibKembali: true,
-    catatan: "Duk bolong kecil satuan.",
-    komponen: [{ nama: "Duk Bolong Kecil", jumlah: "1 pcs" }]
-  },
-  {
-    id: "linen-jas-koan",
-    kategori: "LINEN",
-    nama: "JAS KOAN SATUAN",
-    satuan: "Pcs",
-    parstokAwal: 40,
-    wajibKembali: true,
-    catatan: "Jas koan satuan.",
-    komponen: [{ nama: "Jas Koan", jumlah: "1 pcs" }]
-  },
-  {
-    id: "linen-jas-cathlab",
-    kategori: "LINEN",
-    nama: "JAS CATHLAB SATUAN",
-    satuan: "Pcs",
-    parstokAwal: 25,
-    wajibKembali: true,
-    catatan: "Jas cathlab satuan.",
-    komponen: [{ nama: "Jas Cathlab", jumlah: "1 pcs" }]
-  },
-
-  /* SET INSTRUMEN */
-  {
-    id: "oka-bedah-mikro",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BEDAH MIKRO",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Inventaris set instrumen bedah mikro OKA.",
-    komponen: [{ nama: "Instrumen Bedah Mikro", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-bedah-minor",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BEDAH MINOR",
-    satuan: "Set",
-    parstokAwal: 12,
-    wajibKembali: true,
-    catatan: "Inventaris set instrumen bedah minor OKA.",
-    komponen: [{ nama: "Instrumen Bedah Minor", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-bedah-anak",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BEDAH ANAK",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Inventaris set instrumen bedah anak OKA.",
-    komponen: [{ nama: "Instrumen Bedah Anak", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-bedah-umum",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BEDAH UMUM",
-    satuan: "Set",
-    parstokAwal: 10,
-    wajibKembali: true,
-    catatan: "Inventaris Instrumen OKA (20 jenis instrumen, total 38).",
-    komponen: [
-      { nama: "Scalpel Hendles no.4", jumlah: "1" },
-      { nama: "Scalpel Hendles no.3", jumlah: "1" },
-      { nama: "Pinset Anatomis", jumlah: "2" },
-      { nama: "Pinset Cirurgis", jumlah: "1" },
-      { nama: "Gunting Jaringan", jumlah: "1" },
-      { nama: "Gunting Benang", jumlah: "1" },
-      { nama: "Needel Holder", jumlah: "2" },
-      { nama: "Bak Instrument", jumlah: "1" }
-    ]
-  },
-  {
-    id: "oka-bedah-laparatomy",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BEDAH LAPARATOMY",
-    satuan: "Set",
-    parstokAwal: 8,
-    wajibKembali: true,
-    catatan: "Set instrumen laparatomi OKA.",
-    komponen: [{ nama: "Instrumen Laparatomy", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-bedah-apendiktomi",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BEDAH APENDIKTOMY",
-    satuan: "Set",
-    parstokAwal: 8,
-    wajibKembali: true,
-    catatan: "Set instrumen apendiktomi OKA.",
-    komponen: [{ nama: "Instrumen Apendiktomi", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-bedah-mayor-snnt",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BEDAH MAYOR SNNT",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen bedah mayor SNNT OKA.",
-    komponen: [{ nama: "Instrumen Bedah Mayor SNNT", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-laparaskopik",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BEDAH LAPARASKOPIK",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen bedah laparoskopik OKA.",
-    komponen: [{ nama: "Instrumen Laparaskopik", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-urologi-minor",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BEDAH UROLOGI MINOR",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen urologi minor OKA.",
-    komponen: [{ nama: "Instrumen Urologi Minor", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-urologi-besar",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BEDAH UROLOGI BESAR",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen urologi besar OKA.",
-    komponen: [{ nama: "Instrumen Urologi Besar", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-saraf-minor",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BEDAH SARAF MINOR",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen bedah saraf minor OKA.",
-    komponen: [{ nama: "Instrumen Bedah Saraf Minor", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-saraf-besar",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BEDAH SARAF BESAR",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen bedah saraf besar OKA.",
-    komponen: [{ nama: "Instrumen Bedah Saraf Besar", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-ortopedi-mikro",
-    kategori: "SET INSTRUMEN",
-    nama: "SET ORTOPEDI MIKRO",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen ortopedi mikro OKA.",
-    komponen: [{ nama: "Instrumen Ortopedi Mikro", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-ortopedi-minor",
-    kategori: "SET INSTRUMEN",
-    nama: "SET ORTOPEDI MINOR",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen ortopedi minor OKA.",
-    komponen: [{ nama: "Instrumen Ortopedi Minor", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-ortopedi-besar",
-    kategori: "SET INSTRUMEN",
-    nama: "SET ORTOPEDI BESAR",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen ortopedi besar OKA.",
-    komponen: [{ nama: "Instrumen Ortopedi Besar", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-tht-tonsil",
-    kategori: "SET INSTRUMEN",
-    nama: "SET THT TONSIL",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen THT tonsil OKA.",
-    komponen: [{ nama: "Instrumen THT Tonsil", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-tht-sinus",
-    kategori: "SET INSTRUMEN",
-    nama: "SET THT SINUS",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen THT sinus OKA.",
-    komponen: [{ nama: "Instrumen THT Sinus", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-tht-fess",
-    kategori: "SET INSTRUMEN",
-    nama: "SET THT FESS",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen THT FESS OKA.",
-    komponen: [{ nama: "Instrumen THT FESS", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-obgin-sc",
-    kategori: "SET INSTRUMEN",
-    nama: "SET OBGIN SC",
-    satuan: "Set",
-    parstokAwal: 10,
-    wajibKembali: true,
-    catatan: "Set instrumen sectio caesarea OKA.",
-    komponen: [{ nama: "Instrumen Obgin SC", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-obgin-laparatomy",
-    kategori: "SET INSTRUMEN",
-    nama: "SET OBGIN LAPARATOMY",
-    satuan: "Set",
-    parstokAwal: 8,
-    wajibKembali: true,
-    catatan: "Set instrumen obgin laparatomi OKA.",
-    komponen: [{ nama: "Instrumen Obgin Laparatomy", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-obgin-histerectomy",
-    kategori: "SET INSTRUMEN",
-    nama: "SET OBGIN HISTER ECTOMY",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen obgin histerektomi OKA.",
-    komponen: [{ nama: "Instrumen Obgin Histerectomy", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-post-partum",
-    kategori: "SET INSTRUMEN",
-    nama: "SET POST PARTUM",
-    satuan: "Set",
-    parstokAwal: 8,
-    wajibKembali: true,
-    catatan: "Set instrumen post partum.",
-    komponen: [{ nama: "Instrumen Post Partum", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-tracheostomy",
-    kategori: "SET INSTRUMEN",
-    nama: "SET TRACKHEOSTOMY",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen trakeostomi.",
-    komponen: [{ nama: "Instrumen Trackheostomy", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-biopsi",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BIOPSI OKA",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen biopsi OKA.",
-    komponen: [{ nama: "Instrumen Biopsi OKA", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-wsd",
-    kategori: "SET INSTRUMEN",
-    nama: "SET WSD OKA",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen WSD OKA.",
-    komponen: [{ nama: "Instrumen WSD OKA", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-labioplasty",
-    kategori: "SET INSTRUMEN",
-    nama: "SET LABIOPLASTY",
-    satuan: "Set",
-    parstokAwal: 6,
-    wajibKembali: true,
-    catatan: "Set instrumen labioplasty.",
-    komponen: [{ nama: "Instrumen Labioplasty", jumlah: "1 set" }]
-  },
-  {
-    id: "oka-alat-mata",
-    kategori: "SET INSTRUMEN",
-    nama: "SET ALAT MATA",
-    satuan: "Set",
-    parstokAwal: 8,
-    wajibKembali: true,
-    catatan: "Set instrumen mata.",
-    komponen: [{ nama: "Instrumen Mata", jumlah: "1 set" }]
-  },
-  {
-    id: "satuan-laparaskopik",
-    kategori: "SET INSTRUMEN",
-    nama: "ALAT SATUAN LAPARASKOPIK",
-    satuan: "Pcs",
-    parstokAwal: 15,
-    wajibKembali: true,
-    catatan: "Alat satuan laparoskopik.",
-    komponen: [{ nama: "Alat Satuan Laparaskopik", jumlah: "1 pcs" }]
-  },
-  {
-    id: "satuan-endo-urologi",
-    kategori: "SET INSTRUMEN",
-    nama: "ALAT SATUAN ENDO UROLOGI",
-    satuan: "Pcs",
-    parstokAwal: 15,
-    wajibKembali: true,
-    catatan: "Alat satuan endo urologi.",
-    komponen: [{ nama: "Alat Satuan Endo Urologi", jumlah: "1 pcs" }]
-  },
-  {
-    id: "satuan-bedah-saraf",
-    kategori: "SET INSTRUMEN",
-    nama: "ALAT SATUAN BEDAH SARAF",
-    satuan: "Pcs",
-    parstokAwal: 15,
-    wajibKembali: true,
-    catatan: "Alat satuan bedah saraf.",
-    komponen: [{ nama: "Alat Satuan Bedah Saraf", jumlah: "1 pcs" }]
-  },
-  {
-    id: "satuan-instrumen-lainnya",
-    kategori: "SET INSTRUMEN",
-    nama: "ALAT SATUAN LAINNYA",
-    satuan: "Pcs",
-    parstokAwal: 20,
-    wajibKembali: true,
-    catatan: "Alat satuan instrumen lainnya.",
-    komponen: [{ nama: "Alat Satuan Lainnya", jumlah: "1 pcs" }]
-  },
-
-  /* SET INSTRUMEN LAINNYA */
-  {
-    id: "set-gv",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "SET GV",
-    satuan: "Set",
-    parstokAwal: 40,
-    wajibKembali: true,
-    catatan: "Catatan lapangan: memakai Kassa 5 cm : 1 pcs (10 lembar).",
-    komponen: [
-      { nama: "Bak Instrumen Sedang + Tutup", jumlah: "1" },
-      { nama: "Pinset Anatomis", jumlah: "1" },
-      { nama: "Pinset Sirurgis", jumlah: "1" },
-      { nama: "Gunting Benang", jumlah: "1" },
-      { nama: "Kom", jumlah: "1" },
-      { nama: "Kassa 5 cm (catatan lapangan)", jumlah: "1 pcs" }
-    ]
-  },
-  {
-    id: "set-hecting",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "SET HECTING",
-    satuan: "Set",
-    parstokAwal: 25,
-    wajibKembali: true,
-    catatan: "Sumber: Daftar amprahan instrumen ruangan.",
-    komponen: [
-      { nama: "Bak Instrumen Sedang + Tutup", jumlah: "1" },
-      { nama: "Pinset Anatomis", jumlah: "1" },
-      { nama: "Pinset Sirurgis", jumlah: "1" },
-      { nama: "Needle Holder", jumlah: "1" },
-      { nama: "Gunting Benang", jumlah: "1" },
-      { nama: "Klem lurus", jumlah: "2" },
-      { nama: "Klem Bengkok", jumlah: "2" },
-      { nama: "Scalpel", jumlah: "1" }
-    ]
-  },
-  {
-    id: "set-oral",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "SET ORAL",
-    satuan: "Set",
-    parstokAwal: 15,
-    wajibKembali: true,
-    catatan: "Set instrumen oral.",
-    komponen: [{ nama: "Instrumen Set Oral", jumlah: "1 set" }]
-  },
-  {
-    id: "set-wsd-ruangan",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "SET WSD",
-    satuan: "Set",
-    parstokAwal: 12,
-    wajibKembali: true,
-    catatan: "Set instrumen WSD ruangan.",
-    komponen: [{ nama: "Instrumen Set WSD", jumlah: "1 set" }]
-  },
-  {
-    id: "set-cvc",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "SET CVC",
-    satuan: "Set",
-    parstokAwal: 15,
-    wajibKembali: true,
-    catatan: "Catatan lapangan: memakai Kassa 5 cm : 1 pcs (10 lembar).",
-    komponen: [
-      { nama: "Bak Intrumen Besar + Tutup", jumlah: "1" },
-      { nama: "Scalpel", jumlah: "1" },
-      { nama: "Pinset Anatomis", jumlah: "1" },
-      { nama: "Pinset Sirurgis", jumlah: "1" },
-      { nama: "Needle Holder", jumlah: "1" },
-      { nama: "Gunting Jaringan", jumlah: "1" },
-      { nama: "Gunting Benang", jumlah: "1" },
-      { nama: "Klem Lurus", jumlah: "2" },
-      { nama: "Klem Bengkok", jumlah: "2" },
-      { nama: "Kocher", jumlah: "1" },
-      { nama: "Bowel", jumlah: "1" },
-      { nama: "Duklamp", jumlah: "2" },
-      { nama: "Kassa 5 cm (catatan lapangan)", jumlah: "1 pcs" }
-    ]
-  },
-  {
-    id: "set-partus",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "SET PARTUS",
-    satuan: "Set",
-    parstokAwal: 18,
-    wajibKembali: true,
-    catatan: "Catatan lapangan: memakai Kassa 5 cm : 5 lembar (0,5 pcs).",
-    komponen: [
-      { nama: "Bak Instrumen Sedang + Tutup", jumlah: "1" },
-      { nama: "Pinset anatomis", jumlah: "1" },
-      { nama: "Pinset cirurgis", jumlah: "1" },
-      { nama: "Gunting Benang", jumlah: "1" },
-      { nama: "Gunting tali pusat", jumlah: "1" },
-      { nama: "Gunting episiotomi", jumlah: "1" },
-      { nama: "Klem", jumlah: "1" },
-      { nama: "1/2 Koher", jumlah: "1" },
-      { nama: "Koher", jumlah: "1" },
-      { nama: "Needle holder", jumlah: "1" },
-      { nama: "Kassa 5 cm (catatan lapangan)", jumlah: "5 lembar" }
-    ]
-  },
-  {
-    id: "set-kuret",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "SET KURET",
-    satuan: "Set",
-    parstokAwal: 14,
-    wajibKembali: true,
-    catatan: "Catatan lapangan: memakai Kassa 5 cm : 5 lembar (0,5 pcs).",
-    komponen: [
-      { nama: "Sendok kuret", jumlah: "6" },
-      { nama: "Sim", jumlah: "2" },
-      { nama: "Sonde", jumlah: "1" },
-      { nama: "Klem ovum (Foester)", jumlah: "1" },
-      { nama: "Tenakulum", jumlah: "1" },
-      { nama: "Tang abortus", jumlah: "1" },
-      { nama: "Kassa 5 cm (catatan lapangan)", jumlah: "5 lembar" }
-    ]
-  },
-  {
-    id: "set-laminaria",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "SET LAMINARIA",
-    satuan: "Set",
-    parstokAwal: 10,
-    wajibKembali: true,
-    catatan: "Set instrumen laminaria.",
-    komponen: [{ nama: "Instrumen Set Laminaria", jumlah: "1 set" }]
-  },
-  {
-    id: "bengkok-satuan",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "BENGKOK SATUAN",
-    satuan: "Pcs",
-    parstokAwal: 35,
-    wajibKembali: true,
-    catatan: "Bengkok satuan.",
-    komponen: [{ nama: "Bengkok", jumlah: "1 pcs" }]
-  },
-  {
-    id: "kom-satuan",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "KOM SATUAN",
-    satuan: "Pcs",
-    parstokAwal: 35,
-    wajibKembali: true,
-    catatan: "Kom satuan.",
-    komponen: [{ nama: "Kom", jumlah: "1 pcs" }]
-  },
-  {
-    id: "alat-satuan-ponek",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "ALAT SATUAN PONEK",
-    satuan: "Pcs",
-    parstokAwal: 20,
-    wajibKembali: true,
-    catatan: "Alat satuan PONEK.",
-    komponen: [{ nama: "Alat Satuan PONEK", jumlah: "1 pcs" }]
-  },
-  {
-    id: "alat-satuan-lainnya-2",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "ALAT SATUAN LAINNYA",
-    satuan: "Pcs",
-    parstokAwal: 25,
-    wajibKembali: true,
-    catatan: "Alat satuan lainnya.",
-    komponen: [{ nama: "Alat Satuan Lainnya", jumlah: "1 pcs" }]
-  },
-
-  /* BARANG LAINNYA */
-  {
-    id: "brg-set-ventilator",
-    kategori: "BARANG LAINNYA",
-    nama: "SET VENTILATOR",
-    satuan: "Set",
-    parstokAwal: 15,
-    wajibKembali: true,
-    catatan: "Set ventilator.",
-    komponen: [{ nama: "Set Ventilator", jumlah: "1 set" }]
-  },
-  {
-    id: "brg-set-cpap",
-    kategori: "BARANG LAINNYA",
-    nama: "SET CPAP",
-    satuan: "Set",
-    parstokAwal: 15,
-    wajibKembali: true,
-    catatan: "Set CPAP.",
-    komponen: [{ nama: "Set CPAP", jumlah: "1 set" }]
-  },
-  {
-    id: "brg-ambubag",
-    kategori: "BARANG LAINNYA",
-    nama: "AMUBAG",
-    satuan: "Pcs",
-    parstokAwal: 20,
-    wajibKembali: true,
-    catatan: "Ambubag / amubag.",
-    komponen: [{ nama: "Ambubag", jumlah: "1 pcs" }]
-  },
-  {
-    id: "brg-mandrein",
-    kategori: "BARANG LAINNYA",
-    nama: "MANDREIN",
-    satuan: "Pcs",
-    parstokAwal: 20,
-    wajibKembali: true,
-    catatan: "Mandrein.",
-    komponen: [{ nama: "Mandrein", jumlah: "1 pcs" }]
-  },
-  {
-    id: "brg-selang-suction",
-    kategori: "BARANG LAINNYA",
-    nama: "SELANG SUCTION",
-    satuan: "Pcs",
-    parstokAwal: 30,
-    wajibKembali: true,
-    catatan: "Selang suction.",
-    komponen: [{ nama: "Selang Suction", jumlah: "1 pcs" }]
-  },
-  {
-    id: "brg-satuan-lainnya",
-    kategori: "BARANG LAINNYA",
-    nama: "BARANG SATUAN LAINNYA",
-    satuan: "Pcs",
-    parstokAwal: 25,
-    wajibKembali: true,
-    catatan: "Barang satuan lainnya.",
-    komponen: [{ nama: "Barang Satuan Lainnya", jumlah: "1 pcs" }]
-  },
-
-  /* POLI RAWAT JALAN SATUAN */
-  { id: "poli-edelweis", kategori: "POLI RAWAT JALAN SATUAN", nama: "ALAT SATUAN POLI EDELWEIS", satuan: "Pcs", parstokAwal: 15, wajibKembali: true, catatan: "Alat satuan Poli Edelweis.", komponen: [{ nama: "Alat Satuan Poli Edelweis", jumlah: "1 pcs" }] },
-  { id: "poli-obgin", kategori: "POLI RAWAT JALAN SATUAN", nama: "ALAT SATUAN POLI OBGIN", satuan: "Pcs", parstokAwal: 15, wajibKembali: true, catatan: "Alat satuan Poli Obgin.", komponen: [{ nama: "Alat Satuan Poli Obgin", jumlah: "1 pcs" }] },
-  { id: "poli-bedah", kategori: "POLI RAWAT JALAN SATUAN", nama: "ALAT SATUAN POLI BEDAH", satuan: "Pcs", parstokAwal: 15, wajibKembali: true, catatan: "Alat satuan Poli Bedah.", komponen: [{ nama: "Alat Satuan Poli Bedah", jumlah: "1 pcs" }] },
-  { id: "poli-urologi", kategori: "POLI RAWAT JALAN SATUAN", nama: "ALAT SATUAN POLI UROLOGI", satuan: "Pcs", parstokAwal: 15, wajibKembali: true, catatan: "Alat satuan Poli Urologi.", komponen: [{ nama: "Alat Satuan Poli Urologi", jumlah: "1 pcs" }] },
-  { id: "poli-gigi-umum", kategori: "POLI RAWAT JALAN SATUAN", nama: "ALAT SATUAN POLI GIGI UMUM", satuan: "Pcs", parstokAwal: 20, wajibKembali: true, catatan: "Alat satuan Poli Gigi Umum.", komponen: [{ nama: "Alat Satuan Poli Gigi Umum", jumlah: "1 pcs" }] },
-  { id: "poli-gigi-sp", kategori: "POLI RAWAT JALAN SATUAN", nama: "ALAT SATUAN POLI GIGI SP", satuan: "Pcs", parstokAwal: 15, wajibKembali: true, catatan: "Alat satuan Poli Gigi Spesialis.", komponen: [{ nama: "Alat Satuan Poli Gigi SP", jumlah: "1 pcs" }] },
-  { id: "poli-tht", kategori: "POLI RAWAT JALAN SATUAN", nama: "ALAT SATUAN POLI THT", satuan: "Pcs", parstokAwal: 15, wajibKembali: true, catatan: "Alat satuan Poli THT.", komponen: [{ nama: "Alat Satuan Poli THT", jumlah: "1 pcs" }] },
-  { id: "poli-bedah-saraf", kategori: "POLI RAWAT JALAN SATUAN", nama: "ALAT SATUAN POLI BEDAH SARAF", satuan: "Pcs", parstokAwal: 15, wajibKembali: true, catatan: "Alat satuan Poli Bedah Saraf.", komponen: [{ nama: "Alat Satuan Poli Bedah Saraf", jumlah: "1 pcs" }] },
-  { id: "poli-vaskuler", kategori: "POLI RAWAT JALAN SATUAN", nama: "ALAT SATUAN POLI VASKULER", satuan: "Pcs", parstokAwal: 15, wajibKembali: true, catatan: "Alat satuan Poli Vaskuler.", komponen: [{ nama: "Alat Satuan Poli Vaskuler", jumlah: "1 pcs" }] },
-  { id: "poli-ortopedi", kategori: "POLI RAWAT JALAN SATUAN", nama: "ALAT SATUAN POLI ORTOPEDI", satuan: "Pcs", parstokAwal: 15, wajibKembali: true, catatan: "Alat satuan Poli Ortopedi.", komponen: [{ nama: "Alat Satuan Poli Ortopedi", jumlah: "1 pcs" }] },
-  { id: "poli-lainnya", kategori: "POLI RAWAT JALAN SATUAN", nama: "ALAT SATUAN POLI LAINNYA", satuan: "Pcs", parstokAwal: 15, wajibKembali: true, catatan: "Alat satuan Poli Lainnya.", komponen: [{ nama: "Alat Satuan Poli Lainnya", jumlah: "1 pcs" }] },
-
-  /* ALAT LAINNYA */
-  { id: "alat-lainnya", kategori: "ALAT LAINNYA", nama: "LAINNYA", satuan: "Pcs", parstokAwal: 20, wajibKembali: true, catatan: "Alat lainnya CSSD.", komponen: [{ nama: "Alat Lainnya", jumlah: "1 pcs" }] }
-];
+/* ===== MASTER DATA ALAT & SET DIKOSONGKAN UNTUK DISUSUN ULANG ===== */
+const MASTER_INFO_DATA = [];
 
 function buildDefaultGudangFromMaster(){
   const seen = new Set();
   const list = [];
   MASTER_INFO_DATA.forEach(item => {
-    if(seen.has(item.nama)) return;
+    if(!item || !item.nama || seen.has(item.nama)) return;
     seen.add(item.nama);
     list.push({
       id: item.id,
       nama: item.nama,
-      kategori: item.kategori,
-      parstok: Number(item.parstokAwal ?? 10),
+      kategori: item.kategori || "MASTER",
+      parstok: Number(item.parstokAwal ?? 0),
       wajibKembali: Boolean(item.wajibKembali),
       komponen: (item.komponen || []).map(k => k.nama)
     });
@@ -3734,41 +2945,15 @@ function buildDefaultGudangFromMaster(){
   return list;
 }
 
-const STORAGE_KEY = "cssd_beriman_state_v2";
+const STORAGE_KEY = "cssd_beriman_state_v3_clean";
 let state = null;
 let currentSession = null;
 
 function getDefaultState() {
   return {
     gudang: buildDefaultGudangFromMaster(),
-    permintaan: [
-      {
-        id: "REQ-1001",
-        unit: "NAS LT 1",
-        waktu: "2026-11-27T08:30",
-        prioritas: "Rutin",
-        pemohon: "Ns. Dian",
-        catatan: "Kebutuhan rawat luka pagi",
-        items: [{ namaAlat: "SET GV", jumlahDiminta: 15, jumlahDikonfirmasi: 15 }],
-        status: "Terkonfirmasi 🔥👍🏽",
-        catatanCssd: "Dikonfirmasi penuh"
-      }
-    ],
-    pengembalian: [
-      {
-        id: "RET-2001",
-        unit: "NAS LT 1",
-        namaAlat: "SET GV",
-        jumlahKembali: 10,
-        petugasRuangan: "Ns. Rina",
-        waktu: "2026-11-27T14:20",
-        catatan: "5 set belum kembali, 1 set kurang gunting benang & pinset sirurgis",
-        komponenKurang: [
-          { komponen: "Gunting Benang", jumlahKurang: 1 },
-          { komponen: "Pinset Sirurgis", jumlahKurang: 1 }
-        ]
-      }
-    ]
+    permintaan: [],
+    pengembalian: []
   };
 }
 
@@ -3776,9 +2961,9 @@ function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     state = raw ? JSON.parse(raw) : getDefaultState();
-    if(!Array.isArray(state.gudang) || state.gudang.length < MASTER_INFO_DATA.length){
-      state.gudang = buildDefaultGudangFromMaster();
-    }
+    if(!Array.isArray(state.gudang)) state.gudang = [];
+    if(!Array.isArray(state.permintaan)) state.permintaan = [];
+    if(!Array.isArray(state.pengembalian)) state.pengembalian = [];
   } catch {
     state = getDefaultState();
   }
@@ -3788,13 +2973,6 @@ function loadState() {
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
-
-window.resetMasterGudangKeAwal = function(){
-  state.gudang = buildDefaultGudangFromMaster();
-  saveState();
-  refreshAllViews();
-  alert("Parstok Gudang Alat Steril & daftar Master Alat berhasil dikembalikan ke setelan awal lengkap.");
-};
 
 /* ===== TANGGAL & JAM REALTIME MINIMALIS ===== */
 var NAMA_HARI_ID = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
@@ -3890,8 +3068,8 @@ window.addEventListener("popstate", function(){
   }
 });
 
-/* ===== ISI DROPDOWN 32 UNIT / RUANGAN ===== */
-function isiSemuaDropdown32Unit(){
+/* ===== ISI DROPDOWN RUANGAN AKTIF (TANPA POLI & OKA) ===== */
+function isiSemuaDropdownUnitAktif(){
   const optionsHtml = UNIT_QR_LIST.map(u => `<option value="${u.unit}">${u.unit}</option>`).join("");
 
   const unitAsal = document.getElementById("unitAktivitas");
@@ -3920,34 +3098,40 @@ function isiSemuaDropdown32Unit(){
   }
 }
 
+function sinkronkanDropdownAlatDariMaster(){
+  const baseHtml = `<option value="">Pilih nama alat / set</option>` +
+    state.gudang.map(g => `<option value="${g.nama}">${g.nama}</option>`).join("");
+
+  ["namaAlat", "alatDistribusi", "alatPacking", "alatSterilisasi", "alatPenerimaan", "alatDekontaminasi"].forEach(id => {
+    const sel = document.getElementById(id);
+    if(sel) sel.innerHTML = baseHtml;
+  });
+
+  const filterGudang = document.getElementById("filterKategoriGudang");
+  if(filterGudang){
+    const cats = [...new Set(state.gudang.map(g => g.kategori).filter(Boolean))];
+    filterGudang.innerHTML = `<option value="ALL">Semua Kategori</option>` +
+      cats.map(c => `<option value="${c}">${c}</option>`).join("");
+  }
+
+  const filterMaster = document.getElementById("filterKategoriMaster");
+  if(filterMaster){
+    const cats = [...new Set(MASTER_INFO_DATA.map(m => m.kategori).filter(Boolean))];
+    filterMaster.innerHTML = cats.length
+      ? `<option value="">Pilih kelompok / kategori</option>` + cats.map(c => `<option value="${c}">${c}</option>`).join("")
+      : `<option value="">Belum ada kategori master (siap disusun ulang)</option>`;
+  }
+}
+
 loadState();
-isiSemuaDropdown32Unit();
+isiSemuaDropdownUnitAktif();
+sinkronkanDropdownAlatDariMaster();
 
 var form = document.getElementById("form");
 var pass = document.getElementById("pass");
 var show = document.getElementById("show");
 var msg = document.getElementById("msg");
 var alatAsal = document.getElementById("namaAlat");
-
-var alatDistribusi = document.getElementById("alatDistribusi");
-alatDistribusi.innerHTML = alatAsal.innerHTML;
-alatDistribusi.options[0].text = "Pilih nama alat / set";
-
-var alatPacking = document.getElementById("alatPacking");
-alatPacking.innerHTML = alatAsal.innerHTML;
-alatPacking.options[0].text = "Pilih nama alat / set";
-
-var alatSterilisasi = document.getElementById("alatSterilisasi");
-alatSterilisasi.innerHTML = alatAsal.innerHTML;
-alatSterilisasi.options[0].text = "Pilih nama alat / set";
-
-var alatPenerimaan = document.getElementById("alatPenerimaan");
-alatPenerimaan.innerHTML = alatAsal.innerHTML;
-alatPenerimaan.options[0].text = "Pilih nama alat / set";
-
-var alatDekontaminasi = document.getElementById("alatDekontaminasi");
-alatDekontaminasi.innerHTML = alatAsal.innerHTML;
-alatDekontaminasi.options[0].text = "Pilih nama alat / set";
 
 var daftarAlatSterilisasiTambahan = document.getElementById("daftarAlatSterilisasiTambahan");
 var daftarAlatPackingTambahan = document.getElementById("daftarAlatPackingTambahan");
@@ -3959,35 +3143,15 @@ var daftarAlatReuseTambahan = document.getElementById("daftarAlatReuseTambahan")
 var nowDateObj = new Date();
 document.getElementById("pilihBulanSuhuRekap").value = String(nowDateObj.getMonth() + 1).padStart(2, "0");
 
+/* ===== MASTER DATA KOSONG / SIAP DISUSUN ULANG ===== */
 function buatKartuDetailMaster(item){
   var card = document.createElement("div");
   card.className = "master-card";
-
-  var head = document.createElement("div");
-  head.className = "master-card-head";
-  head.innerHTML =
+  card.innerHTML =
+    '<div class="master-card-head">' +
     '<div class="master-card-title">' + item.nama + '</div>' +
-    '<span class="master-badge">' + (item.kategori || item.satuan || "Info") + '</span>';
-  card.appendChild(head);
-
-  if(item.komponen && item.komponen.length > 0){
-    var kompBox = document.createElement("div");
-    kompBox.className = "master-komp-list";
-    item.komponen.forEach(function(k){
-      var row = document.createElement("div");
-      row.className = "master-komp-row";
-      row.innerHTML = '<span>' + k.nama + '</span><strong>' + k.jumlah + '</strong>';
-      kompBox.appendChild(row);
-    });
-    card.appendChild(kompBox);
-  }
-
-  if(item.catatan){
-    var cat = document.createElement("div");
-    cat.className = "master-catatan";
-    cat.textContent = item.catatan;
-    card.appendChild(cat);
-  }
+    '<span class="master-badge">' + (item.kategori || item.satuan || "Info") + '</span>' +
+    '</div>';
   return card;
 }
 
@@ -4009,7 +3173,7 @@ function isiPilihanItemDariKategori(){
   selectItem.innerHTML = '<option value="">Pilih alat / set</option>';
   if(!kategori){ areaItem.style.display = "none"; return; }
   var items = MASTER_INFO_DATA.filter(function(x){ return x.kategori === kategori; });
-  areaItem.style.display = "block";
+  areaItem.style.display = items.length ? "block" : "none";
   items.forEach(function(item){
     var opt = document.createElement("option");
     opt.value = item.id;
@@ -4019,28 +3183,8 @@ function isiPilihanItemDariKategori(){
 }
 
 function jalankanPencarianMaster(){
-  var kataKunci = (document.getElementById("cariMaster").value || "").trim().toLowerCase();
   var detailBox = document.getElementById("hasilDetailMaster");
-  document.getElementById("filterKategoriMaster").value = "";
-  document.getElementById("areaPilihanItemMaster").style.display = "none";
-  detailBox.innerHTML = "";
-  if(!kataKunci){
-    detailBox.innerHTML = '<div class="master-card" style="text-align:center;color:#8b7562">Ketik nama alat, set, atau isi komponen lalu tekan 🔍 Cari.</div>';
-    return;
-  }
-  var hasil = MASTER_INFO_DATA.filter(function(item){
-    return (item.nama || "").toLowerCase().includes(kataKunci) ||
-           (item.kategori || "").toLowerCase().includes(kataKunci) ||
-           (item.catatan || "").toLowerCase().includes(kataKunci) ||
-           (item.komponen || []).some(function(k){
-             return (k.nama || "").toLowerCase().includes(kataKunci) || (k.jumlah || "").toLowerCase().includes(kataKunci);
-           });
-  });
-  if(hasil.length === 0){
-    detailBox.innerHTML = '<div class="master-card" style="text-align:center;color:#8b7562">Tidak ditemukan informasi untuk "' + document.getElementById("cariMaster").value + '".</div>';
-    return;
-  }
-  hasil.forEach(function(item){ detailBox.appendChild(buatKartuDetailMaster(item)); });
+  detailBox.innerHTML = '<div class="master-card" style="text-align:center;color:#8b7562">Master Data Alat &amp; Set masih kosong dan siap disusun ulang.</div>';
 }
 
 document.getElementById("btnCariMaster").onclick = jalankanPencarianMaster;
@@ -4331,6 +3475,10 @@ window.gantiMenuRuangan = function(menu){
 window.renderParstokRuangan = function(){
   const el = document.getElementById("gridParstokRuangan");
   if(!el) return;
+  if(state.gudang.length === 0){
+    el.innerHTML = `<p class="muted-ui">Master data alat &amp; set masih kosong. Siap disusun ulang.</p>`;
+    return;
+  }
   el.innerHTML = state.gudang.map(item => `
     <div class="stock-card">
       <div class="stock-cat">${item.kategori || "MASTER"}</div>
@@ -4561,14 +3709,16 @@ window.renderKomponenRetur = function(){
 
   const prevVal = setSel.value;
   const setOnly = state.gudang.filter(g => g.wajibKembali);
-  setSel.innerHTML = setOnly.map(g => `<option value="${g.nama}">${g.nama}</option>`).join("");
+  setSel.innerHTML = setOnly.length
+    ? setOnly.map(g => `<option value="${g.nama}">${g.nama}</option>`).join("")
+    : `<option value="">Belum ada set/alat di master</option>`;
   if(prevVal && setOnly.some(g => g.nama === prevVal)){
     setSel.value = prevVal;
   }
 
   const master = state.gudang.find(g => g.nama === setSel.value);
   if(!master || !master.komponen || master.komponen.length === 0){
-    container.innerHTML = `<div class="muted-ui">Tidak ada komponen instrumen khusus untuk item ini.</div>`;
+    container.innerHTML = `<div class="muted-ui">Tidak ada komponen instrumen terdaftar untuk item ini.</div>`;
     return;
   }
 
@@ -4584,6 +3734,10 @@ window.submitPenerimaanAlat = function(e){
   e.preventDefault();
   const unit = document.getElementById("retUnitSelect").value;
   const namaAlat = document.getElementById("retSetSelect").value;
+  if(!namaAlat){
+    alert("Belum ada alat/set pada master data.");
+    return;
+  }
   const jumlahKembali = Number(document.getElementById("retJumlahSetInput").value || 0);
   const petugasRuangan = document.getElementById("retPetugasRuanganInput").value.trim();
   const waktu = document.getElementById("retWaktuInput").value;
@@ -4648,6 +3802,10 @@ window.renderJejakPengembalianCssd = function(){
 window.renderParstokCssd = function(){
   const el = document.getElementById("gridParstokCssd");
   if(!el) return;
+  if(state.gudang.length === 0){
+    el.innerHTML = `<p class="muted-ui">Master data alat &amp; set masih kosong. Siap disusun ulang.</p>`;
+    return;
+  }
   const filterKat = document.getElementById("filterKategoriGudang")?.value || "ALL";
   const rows = state.gudang
     .map((item, realIdx) => ({ item, realIdx }))
@@ -4773,6 +3931,7 @@ window.cetakSatuKartuQr = function(token){
 };
 
 window.refreshAllViews = function(){
+  sinkronkanDropdownAlatDariMaster();
   renderKomponenRetur();
   renderParstokRuangan();
   renderParstokCssd();
@@ -4953,7 +4112,7 @@ document.getElementById("tutupMutu").onclick = function(){ tutupSemuaSubmenuKeBe
 document.getElementById("homeReuse").onclick = function(){ bukaSubmenuDariBeranda("isiReuse"); };
 document.getElementById("tutupReuse").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
 
-/* ===== SIMPAN & RIWAYAT MUTU, REUSE, SUHU ===== */
+/* ===== SIMPAN & RIWAYAT MUTU, REUSE, SUHU (TIDAK DIGANGGU) ===== */
 document.getElementById("simpanMutu").onclick = async function(){
   var tanggal = document.getElementById("tanggalMutu").value;
   var jam = document.getElementById("jamMutu").value;
@@ -5794,39 +4953,103 @@ document.getElementById("btnTampilkanRekap").onclick = async function(){
       hasil.innerHTML = '<div class="rekap-item-card" style="text-align:center;color:#8b7562">Pilih nama pelaksana CSSD terlebih dahulu.</div>';
       return;
     }
-    var cAkt = dataAktivitas.filter(function(d){ return d.petugas === pilihPetugas; }).length;
-    var cDist = dataDistribusi.filter(function(d){ return d.petugas === pilihPetugas; }).length;
-    var cTerim = dataPenerimaan.filter(function(d){ return d.petugas === pilihPetugas; }).length;
-    var cDekon = dataDekon.filter(function(d){ return d.petugas === pilihPetugas; }).length;
-    var cPack = dataPacking.filter(function(d){ return d.petugas === pilihPetugas; }).length;
-    var cSteril = dataSteril.filter(function(d){ return d.petugas === pilihPetugas; }).length;
-    var cSuhu = dataSuhu.filter(function(d){ return d.petugas === pilihPetugas; }).length;
-    var cMutu = dataMutu.filter(function(d){ return d.petugasPelapor === pilihPetugas; }).length;
-    var cReuse = dataReuse.filter(function(d){ return d.petugas === pilihPetugas; }).length;
-    var totalCatatanPetugas = cAkt + cDist + cTerim + cDekon + cPack + cSteril + cSuhu + cMutu + cReuse;
+    var semuaDocs = []
+      .concat(dataAktivitas.map(function(x){ x._jenis = "Aktivitas"; return x; }))
+      .concat(dataDistribusi.map(function(x){ x._jenis = "Distribusi"; return x; }))
+      .concat(dataPenerimaan.map(function(x){ x._jenis = "Penerimaan"; return x; }))
+      .concat(dataDekon.map(function(x){ x._jenis = "Dekontaminasi"; return x; }))
+      .concat(dataPacking.map(function(x){ x._jenis = "Packing"; return x; }))
+      .concat(dataSteril.map(function(x){ x._jenis = "Sterilisasi"; return x; }))
+      .concat(dataSuhu.map(function(x){ x._jenis = "Suhu"; return x; }))
+      .concat(dataMutu.map(function(x){ x._jenis = "Mutu"; return x; }))
+      .concat(dataReuse.map(function(x){ x._jenis = "Reuse"; return x; }));
 
-    TERAKHIR_CSV_ROWS = [
-      ["Petugas", "Periode", "Aktivitas", "Distribusi", "Penerimaan", "Dekon", "Packing", "Sterilisasi", "Suhu", "Mutu", "Reuse", "Total"],
-      [pilihPetugas, periode, cAkt, cDist, cTerim, cDekon, cPack, cSteril, cSuhu, cMutu, cReuse, totalCatatanPetugas]
-    ];
+    var milikPetugas = semuaDocs.filter(function(d){
+      var namaDoc = d.petugas || d.petugasPelapor || "";
+      return String(namaDoc).trim().toLowerCase() === pilihPetugas.trim().toLowerCase();
+    });
 
-    html += '<div class="rekap-item-card"><div class="rekap-item-head"><div class="rekap-item-title">👤 ' + pilihPetugas + '</div><span class="rekap-item-badge">Total: ' + totalCatatanPetugas + '</span></div><div style="font-size:12px;color:#65482f;line-height:1.7">Aktivitas: <strong>' + cAkt + '</strong> • Distribusi: <strong>' + cDist + '</strong> • Penerimaan: <strong>' + cTerim + '</strong><br>Dekontaminasi: <strong>' + cDekon + '</strong> • Packing: <strong>' + cPack + '</strong> • Sterilisasi: <strong>' + cSteril + '</strong><br>Suhu: <strong>' + cSuhu + '</strong> • Mutu: <strong>' + cMutu + '</strong> • Reuse: <strong>' + cReuse + '</strong></div></div>';
-
-    var distPetugas = [
-      { label: "Distribusi", value: cDist },
-      { label: "Penerimaan", value: cTerim },
-      { label: "Dekon", value: cDekon },
-      { label: "Packing", value: cPack },
-      { label: "Sterilisasi", value: cSteril },
-      { label: "Lainnya", value: cAkt + cSuhu + cMutu + cReuse }
-    ];
-    html += renderKumpulanDiagram("Kinerja " + pilihPetugas + " (" + periode + ")", distPetugas, distPetugas);
+    TERAKHIR_CSV_ROWS = [["Petugas", "Jenis Catatan", "Tanggal", "Jam", "Jumlah / Keterangan"]];
+    milikPetugas.forEach(function(d){
+      var ket = d._jenis === "Suhu"
+        ? (d.area + " (" + d.suhu + ", " + d.kelembaban + ")")
+        : d._jenis === "Mutu"
+          ? (d.jenisTemuan || "-")
+          : ("Qty: " + getQtyItems(d));
+      TERAKHIR_CSV_ROWS.push([pilihPetugas, d._jenis, d.tanggal || "-", d.jam || d.waktu || "-", ket]);
+      html += '<div class="rekap-item-card"><div class="rekap-item-head"><div class="rekap-item-title">👤 ' + d._jenis + '</div><span class="rekap-item-badge">' + (d.tanggal || "-") + '</span></div><div style="font-size:12px;color:#65482f">' + ket + '</div></div>';
+    });
+    if(milikPetugas.length === 0){
+      html += '<div class="rekap-item-card" style="text-align:center;color:#8b7562">Belum ada catatan untuk ' + pilihPetugas + ' pada periode ' + periode + '.</div>';
+    }
   }
 
-  hasil.innerHTML = html || '<div class="rekap-item-card" style="text-align:center;color:#8b7562">Tidak ada data untuk ditampilkan.</div>';
+  hasil.innerHTML = html;
 };
 
-/* ===== SIMPAN & RIWAYAT DISTRIBUSI, PENERIMAAN, DEKON, PACKING, STERILISASI, AKTIVITAS ===== */
+/* ===== SIMPAN & RIWAYAT PROSES CSSD ===== */
+document.getElementById("simpanAktivitas").onclick = async function(){
+  var tanggal = document.getElementById("tanggalAktivitas").value;
+  var jam = document.getElementById("jamAktivitas").value;
+  var petugas = document.getElementById("petugasAktivitas").value;
+  var unit = document.getElementById("unitAktivitas").value;
+  var jenisAktivitas = document.getElementById("jenisAktivitas").value;
+  var namaAlat = document.getElementById("namaAlat").value;
+  var jumlah = document.getElementById("jumlahAlat").value;
+  var kondisi = document.getElementById("kondisiAlat").value;
+  var statusPekerjaan = document.getElementById("statusAktivitas").value;
+  var catatan = document.getElementById("catatanAktivitas").value;
+
+  if(!tanggal || !jam || !petugas || !unit || !jenisAktivitas || !namaAlat || !jumlah || !kondisi || !statusPekerjaan){
+    document.getElementById("pesanAktivitas").innerText = "Lengkapi seluruh kolom wajib terlebih dahulu.";
+    return;
+  }
+
+  try{
+    await addDoc(collection(firebaseDb, "aktivitasCssd"), {
+      tanggal, jam, petugas, unit, jenisAktivitas, namaAlat, jumlah: Number(jumlah), kondisi, statusPekerjaan, catatan,
+      dibuatPada: serverTimestamp(),
+      userId: firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : penggunaAktif.username
+    });
+    document.getElementById("pesanAktivitas").innerText = "✓ Aktivitas berhasil disimpan.";
+    ["tanggalAktivitas","jamAktivitas","unitAktivitas","jenisAktivitas","namaAlat","jumlahAlat","kondisiAlat","statusAktivitas","catatanAktivitas"]
+      .forEach(id => document.getElementById(id).value = "");
+  }catch(error){
+    console.log(error);
+    document.getElementById("pesanAktivitas").innerText = "Aktivitas gagal disimpan: " + error.code;
+  }
+};
+
+document.getElementById("lihatRiwayat").onclick = async function(){
+  var pesan = document.getElementById("pesanAktivitas");
+  pesan.innerHTML = "Memuat riwayat...";
+  try{
+    var q = query(collection(firebaseDb, "aktivitasCssd"), orderBy("dibuatPada", "desc"));
+    var dataRiwayat = await getDocs(q);
+    pesan.innerHTML = "";
+    var jumlahPribadi = 0;
+    dataRiwayat.forEach(function(dokumen){
+      var data = dokumen.data();
+      if(data.petugas !== penggunaAktif.nama) return;
+      jumlahPribadi++;
+      var kartu = document.createElement("div");
+      kartu.style.cssText = "background:white;border:1px solid #d9e4df;border-radius:14px;padding:14px;margin-bottom:12px;text-align:left;color:#12372e;";
+      kartu.innerHTML =
+        `<strong style="display:block;font-size:15px;color:#047857;margin-bottom:4px;">${data.jenisAktivitas}</strong>` +
+        `<p style="font-size:12px;color:#64748b;margin:2px 0 8px;">${data.tanggal} • ${data.jam} • ${data.unit}</p>` +
+        `<p style="font-size:14px;margin:4px 0;">Alat: <strong>${data.namaAlat}</strong> (${data.jumlah})</p>` +
+        `<span style="display:inline-block;margin-top:6px;padding:4px 10px;background:#ecfdf5;color:#047857;border-radius:999px;font-size:12px;font-weight:bold;">${data.statusPekerjaan}</span>` +
+        `<p style="margin-top:8px;font-size:12px;color:#475569;">Petugas: ${data.petugas}</p>` +
+        (data.catatan ? `<p style="background:#f8fbfa;padding:8px;border-radius:8px;font-size:12px;margin-top:6px;">Catatan: ${data.catatan}</p>` : "");
+      pesan.appendChild(kartu);
+    });
+    if(jumlahPribadi === 0) pesan.innerHTML = "Belum ada riwayat aktivitas Anda.";
+  }catch(error){
+    console.log(error);
+    pesan.innerHTML = "Riwayat gagal dimuat.";
+  }
+};
+
 document.getElementById("simpanDistribusi").onclick = async function(){
   var tanggal = document.getElementById("tanggalDistribusi").value;
   var jam = document.getElementById("jamDistribusi").value;
@@ -5834,26 +5057,26 @@ document.getElementById("simpanDistribusi").onclick = async function(){
   var alat = document.getElementById("alatDistribusi").value;
   var jumlah = document.getElementById("jumlahDistribusi").value;
   var petugas = document.getElementById("petugasDistribusi").value;
-  var penerima = document.getElementById("petugasPenerima").value;
-  var status = document.getElementById("statusDistribusi").value;
+  var petugasPenerima = document.getElementById("petugasPenerima").value;
+  var statusPenerimaan = document.getElementById("statusDistribusi").value;
   var catatan = document.getElementById("catatanDistribusi").value;
 
   var items = [];
   if(alat && jumlah) items.push({ alat: alat, jumlah: Number(jumlah) });
   document.querySelectorAll("#daftarAlatTambahan > div").forEach(function(item){
-    var nama = item.querySelector(".alatDistribusiTambahan").value;
-    var banyak = item.querySelector(".jumlahDistribusiTambahan").value;
-    if(nama && banyak) items.push({ alat: nama, jumlah: Number(banyak) });
+    var namaAlat = item.querySelector(".alatDistribusiTambahan").value;
+    var banyakAlat = item.querySelector(".jumlahDistribusiTambahan").value;
+    if(namaAlat && banyakAlat) items.push({ alat: namaAlat, jumlah: Number(banyakAlat) });
   });
 
-  if(!tanggal || !jam || !ruang || items.length === 0 || !petugas || !penerima || !status){
+  if(!tanggal || !jam || !ruang || !petugas || !petugasPenerima || !statusPenerimaan || items.length === 0){
     document.getElementById("pesanDistribusi").innerText = "Lengkapi data distribusi dan minimal 1 alat beserta jumlahnya.";
     return;
   }
 
   try{
     await addDoc(collection(firebaseDb, "distribusiAlat"), {
-      tanggal, jam, ruang, items, petugas, penerima, status, catatan,
+      tanggal, jam, ruang, petugas, petugasPenerima, statusPenerimaan, catatan, items,
       dibuatPada: serverTimestamp(),
       userId: firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : penggunaAktif.username
     });
@@ -5882,18 +5105,18 @@ document.getElementById("riwayatDistribusi").onclick = async function(){
       if(data.petugas !== penggunaAktif.nama) return;
       jumlahPribadi++;
       var itemsHtml = (data.items || []).map(item =>
-        `<div style="background:#f6faf8;border:1px solid #e1ede8;padding:9px 11px;border-radius:10px;margin-bottom:6px;color:#3d5c54;font-size:13px;">• ${item.alat} — Jumlah: ${item.jumlah}</div>`
+        `<div style="background:#f3faf7;border:1px solid #d4e8df;padding:8px 10px;border-radius:9px;margin-bottom:6px;color:#3f7166;font-size:13px;">• ${item.alat} — Jumlah: ${item.jumlah}</div>`
       ).join("");
       var kartu = document.createElement("div");
-      kartu.style.cssText = "background:linear-gradient(145deg,#ffffff,#f7fbf9);border:1px solid #dcece6;border-radius:18px;padding:18px;margin-bottom:14px;";
+      kartu.style.cssText = "background:#ffffff;border:1px solid #dcece6;border-radius:16px;padding:16px;margin-bottom:12px;";
       kartu.innerHTML =
-        `<strong style="display:block;font-size:17px;color:#3f7166;margin-bottom:6px;">📦 ${data.ruang}</strong>` +
-        `<p style="font-size:13px;color:#788e88;margin:4px 0 14px;">${data.tanggal} • ${data.jam}</p>` +
+        `<strong style="display:block;font-size:16px;color:#3f7166;margin-bottom:4px;">${data.ruang}</strong>` +
+        `<p style="font-size:12px;color:#647a74;margin:2px 0 10px;">${data.tanggal} • ${data.jam}</p>` +
         `<div>${itemsHtml}</div>` +
-        `<span style="display:inline-block;margin:8px 0 4px;padding:6px 10px;background:#e4f3ee;color:#3d7066;border-radius:999px;font-size:12px;font-weight:700;">Status: ${data.status}</span>` +
-        `<p style="margin:12px 0 4px;font-size:13px;color:#3d5c54;font-weight:600;">Petugas CSSD: ${data.petugas}</p>` +
-        `<p style="margin:0;font-size:13px;color:#5f7770;">Petugas Penerima: ${data.penerima}</p>` +
-        (data.catatan ? `<p style="background:#f8fbfa;border-left:2px solid #96c4b7;padding:9px 11px;border-radius:8px;font-size:12px;color:#5a706a;margin:10px 0 0;">Catatan: ${data.catatan}</p>` : "");
+        `<span style="display:inline-block;margin:8px 0 4px;padding:5px 10px;background:#e5f3ee;color:#3f7166;border-radius:999px;font-size:12px;font-weight:700;">${data.statusPenerimaan}</span>` +
+        `<p style="margin:8px 0 2px;font-size:13px;color:#3f7166;">Petugas CSSD: <strong>${data.petugas}</strong></p>` +
+        `<p style="margin:2px 0;font-size:13px;color:#4f6962;">Petugas Penerima: <strong>${data.petugasPenerima}</strong></p>` +
+        (data.catatan ? `<p style="background:#f7fbf9;border-left:2px solid #8cb8aa;padding:8px 10px;border-radius:8px;font-size:12px;color:#556e67;margin-top:8px;">Catatan: ${data.catatan}</p>` : "");
       hasilRiwayat.appendChild(kartu);
     });
     if(jumlahPribadi === 0) hasilRiwayat.innerHTML = "Belum ada riwayat distribusi Anda.";
@@ -5911,26 +5134,26 @@ document.getElementById("simpanPenerimaan").onclick = async function(){
   var jumlah = document.getElementById("jumlahPenerimaan").value;
   var kondisi = document.getElementById("kondisiPenerimaan").value;
   var petugas = document.getElementById("petugasPenerimaan").value;
-  var menyerahkan = document.getElementById("petugasMenyerahkan").value;
+  var petugasMenyerahkan = document.getElementById("petugasMenyerahkan").value;
   var catatan = document.getElementById("catatanPenerimaan").value;
 
   var items = [];
   if(alat && jumlah && kondisi) items.push({ alat: alat, jumlah: Number(jumlah), kondisi: kondisi });
   document.querySelectorAll("#daftarAlatPenerimaanTambahan > div").forEach(function(item){
-    var nama = item.querySelector(".alatPenerimaanTambahan").value;
-    var banyak = item.querySelector(".jumlahPenerimaanTambahan").value;
-    var cond = item.querySelector(".kondisiPenerimaanTambahan").value;
-    if(nama && banyak && cond) items.push({ alat: nama, jumlah: Number(banyak), kondisi: cond });
+    var namaAlat = item.querySelector(".alatPenerimaanTambahan").value;
+    var banyakAlat = item.querySelector(".jumlahPenerimaanTambahan").value;
+    var kondisiAlat = item.querySelector(".kondisiPenerimaanTambahan").value;
+    if(namaAlat && banyakAlat && kondisiAlat) items.push({ alat: namaAlat, jumlah: Number(banyakAlat), kondisi: kondisiAlat });
   });
 
-  if(!tanggal || !jam || !ruang || items.length === 0 || !petugas || !menyerahkan){
+  if(!tanggal || !jam || !ruang || !petugas || !petugasMenyerahkan || items.length === 0){
     document.getElementById("pesanPenerimaan").innerText = "Lengkapi data penerimaan dan minimal 1 alat beserta jumlah serta kondisinya.";
     return;
   }
 
   try{
     await addDoc(collection(firebaseDb, "penerimaanAlatKotor"), {
-      tanggal, jam, ruang, items, petugas, menyerahkan, catatan,
+      tanggal, jam, ruang, petugas, petugasMenyerahkan, catatan, items,
       dibuatPada: serverTimestamp(),
       userId: firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : penggunaAktif.username
     });
@@ -5940,7 +5163,7 @@ document.getElementById("simpanPenerimaan").onclick = async function(){
     daftarAlatPenerimaanTambahan.innerHTML = "";
   }catch(error){
     console.log(error);
-    document.getElementById("pesanPenerimaan").innerText = "Penerimaan gagal disimpan: " + error.code;
+    document.getElementById("pesanPenerimaan").innerText = "Penerimaan alat kotor gagal disimpan: " + error.code;
   }
 };
 
@@ -5948,7 +5171,7 @@ document.getElementById("riwayatPenerimaan").onclick = async function(){
   var hasilRiwayat = document.getElementById("hasilRiwayatPenerimaan");
   if(hasilRiwayat.style.display === "block"){ hasilRiwayat.style.display = "none"; return; }
   hasilRiwayat.style.display = "block";
-  hasilRiwayat.innerHTML = "Memuat riwayat penerimaan...";
+  hasilRiwayat.innerHTML = "Memuat riwayat penerimaan alat kotor...";
   try{
     var qTerim = query(collection(firebaseDb, "penerimaanAlatKotor"), orderBy("dibuatPada", "desc"));
     var dataTerim = await getDocs(qTerim);
@@ -5959,23 +5182,23 @@ document.getElementById("riwayatPenerimaan").onclick = async function(){
       if(data.petugas !== penggunaAktif.nama) return;
       jumlahPribadi++;
       var itemsHtml = (data.items || []).map(item =>
-        `<div style="background:#fffaf9;border:1px solid #f2dfdb;padding:9px 11px;border-radius:10px;margin-bottom:6px;color:#6e4943;font-size:13px;">• ${item.alat} — Jumlah: ${item.jumlah} (${item.kondisi})</div>`
+        `<div style="background:#fff4f1;border:1px solid #f0d8d3;padding:8px 10px;border-radius:9px;margin-bottom:6px;color:#8a544b;font-size:13px;">• ${item.alat} — Jumlah: ${item.jumlah} — Kondisi: <strong>${item.kondisi}</strong></div>`
       ).join("");
       var kartu = document.createElement("div");
-      kartu.style.cssText = "background:linear-gradient(145deg,#ffffff,#fff8f6);border:1px solid #f2dfdb;border-radius:18px;padding:18px;margin-bottom:14px;";
+      kartu.style.cssText = "background:#ffffff;border:1px solid #f0dcd8;border-radius:16px;padding:16px;margin-bottom:12px;";
       kartu.innerHTML =
-        `<strong style="display:block;font-size:17px;color:#8a544b;margin-bottom:6px;">🧺 ${data.ruang}</strong>` +
-        `<p style="font-size:13px;color:#9c7a74;margin:4px 0 14px;">${data.tanggal} • ${data.jam}</p>` +
+        `<strong style="display:block;font-size:16px;color:#8a544b;margin-bottom:4px;">${data.ruang}</strong>` +
+        `<p style="font-size:12px;color:#9c756e;margin:2px 0 10px;">${data.tanggal} • ${data.jam}</p>` +
         `<div>${itemsHtml}</div>` +
-        `<p style="margin:12px 0 4px;font-size:13px;color:#6e4943;font-weight:600;">Petugas CSSD: ${data.petugas}</p>` +
-        `<p style="margin:0;font-size:13px;color:#8a6b65;">Diserahkan oleh: ${data.menyerahkan}</p>` +
-        (data.catatan ? `<p style="background:#fff8f6;border-left:2px solid #d4968c;padding:9px 11px;border-radius:8px;font-size:12px;color:#7d625d;margin:10px 0 0;">Catatan: ${data.catatan}</p>` : "");
+        `<p style="margin:8px 0 2px;font-size:13px;color:#8a544b;">Petugas CSSD: <strong>${data.petugas}</strong></p>` +
+        `<p style="margin:2px 0;font-size:13px;color:#7a5b55;">Petugas Menyerahkan: <strong>${data.petugasMenyerahkan}</strong></p>` +
+        (data.catatan ? `<p style="background:#fff9f8;border-left:2px solid #c9857b;padding:8px 10px;border-radius:8px;font-size:12px;color:#7c5e58;margin-top:8px;">Catatan: ${data.catatan}</p>` : "");
       hasilRiwayat.appendChild(kartu);
     });
-    if(jumlahPribadi === 0) hasilRiwayat.innerHTML = "Belum ada riwayat penerimaan Anda.";
+    if(jumlahPribadi === 0) hasilRiwayat.innerHTML = "Belum ada riwayat penerimaan alat kotor Anda.";
   }catch(error){
     console.log(error);
-    hasilRiwayat.innerHTML = "Riwayat penerimaan gagal dimuat.";
+    hasilRiwayat.innerHTML = "Riwayat penerimaan alat kotor gagal dimuat.";
   }
 };
 
@@ -5991,19 +5214,19 @@ document.getElementById("simpanDekontaminasi").onclick = async function(){
   var items = [];
   if(alat && jumlah) items.push({ alat: alat, jumlah: Number(jumlah) });
   document.querySelectorAll("#daftarAlatDekontaminasiTambahan > div").forEach(function(item){
-    var nama = item.querySelector(".alatDekontaminasiTambahan").value;
-    var banyak = item.querySelector(".jumlahDekontaminasiTambahan").value;
-    if(nama && banyak) items.push({ alat: nama, jumlah: Number(banyak) });
+    var namaAlat = item.querySelector(".alatDekontaminasiTambahan").value;
+    var banyakAlat = item.querySelector(".jumlahDekontaminasiTambahan").value;
+    if(namaAlat && banyakAlat) items.push({ alat: namaAlat, jumlah: Number(banyakAlat) });
   });
 
-  if(!tanggal || !jam || !petugas || items.length === 0 || !metode){
-    document.getElementById("pesanDekontaminasi").innerText = "Lengkapi data dekontaminasi, metode, dan minimal 1 alat beserta jumlahnya.";
+  if(!tanggal || !jam || !petugas || !metode || items.length === 0){
+    document.getElementById("pesanDekontaminasi").innerText = "Lengkapi data dekontaminasi dan minimal 1 alat beserta jumlahnya.";
     return;
   }
 
   try{
     await addDoc(collection(firebaseDb, "dekontaminasiAlat"), {
-      tanggal, jam, petugas, items, metode, catatan,
+      tanggal, jam, petugas, metode, catatan, items,
       dibuatPada: serverTimestamp(),
       userId: firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : penggunaAktif.username
     });
@@ -6032,16 +5255,17 @@ document.getElementById("riwayatDekontaminasi").onclick = async function(){
       if(data.petugas !== penggunaAktif.nama) return;
       jumlahPribadi++;
       var itemsHtml = (data.items || []).map(item =>
-        `<div style="background:#fffaf9;border:1px solid #f2dfdb;padding:9px 11px;border-radius:10px;margin-bottom:6px;color:#6e4943;font-size:13px;">• ${item.alat} — Jumlah: ${item.jumlah}</div>`
+        `<div style="background:#fff4f1;border:1px solid #f0d8d3;padding:8px 10px;border-radius:9px;margin-bottom:6px;color:#8a544b;font-size:13px;">• ${item.alat} — Jumlah: ${item.jumlah}</div>`
       ).join("");
       var kartu = document.createElement("div");
-      kartu.style.cssText = "background:linear-gradient(145deg,#ffffff,#fff8f6);border:1px solid #f2dfdb;border-radius:18px;padding:18px;margin-bottom:14px;";
+      kartu.style.cssText = "background:#ffffff;border:1px solid #f0dcd8;border-radius:16px;padding:16px;margin-bottom:12px;";
       kartu.innerHTML =
-        `<strong style="display:block;font-size:17px;color:#8a544b;margin-bottom:6px;">🧼 ${data.metode}</strong>` +
-        `<p style="font-size:13px;color:#9c7a74;margin:4px 0 14px;">${data.tanggal} • ${data.jam}</p>` +
+        `<strong style="display:block;font-size:16px;color:#8a544b;margin-bottom:4px;">Dekontaminasi</strong>` +
+        `<p style="font-size:12px;color:#9c756e;margin:2px 0 10px;">${data.tanggal} • ${data.jam}</p>` +
         `<div>${itemsHtml}</div>` +
-        `<p style="margin:12px 0 4px;font-size:13px;color:#6e4943;font-weight:600;">Petugas CSSD: ${data.petugas}</p>` +
-        (data.catatan ? `<p style="background:#fff8f6;border-left:2px solid #d4968c;padding:9px 11px;border-radius:8px;font-size:12px;color:#7d625d;margin:10px 0 0;">Catatan: ${data.catatan}</p>` : "");
+        `<span style="display:inline-block;margin:8px 0 4px;padding:5px 10px;background:#fde9e5;color:#8a544b;border-radius:999px;font-size:12px;font-weight:700;">Metode: ${data.metode}</span>` +
+        `<p style="margin:8px 0 2px;font-size:13px;color:#8a544b;">Petugas CSSD: <strong>${data.petugas}</strong></p>` +
+        (data.catatan ? `<p style="background:#fff9f8;border-left:2px solid #c9857b;padding:8px 10px;border-radius:8px;font-size:12px;color:#7c5e58;margin-top:8px;">Catatan: ${data.catatan}</p>` : "");
       hasilRiwayat.appendChild(kartu);
     });
     if(jumlahPribadi === 0) hasilRiwayat.innerHTML = "Belum ada riwayat dekontaminasi Anda.";
@@ -6065,28 +5289,28 @@ document.getElementById("simpanPacking").onclick = async function(){
 
   var items = [];
   if(alat && jumlah && kondisi && kemasan && indikatorTinggi && indikatorRendah){
-    items.push({ alat: alat, jumlah: Number(jumlah), kondisi: kondisi, kemasan: kemasan, indikatorTinggi: indikatorTinggi, indikatorRendah: indikatorRendah });
+    items.push({ alat, jumlah: Number(jumlah), kondisi, kemasan, indikatorTinggi, indikatorRendah });
   }
   document.querySelectorAll("#daftarAlatPackingTambahan > div").forEach(function(item){
-    var nama = item.querySelector(".alatPackingTambahan").value;
-    var banyak = item.querySelector(".jumlahPackingTambahan").value;
-    var cond = item.querySelector(".kondisiPackingTambahan").value;
-    var pack = item.querySelector(".kemasanPackingTambahan").value;
-    var indT = item.querySelector(".indikatorTinggiPackingTambahan").value;
-    var indR = item.querySelector(".indikatorRendahPackingTambahan").value;
-    if(nama && banyak && cond && pack && indT && indR){
-      items.push({ alat: nama, jumlah: Number(banyak), kondisi: cond, kemasan: pack, indikatorTinggi: indT, indikatorRendah: indR });
+    var namaAlat = item.querySelector(".alatPackingTambahan").value;
+    var banyakAlat = item.querySelector(".jumlahPackingTambahan").value;
+    var kondisiAlat = item.querySelector(".kondisiPackingTambahan").value;
+    var jenisKemasan = item.querySelector(".kemasanPackingTambahan").value;
+    var indTinggi = item.querySelector(".indikatorTinggiPackingTambahan").value;
+    var indRendah = item.querySelector(".indikatorRendahPackingTambahan").value;
+    if(namaAlat && banyakAlat && kondisiAlat && jenisKemasan && indTinggi && indRendah){
+      items.push({ alat: namaAlat, jumlah: Number(banyakAlat), kondisi: kondisiAlat, kemasan: jenisKemasan, indikatorTinggi: indTinggi, indikatorRendah: indRendah });
     }
   });
 
   if(!tanggal || !waktu || !petugas || items.length === 0){
-    document.getElementById("pesanPacking").innerText = "Lengkapi data packing dan minimal 1 alat beserta jumlah, kondisi, kemasan, dan indikatornya.";
+    document.getElementById("pesanPacking").innerText = "Lengkapi data packing, indikator suhu tinggi/rendah, dan minimal 1 alat beserta jumlah, kondisi, serta kemasannya.";
     return;
   }
 
   try{
     await addDoc(collection(firebaseDb, "packingAlat"), {
-      tanggal, waktu, petugas, items, catatan,
+      tanggal, waktu, petugas, catatan, items,
       dibuatPada: serverTimestamp(),
       userId: firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : penggunaAktif.username
     });
@@ -6115,16 +5339,16 @@ document.getElementById("riwayatPacking").onclick = async function(){
       if(data.petugas !== penggunaAktif.nama) return;
       jumlahPribadi++;
       var itemsHtml = (data.items || []).map(item =>
-        `<div style="background:#f7fbff;border:1px solid #ddeaf7;padding:10px 12px;border-radius:11px;margin-bottom:7px;color:#46698a;font-size:13px;line-height:1.6;">• <strong>${item.alat}</strong> — Jumlah: ${item.jumlah}<br>Kondisi: ${item.kondisi} • Kemasan: ${item.kemasan}<br>Indikator Suhu Tinggi: ${item.indikatorTinggi || "-"} • Indikator Suhu Rendah: ${item.indikatorRendah || "-"}</div>`
+        `<div style="background:#f2f7fd;border:1px solid #d5e5f6;padding:8px 10px;border-radius:9px;margin-bottom:6px;color:#4f779c;font-size:13px;">• ${item.alat} — Jumlah: ${item.jumlah} — Kondisi: <strong>${item.kondisi}</strong> — Kemasan: <strong>${item.kemasan}</strong><br><span style="font-size:12px;color:#5f85a8;">Indikator Suhu Tinggi: <strong>${item.indikatorTinggi || "-"}</strong> • Indikator Suhu Rendah: <strong>${item.indikatorRendah || "-"}</strong></span></div>`
       ).join("");
       var kartu = document.createElement("div");
-      kartu.style.cssText = "background:linear-gradient(145deg,#ffffff,#f5f9ff);border:1px solid #ddeaf7;border-radius:18px;padding:18px;margin-bottom:14px;";
+      kartu.style.cssText = "background:#ffffff;border:1px solid #dce8f5;border-radius:16px;padding:16px;margin-bottom:12px;";
       kartu.innerHTML =
-        `<strong style="display:block;font-size:17px;color:#486f94;margin-bottom:6px;">📋 Packing Alat</strong>` +
-        `<p style="font-size:13px;color:#7792ad;margin:4px 0 14px;">${data.tanggal} • ${data.waktu}</p>` +
+        `<strong style="display:block;font-size:16px;color:#4f779c;margin-bottom:4px;">Packing</strong>` +
+        `<p style="font-size:12px;color:#7492ae;margin:2px 0 10px;">${data.tanggal} • ${data.waktu}</p>` +
         `<div>${itemsHtml}</div>` +
-        `<p style="margin:12px 0 4px;font-size:13px;color:#46698a;font-weight:600;">Petugas CSSD: ${data.petugas}</p>` +
-        (data.catatan ? `<p style="background:#f5f9ff;border-left:2px solid #8fb6db;padding:9px 11px;border-radius:8px;font-size:12px;color:#5c7996;margin:10px 0 0;">Catatan: ${data.catatan}</p>` : "");
+        `<p style="margin:8px 0 2px;font-size:13px;color:#4f779c;">Petugas CSSD: <strong>${data.petugas}</strong></p>` +
+        (data.catatan ? `<p style="background:#f7fafe;border-left:2px solid #8cb2d4;padding:8px 10px;border-radius:8px;font-size:12px;color:#5a7894;margin-top:8px;">Catatan: ${data.catatan}</p>` : "");
       hasilRiwayat.appendChild(kartu);
     });
     if(jumlahPribadi === 0) hasilRiwayat.innerHTML = "Belum ada riwayat packing Anda.";
@@ -6148,21 +5372,19 @@ document.getElementById("simpanSterilisasi").onclick = async function(){
   var items = [];
   if(alat && jumlah) items.push({ alat: alat, jumlah: Number(jumlah) });
   document.querySelectorAll("#daftarAlatSterilisasiTambahan > div").forEach(function(item){
-    var nama = item.querySelector(".alatSterilisasiTambahan").value;
-    var banyak = item.querySelector(".jumlahSterilisasiTambahan").value;
-    if(nama && banyak) items.push({ alat: nama, jumlah: Number(banyak) });
+    var namaAlat = item.querySelector(".alatSterilisasiTambahan").value;
+    var banyakAlat = item.querySelector(".jumlahSterilisasiTambahan").value;
+    if(namaAlat && banyakAlat) items.push({ alat: namaAlat, jumlah: Number(banyakAlat) });
   });
 
-  if(!tanggal || !jam || !petugas || items.length === 0 || !metode || !validasiPrintout || !validasiIndikatorKimia){
-    document.getElementById("pesanSterilisasi").innerText = "Lengkapi data sterilisasi, metode, hasil validasi, dan minimal 1 alat beserta jumlahnya.";
+  if(!tanggal || !jam || !petugas || !metode || !validasiPrintout || !validasiIndikatorKimia || items.length === 0){
+    document.getElementById("pesanSterilisasi").innerText = "Lengkapi data sterilisasi, validasi printout/parameter mesin, indikator kimia, dan minimal 1 alat beserta jumlahnya.";
     return;
   }
 
   try{
     await addDoc(collection(firebaseDb, "sterilisasiAlat"), {
-      tanggal, jam, petugas, items, metode,
-      validasi: { printout: validasiPrintout, indikatorKimia: validasiIndikatorKimia },
-      catatan,
+      tanggal, jam, petugas, metode, validasiPrintout, validasiIndikatorKimia, catatan, items,
       dibuatPada: serverTimestamp(),
       userId: firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : penggunaAktif.username
     });
@@ -6191,20 +5413,19 @@ document.getElementById("riwayatSterilisasi").onclick = async function(){
       if(data.petugas !== penggunaAktif.nama) return;
       jumlahPribadi++;
       var itemsHtml = (data.items || []).map(item =>
-        `<div style="background:#f7fbff;border:1px solid #ddeaf7;padding:9px 11px;border-radius:10px;margin-bottom:6px;color:#46698a;font-size:13px;">• ${item.alat} — Jumlah: ${item.jumlah}</div>`
+        `<div style="background:#f2f7fd;border:1px solid #d5e5f6;padding:8px 10px;border-radius:9px;margin-bottom:6px;color:#4f779c;font-size:13px;">• ${item.alat} — Jumlah: ${item.jumlah}</div>`
       ).join("");
-      var valText = data.validasi
-        ? `Printout: ${data.validasi.printout || "-"} • Indikator Kimia: ${data.validasi.indikatorKimia || "-"}`
-        : (data.validasiSterilisasi || "-");
       var kartu = document.createElement("div");
-      kartu.style.cssText = "background:linear-gradient(145deg,#ffffff,#f5f9ff);border:1px solid #ddeaf7;border-radius:18px;padding:18px;margin-bottom:14px;";
+      kartu.style.cssText = "background:#ffffff;border:1px solid #dce8f5;border-radius:16px;padding:16px;margin-bottom:12px;";
       kartu.innerHTML =
-        `<strong style="display:block;font-size:17px;color:#486f94;margin-bottom:6px;">♨️ ${data.metode}</strong>` +
-        `<p style="font-size:13px;color:#7792ad;margin:4px 0 14px;">${data.tanggal} • ${data.jam}</p>` +
+        `<strong style="display:block;font-size:16px;color:#4f779c;margin-bottom:4px;">Sterilisasi</strong>` +
+        `<p style="font-size:12px;color:#7492ae;margin:2px 0 10px;">${data.tanggal} • ${data.jam}</p>` +
         `<div>${itemsHtml}</div>` +
-        `<span style="display:inline-block;margin:8px 0 4px;padding:6px 10px;background:#e7f1fb;color:#486f94;border-radius:999px;font-size:12px;font-weight:700;">Validasi: ${valText}</span>` +
-        `<p style="margin:12px 0 4px;font-size:13px;color:#46698a;font-weight:600;">Petugas CSSD: ${data.petugas}</p>` +
-        (data.catatan ? `<p style="background:#f5f9ff;border-left:2px solid #8fb6db;padding:9px 11px;border-radius:8px;font-size:12px;color:#5c7996;margin:10px 0 0;">Catatan: ${data.catatan}</p>` : "");
+        `<span style="display:inline-block;margin:8px 0 4px;padding:5px 10px;background:#e7f1fb;color:#4f779c;border-radius:999px;font-size:12px;font-weight:700;">Metode: ${data.metode}</span>` +
+        `<p style="margin:6px 0 2px;font-size:12px;color:#5a7894;">Printout / Parameter Mesin: <strong>${data.validasiPrintout || "-"}</strong></p>` +
+        `<p style="margin:2px 0 4px;font-size:12px;color:#5a7894;">Indikator Kimia: <strong>${data.validasiIndikatorKimia || "-"}</strong></p>` +
+        `<p style="margin:8px 0 2px;font-size:13px;color:#4f779c;">Petugas CSSD: <strong>${data.petugas}</strong></p>` +
+        (data.catatan ? `<p style="background:#f7fafe;border-left:2px solid #8cb2d4;padding:8px 10px;border-radius:8px;font-size:12px;color:#5a7894;margin-top:8px;">Catatan: ${data.catatan}</p>` : "");
       hasilRiwayat.appendChild(kartu);
     });
     if(jumlahPribadi === 0) hasilRiwayat.innerHTML = "Belum ada riwayat sterilisasi Anda.";
@@ -6213,83 +5434,6 @@ document.getElementById("riwayatSterilisasi").onclick = async function(){
     hasilRiwayat.innerHTML = "Riwayat sterilisasi gagal dimuat.";
   }
 };
-
-document.getElementById("btnBeranda").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-document.getElementById("tutupBeranda").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-document.getElementById("btnAktivitas").onclick = function(){ bukaSubmenuDariBeranda("isiAktivitas"); };
-document.getElementById("tutupAktivitas").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("simpanAktivitas").onclick = async function(){
-  var tanggal = document.getElementById("tanggalAktivitas").value;
-  var jam = document.getElementById("jamAktivitas").value;
-  var petugas = document.getElementById("petugasAktivitas").value;
-  var unit = document.getElementById("unitAktivitas").value;
-  var jenis = document.getElementById("jenisAktivitas").value;
-  var alat = document.getElementById("namaAlat").value;
-  var jumlah = document.getElementById("jumlahAlat").value;
-  var kondisi = document.getElementById("kondisiAlat").value;
-  var status = document.getElementById("statusAktivitas").value;
-  var catatan = document.getElementById("catatanAktivitas").value;
-
-  if(!tanggal || !jam || !petugas || !unit || !jenis || !alat || !jumlah || !kondisi || !status){
-    document.getElementById("pesanAktivitas").innerText = "Lengkapi semua data aktivitas terlebih dahulu.";
-    return;
-  }
-
-  try{
-    await addDoc(collection(firebaseDb, "aktivitasCssd"), {
-      tanggal, jam, petugas, unit, jenis, alat,
-      jumlah: Number(jumlah), kondisi, status, catatan,
-      dibuatPada: serverTimestamp(),
-      userId: firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : penggunaAktif.username
-    });
-    document.getElementById("pesanAktivitas").innerText = "✓ Aktivitas berhasil disimpan.";
-    ["tanggalAktivitas","jamAktivitas","unitAktivitas","jenisAktivitas","namaAlat","jumlahAlat","kondisiAlat","statusAktivitas","catatanAktivitas"]
-      .forEach(id => document.getElementById(id).value = "");
-  }catch(error){
-    console.log(error);
-    document.getElementById("pesanAktivitas").innerText = "Aktivitas gagal disimpan: " + error.code;
-  }
-};
-
-document.getElementById("lihatRiwayat").onclick = async function(){
-  var hasilRiwayat = document.getElementById("hasilRiwayat");
-  if(!hasilRiwayat){
-    hasilRiwayat = document.createElement("div");
-    hasilRiwayat.id = "hasilRiwayat";
-    hasilRiwayat.style.marginTop = "20px";
-    document.getElementById("pesanAktivitas").insertAdjacentElement("afterend", hasilRiwayat);
-  }
-  hasilRiwayat.innerHTML = "Memuat riwayat aktivitas...";
-  try{
-    var q = query(collection(firebaseDb, "aktivitasCssd"), orderBy("dibuatPada", "desc"));
-    var dataSnapshot = await getDocs(q);
-    hasilRiwayat.innerHTML = "";
-    var jumlahPribadi = 0;
-    dataSnapshot.forEach(function(dokumen){
-      var data = dokumen.data();
-      if(data.petugas !== penggunaAktif.nama) return;
-      jumlahPribadi++;
-      var kartu = document.createElement("div");
-      kartu.style.cssText = "background:#ffffff;border:1px solid #e2eeea;border-radius:16px;padding:16px;margin-bottom:12px;";
-      kartu.innerHTML =
-        `<strong style="display:block;font-size:16px;color:#315f55;margin-bottom:4px;">${data.jenis}</strong>` +
-        `<p style="font-size:13px;color:#647a74;margin:4px 0 12px;">${data.tanggal} • ${data.jam} • ${data.unit}</p>` +
-        `<div style="background:#f8fbfa;border:1px solid #e4efeb;padding:10px 12px;border-radius:10px;color:#3a5951;font-size:14px;">${data.alat} — Jumlah: ${data.jumlah}</div>` +
-        `<span style="display:inline-block;margin:10px 0 4px;padding:6px 10px;background:#e4f3ee;color:#3d7066;border-radius:999px;font-size:12px;font-weight:700;">Status: ${data.status} • Kondisi: ${data.kondisi}</span>` +
-        `<p style="margin:10px 0 0;font-size:13px;color:#557068;">Petugas: ${data.petugas}</p>` +
-        (data.catatan ? `<p style="background:#f9fbfa;border-left:2px solid #96c4b7;padding:8px 10px;border-radius:8px;font-size:12px;color:#5e756f;margin:8px 0 0;">Catatan: ${data.catatan}</p>` : "");
-      hasilRiwayat.appendChild(kartu);
-    });
-    if(jumlahPribadi === 0) hasilRiwayat.innerHTML = "Belum ada riwayat aktivitas Anda.";
-  }catch(error){
-    console.log(error);
-    hasilRiwayat.innerHTML = "Riwayat gagal dimuat.";
-  }
-};
-
-document.getElementById("btnProfil").onclick = function(){ bukaSubmenuDariBeranda("isiProfil"); };
-document.getElementById("tutupProfil").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
 
 cekAutoLoginQrSaatMuat();
 refreshAllViews();
