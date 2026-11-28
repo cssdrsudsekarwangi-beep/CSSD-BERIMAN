@@ -505,7 +505,10 @@ input{
 #isiAktivitas select,
 #isiAktivitas textarea,
 #isiDistribusi select,
+#isiPermintaanMasuk select,
+#isiGudangSteril select,
 #isiPenerimaan select,
+#isiProsesCssd select,
 #isiDekontaminasi select,
 #isiPacking select,
 #isiSterilisasi select{
@@ -536,6 +539,37 @@ input{
   background:#eef3f1;
   color:#557068;
   border:1px solid #e0eae6;
+}
+
+#isiPermintaanMasuk,
+#isiGudangSteril{
+  background:#f7fbf9;
+  border:1px solid #dcece6;
+  border-radius:20px;
+  padding:20px;
+}
+#isiPermintaanMasuk > h3,
+#isiPermintaanMasuk > p,
+#isiGudangSteril > h3,
+#isiGudangSteril > p{
+  text-align:center;
+}
+#isiPermintaanMasuk > h3,
+#isiGudangSteril > h3{
+  background:#e5f3ee;
+  color:#3f7166;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:8px;
+}
+#isiPermintaanMasuk > .logout,
+#isiGudangSteril > .logout{
+  display:block;
+  width:100%;
+  margin-top:12px;
+  padding:13px 16px;
+  text-align:center;
+  border-radius:14px;
 }
 
 #isiDistribusi{
@@ -605,6 +639,32 @@ input{
   background:#8f4f47 !important;
   color:#ffffff !important;
   border:1px solid #884b44 !important;
+}
+
+#isiProsesCssd{
+  background:#f5f9ff;
+  border:1px solid #ddeaf7;
+  border-radius:20px;
+  padding:20px;
+}
+#isiProsesCssd > h3,
+#isiProsesCssd > p{
+  text-align:center;
+}
+#isiProsesCssd > h3{
+  background:#e7f1fb;
+  color:#486f94;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:8px;
+}
+#isiProsesCssd > .logout{
+  display:block;
+  width:100%;
+  margin-top:12px;
+  padding:13px 16px;
+  text-align:center;
+  border-radius:14px;
 }
 
 #isiDekontaminasi{
@@ -1263,77 +1323,6 @@ hr{
   background:linear-gradient(90deg,#e4a664,#c97d38);
   transition:width .35s ease;
 }
-.rekap-trend-wrap{
-  display:flex;
-  align-items:flex-end;
-  gap:8px;
-  min-height:118px;
-  padding:10px 8px 6px;
-  background:#fff7ed;
-  border:1px solid #f3e4d0;
-  border-radius:12px;
-  overflow-x:auto;
-}
-.rekap-trend-col{
-  flex:1 0 40px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-}
-.rekap-trend-val{ font-size:10px; font-weight:700; color:#805a37; }
-.rekap-trend-bar{
-  width:100%;
-  max-width:24px;
-  min-height:6px;
-  border-radius:8px 8px 3px 3px;
-  background:linear-gradient(180deg,#e4a664,#c97d38);
-}
-.rekap-trend-lbl{ font-size:10px; color:#80664e; white-space:nowrap; }
-.rekap-donut-layout{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  flex-wrap:wrap;
-}
-.rekap-legend{ flex:1; min-width:160px; }
-.rekap-legend-item{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  font-size:12px;
-  color:#65482f;
-  padding:5px 0;
-  border-bottom:1px dashed #edd3b2;
-}
-.rekap-legend-item:last-child{ border-bottom:0; }
-.rekap-dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  display:inline-block;
-  margin-right:6px;
-  flex-shrink:0;
-}
-.rekap-kassa-box{
-  background:#fff5e8;
-  border:1px solid #f3e4d0;
-  border-radius:12px;
-  padding:11px 13px;
-  margin-top:8px;
-  color:#65482f;
-  font-size:13px;
-}
-.rekap-kassa-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding:6px 0;
-  border-bottom:1px dashed #edd3b2;
-}
-.rekap-kassa-row:last-child{ border-bottom:0; }
 .rekap-item-card{
   background:linear-gradient(145deg,#ffffff,#fff9f2);
   border:1px solid #f3e4d0;
@@ -1382,27 +1371,6 @@ hr{
   font-weight:700;
   color:#154b7a;
   margin:8px 0 6px;
-}
-.suhu-band-legend{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  font-size:11px;
-  color:#154b7a;
-  background:#f2f8fd;
-  border:1px solid #d4e8f7;
-  border-radius:10px;
-  padding:7px 10px;
-  margin-bottom:8px;
-}
-.suhu-band-swatch{
-  display:inline-block;
-  width:14px;
-  height:10px;
-  background:#c6e2f7;
-  border:1px solid #7ab2de;
-  vertical-align:middle;
-  margin-right:5px;
 }
 .suhu-matrix-scroll{
   width:100%;
@@ -1456,27 +1424,6 @@ table.suhu-matrix-table td.suhu-band-cell{ background:#d4e9f9; }
 .suhu-plot-dot.out-std{
   background:#b91c1c;
   box-shadow:0 0 0 1px #7f1d1d;
-}
-.suhu-summary-box{
-  background:#f4f9fd;
-  border:1px solid #cde2f3;
-  border-radius:12px;
-  padding:11px 13px;
-  margin-top:12px;
-  font-size:12px;
-  color:#0f3557;
-}
-.suhu-summary-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:8px;
-  margin-top:6px;
-}
-.suhu-summary-pill{
-  background:#ffffff;
-  border:1px solid #d4e8f7;
-  border-radius:9px;
-  padding:7px 9px;
 }
 table.suhu-data-table{
   width:100%;
@@ -1538,7 +1485,7 @@ table.suhu-data-table th{
   border:1px solid #b07337 !important;
 }
 
-/* ===== HOMEPAGE MODERN CSSD + AKSEN LEMBUT & JAM REALTIME ===== */
+/* ===== HOMEPAGE MODERN CSSD + 5 MENU UTAMA ===== */
 #homeModern{
   background:#f8fbfa;
   border:1px solid #e4eeea;
@@ -1675,16 +1622,17 @@ table.suhu-data-table th{
 .home-card strong{ font-size:14px; line-height:1.3; }
 .home-card small{ color:#7c8e88; font-size:11px; line-height:1.4; }
 
+.card-permintaan{ background:#eef8f4; border-color:#bce0d2; box-shadow:0 2px 8px rgba(70,105,95,.04); }
 .card-distribusi{ background:#f2faf6; border-color:#c6e2d6; box-shadow:0 2px 8px rgba(70,105,95,.03); }
 .card-penerimaan{ background:#fff8f6; border-color:#efd0c9; box-shadow:0 2px 8px rgba(150,85,75,.03); }
-.card-dekontaminasi{ background:#fff5f3; border-color:#efccc5; box-shadow:0 2px 8px rgba(150,85,75,.03); }
-.card-packing{ background:#f3f8fe; border-color:#c9ddf1; box-shadow:0 2px 8px rgba(80,120,160,.03); }
-.card-sterilisasi{
-  background:#f3f8fe;
-  border-color:#c9ddf1;
-  box-shadow:0 2px 8px rgba(80,120,160,.03);
+.card-proses-cssd{ background:#f3f8fe; border-color:#c9ddf1; box-shadow:0 2px 8px rgba(80,120,160,.03); }
+.card-gudang-steril{
+  background:#edf8f8;
+  border-color:#bfe0df;
+  box-shadow:0 2px 8px rgba(70,105,95,.03);
   grid-column:1 / -1;
 }
+
 .home-grid-support .home-card{ min-height:120px; }
 .card-suhu,
 .card-ketidaksesuaian,
@@ -1808,7 +1756,6 @@ table.suhu-data-table th{
       <button type="button" id="tabR_Status" class="nav-tab" onclick="gantiMenuRuangan('status')">📌 Status Permintaan (<span id="badgeCountRuangan">0</span>)</button>
     </div>
 
-    <!-- 1. Ruangan: Gudang Alat Steril -->
     <div id="panelR_Gudang" class="subcard-ui">
       <div class="subcard-head">
         <div>
@@ -1819,7 +1766,6 @@ table.suhu-data-table th{
       <div id="gridParstokRuangan" class="stock-grid"></div>
     </div>
 
-    <!-- 2. Ruangan: Buat Permintaan -->
     <div id="panelR_Buat" class="subcard-ui" style="display:none;">
       <div class="subcard-head">
         <div>
@@ -1869,7 +1815,6 @@ table.suhu-data-table th{
       </form>
     </div>
 
-    <!-- 3. Ruangan: Status Permintaan -->
     <div id="panelR_Status" class="subcard-ui" style="display:none;">
       <div class="subcard-head">
         <div>
@@ -1915,34 +1860,34 @@ table.suhu-data-table th{
       <h3>Menu Utama</h3>
 
       <div class="home-grid">
+        <button class="home-card card-permintaan" id="homePermintaan" type="button">
+          <span class="home-icon">📥</span>
+          <strong>Permintaan Menunggu Konfirmasi (<span id="badgeCountCssdReq">0</span>)</strong>
+          <small>Konfirmasi permintaan ruangan &amp; potong parstok</small>
+        </button>
+
         <button class="home-card card-distribusi" id="homeDistribusi" type="button">
           <span class="home-icon">📦</span>
-          <strong>Distribusi Alat Steril</strong>
-          <small>Antrian konfirmasi &amp; pencatatan alat keluar</small>
+          <strong>Distribusi</strong>
+          <small>Pengiriman alat steril &amp; riwayat distribusi</small>
         </button>
 
         <button class="home-card card-penerimaan" id="homePenerimaan" type="button">
           <span class="home-icon">🧺</span>
           <strong>Penerimaan Alat Kotor</strong>
-          <small>Pencatatan alat masuk &amp; selisih komponen</small>
+          <small>Alat kotor masuk, selisih set &amp; komponen</small>
         </button>
 
-        <button class="home-card card-dekontaminasi" id="homeDekontaminasi" type="button">
-          <span class="home-icon">🧼</span>
-          <strong>Dekontaminasi</strong>
-          <small>Proses pencucian alat</small>
-        </button>
-
-        <button class="home-card card-packing" id="homePacking" type="button">
-          <span class="home-icon">📋</span>
-          <strong>Packing</strong>
-          <small>Pemeriksaan &amp; pengemasan</small>
-        </button>
-
-        <button class="home-card card-sterilisasi" id="homeSterilisasi" type="button">
+        <button class="home-card card-proses-cssd" id="homeProsesCssd" type="button">
           <span class="home-icon">♨️</span>
-          <strong>Sterilisasi</strong>
-          <small>Dokumentasi proses sterilisasi</small>
+          <strong>Proses CSSD</strong>
+          <small>Dekontaminasi, Packing &amp; Sterilisasi</small>
+        </button>
+
+        <button class="home-card card-gudang-steril" id="homeGudangSteril" type="button">
+          <span class="home-icon">🏭</span>
+          <strong>Gudang Alat Steril</strong>
+          <small>Pantau &amp; sesuaikan parstok alat steril siap pakai</small>
         </button>
       </div>
 
@@ -1970,7 +1915,7 @@ table.suhu-data-table th{
         <button class="home-card card-master" id="homeMaster" type="button">
           <span class="home-icon">🗂️</span>
           <strong>Master Data Alat &amp; Set</strong>
-          <small>Informasi isi set, parstok &amp; standar alat CSSD</small>
+          <small>Informasi isi set, linen, kassa &amp; standar alat CSSD</small>
         </button>
 
         <button class="home-card card-qr-admin" id="homeKartuQr" type="button" style="display:none;">
@@ -2035,6 +1980,7 @@ table.suhu-data-table th{
 
     <button class="primary" id="btnLaporan" type="button">📊 Laporan</button>
 
+    <!-- ==================== MENU PENDUKUNG: LAPORAN & REKAP (TIDAK DIUBAH) ==================== -->
     <div id="isiLaporan" style="display:none;margin-top:25px">
       <h3>📊 Laporan &amp; Rekap</h3>
       <p>Rekapitulasi keluar-masuk barang CSSD, pemakaian per ruangan, kassa &amp; linen, suhu/kelembaban, dan visualisasi analitik.</p>
@@ -2089,7 +2035,7 @@ table.suhu-data-table th{
           </select>
 
           <div id="areaSubSuhuKelembaban" class="rekap-sub-suhu" style="display:none">
-            <label for="pilihAreaSuhuRekap">Pilih Area CSSD</label>
+            <label for="pilihAreaSuhuRekap" style="margin-top:0">Pilih Area CSSD</label>
             <select id="pilihAreaSuhuRekap">
               <option value="SEMUA_AREA">Semua Area CSSD</option>
               <option value="DEKONTAMINASI">DEKONTAMINASI</option>
@@ -2340,19 +2286,21 @@ table.suhu-data-table th{
       <button class="logout" id="tutupAktivitas" type="button">Kembali ke Menu Utama</button>
     </div>
 
-    <!-- Distribusi Alat Steril + Konfirmasi Permintaan Ruangan -->
+    <!-- ==================== MENU UTAMA 1: PERMINTAAN MENUNGGU KONFIRMASI ==================== -->
+    <div id="isiPermintaanMasuk" style="display:none;margin-top:25px">
+      <h3>📥 Permintaan Menunggu Konfirmasi</h3>
+      <p>Sesuaikan jumlah konfirmasi bila parstok terbatas untuk pemerataan ruangan. Saat dikonfirmasi, status jadi <strong>Terkonfirmasi 🔥👍🏽</strong> dan parstok otomatis berkurang.</p>
+      <div id="listPermintaanCssd"></div>
+      <button class="logout" id="tutupPermintaanMasuk" type="button">Kembali ke Menu Utama</button>
+    </div>
+
+    <!-- ==================== MENU UTAMA 2: DISTRIBUSI ==================== -->
     <div id="isiDistribusi" style="display:none;margin-top:25px">
       <h3>📦 Distribusi Alat Steril</h3>
-      <p>Konfirmasi permintaan ruangan (memotong parstok saat <strong>Terkonfirmasi 🔥👍🏽</strong>) &amp; pencatatan distribusi alat steril.</p>
+      <p>Daftar permintaan terkonfirmasi siap didistribusikan &amp; pencatatan distribusi alat steril.</p>
 
       <div class="subcard-ui" style="margin-top:14px;">
-        <h4 style="margin:0 0 6px;color:#35665a;">📥 Permintaan Alat Steril dari Ruangan (<span id="badgeCountCssdReq">0</span> Menunggu)</h4>
-        <div class="muted-ui" style="margin-bottom:10px;">Sesuaikan jumlah konfirmasi bila parstok terbatas untuk pemerataan ruangan. Parstok baru berkurang saat diklik <strong>Konfirmasi &amp; Potong Parstok</strong>.</div>
-        <div id="listPermintaanCssd"></div>
-      </div>
-
-      <div class="subcard-ui">
-        <h4 style="margin:0 0 6px;color:#35665a;">🚚 Daftar Siap Didistribusikan (Terkonfirmasi 🔥👍🏽)</h4>
+        <h4 style="margin:0 0 6px;color:#35665a;">🚚 Daftar Permintaan Siap Didistribusikan (Terkonfirmasi 🔥👍🏽)</h4>
         <div id="listDistribusiCssd"></div>
       </div>
 
@@ -2403,7 +2351,7 @@ table.suhu-data-table th{
       <button class="logout" id="tutupDistribusi" type="button">Kembali ke Menu Utama</button>
     </div>
 
-    <!-- Penerimaan Alat Kotor + Pelacakan Selisih Set & Komponen -->
+    <!-- ==================== MENU UTAMA 3: PENERIMAAN ALAT KOTOR ==================== -->
     <div id="isiPenerimaan" style="display:none;margin-top:25px">
       <h3>🧺 Penerimaan Alat Kotor</h3>
       <p>Pencatatan alat kotor masuk ke CSSD &amp; pelacakan selisih set / komponen instrumen kembali.</p>
@@ -2503,156 +2451,178 @@ table.suhu-data-table th{
       <button class="logout" id="tutupPenerimaan" type="button">Kembali ke Menu Utama</button>
     </div>
 
-    <!-- Dekontaminasi -->
-    <div id="isiDekontaminasi" style="display:none;margin-top:25px">
-      <h3>🧼 Dekontaminasi</h3>
-      <p>Proses dekontaminasi dan pencucian alat.</p>
+    <!-- ==================== MENU UTAMA 4: PROSES CSSD (DEKONTAMINASI, PACKING, STERILISASI) ==================== -->
+    <div id="isiProsesCssd" style="display:none;margin-top:25px">
+      <h3>♨️ Proses CSSD</h3>
+      <p>Alur pengolahan alat steril: <strong>Dekontaminasi</strong>, <strong>Packing</strong>, dan <strong>Sterilisasi</strong>.</p>
 
-      <label>Tanggal</label>
-      <input id="tanggalDekontaminasi" type="date">
-      <label>Jam</label>
-      <input id="jamDekontaminasi" type="time">
-      <label>Petugas CSSD</label>
-      <input id="petugasDekontaminasi" type="text" readonly>
-      <label>Nama Alat / Set</label>
-      <select id="alatDekontaminasi"><option value="">Pilih nama alat / set</option></select>
-      <label>Jumlah</label>
-      <input id="jumlahDekontaminasi" type="number" min="1" placeholder="Masukkan jumlah">
+      <div class="nav-tabs" style="justify-content:center;margin-bottom:16px;">
+        <button type="button" id="tabProses_Dekon" class="nav-tab active" onclick="gantiSubProsesCssd('dekon')">🧼 Dekontaminasi</button>
+        <button type="button" id="tabProses_Packing" class="nav-tab" onclick="gantiSubProsesCssd('packing')">📋 Packing</button>
+        <button type="button" id="tabProses_Steril" class="nav-tab" onclick="gantiSubProsesCssd('steril')">♨️ Sterilisasi</button>
+      </div>
 
-      <div id="daftarAlatDekontaminasiTambahan"></div>
-      <button class="primary" id="tambahAlatDekontaminasi" type="button">+ Tambah Alat / Set</button>
+      <!-- Dekontaminasi -->
+      <div id="isiDekontaminasi" style="display:block;margin-top:0;">
+        <h3>🧼 Dekontaminasi</h3>
+        <p>Proses dekontaminasi dan pencucian alat.</p>
 
-      <label>Metode Dekontaminasi</label>
-      <select id="metodeDekontaminasi">
-        <option value="">Pilih metode dekontaminasi</option>
-        <option>Manual</option>
-        <option>Washer Disinfector</option>
-        <option>Ultrasonic</option>
-        <option>Desinfeksi Tingkat Tinggi</option>
-      </select>
+        <label>Tanggal</label>
+        <input id="tanggalDekontaminasi" type="date">
+        <label>Jam</label>
+        <input id="jamDekontaminasi" type="time">
+        <label>Petugas CSSD</label>
+        <input id="petugasDekontaminasi" type="text" readonly>
+        <label>Nama Alat / Set</label>
+        <select id="alatDekontaminasi"><option value="">Pilih nama alat / set</option></select>
+        <label>Jumlah</label>
+        <input id="jumlahDekontaminasi" type="number" min="1" placeholder="Masukkan jumlah">
 
-      <label>Catatan</label>
-      <textarea id="catatanDekontaminasi" rows="4" placeholder="Masukkan catatan dekontaminasi"></textarea>
+        <div id="daftarAlatDekontaminasiTambahan"></div>
+        <button class="primary" id="tambahAlatDekontaminasi" type="button">+ Tambah Alat / Set</button>
 
-      <button class="primary" id="simpanDekontaminasi" type="button">Simpan Dekontaminasi</button>
-      <div id="pesanDekontaminasi" style="margin-top:15px;color:#a85f55;font-weight:bold"></div>
+        <label>Metode Dekontaminasi</label>
+        <select id="metodeDekontaminasi">
+          <option value="">Pilih metode dekontaminasi</option>
+          <option>Manual</option>
+          <option>Washer Disinfector</option>
+          <option>Ultrasonic</option>
+          <option>Desinfeksi Tingkat Tinggi</option>
+        </select>
 
-      <button class="primary" id="riwayatDekontaminasi" type="button">📋 Riwayat Dekontaminasi</button>
-      <div id="hasilRiwayatDekontaminasi" style="display:none;margin-top:15px"></div>
+        <label>Catatan</label>
+        <textarea id="catatanDekontaminasi" rows="4" placeholder="Masukkan catatan dekontaminasi"></textarea>
 
-      <button class="logout" id="tutupDekontaminasi" type="button">Kembali ke Menu Utama</button>
+        <button class="primary" id="simpanDekontaminasi" type="button">Simpan Dekontaminasi</button>
+        <div id="pesanDekontaminasi" style="margin-top:15px;color:#a85f55;font-weight:bold"></div>
+
+        <button class="primary" id="riwayatDekontaminasi" type="button">📋 Riwayat Dekontaminasi</button>
+        <div id="hasilRiwayatDekontaminasi" style="display:none;margin-top:15px"></div>
+
+        <button class="logout" id="tutupDekontaminasi" type="button">Kembali ke Menu Utama</button>
+      </div>
+
+      <!-- Packing -->
+      <div id="isiPacking" style="display:none;margin-top:0;">
+        <h3>📋 Packing</h3>
+        <p>Pemeriksaan dan pengemasan alat sebelum proses sterilisasi.</p>
+
+        <label>Tanggal</label>
+        <input id="tanggalPacking" type="date">
+        <label>Waktu</label>
+        <input id="waktuPacking" type="time">
+        <label>Petugas CSSD</label>
+        <input id="petugasPacking" type="text" readonly>
+        <label>Nama Alat / Set</label>
+        <select id="alatPacking"><option value="">Pilih nama alat / set</option></select>
+        <label>Jumlah</label>
+        <input id="jumlahPacking" type="number" min="1" placeholder="Masukkan jumlah">
+        <label>Kondisi Alat</label>
+        <select id="kondisiPacking">
+          <option value="">Pilih kondisi alat</option>
+          <option>Lengkap</option>
+          <option>Tidak lengkap</option>
+          <option>Masih kotor</option>
+        </select>
+        <label>Jenis Kemasan</label>
+        <select id="kemasanPacking">
+          <option value="">Pilih jenis kemasan</option>
+          <option>Pouch</option>
+          <option>Linen</option>
+          <option>Wrapping</option>
+        </select>
+        <label>Indikator Suhu Tinggi</label>
+        <select id="indikatorTinggiPacking">
+          <option value="">Pilih penggunaan indikator</option>
+          <option>Pakai</option>
+          <option>Tidak Pakai</option>
+          <option>Stok Habis</option>
+        </select>
+        <label>Indikator Suhu Rendah</label>
+        <select id="indikatorRendahPacking">
+          <option value="">Pilih penggunaan indikator</option>
+          <option>Pakai</option>
+          <option>Tidak Pakai</option>
+          <option>Stok Habis</option>
+        </select>
+
+        <div id="daftarAlatPackingTambahan"></div>
+        <button class="primary" id="tambahAlatPacking" type="button">+ Tambah Alat / Set</button>
+
+        <label>Catatan</label>
+        <textarea id="catatanPacking" rows="4" placeholder="Masukkan catatan packing"></textarea>
+
+        <button class="primary" id="simpanPacking" type="button">Simpan Packing</button>
+        <div id="pesanPacking" style="margin-top:15px;color:#5f89b0;font-weight:bold"></div>
+
+        <button class="primary" id="riwayatPacking" type="button">📋 Riwayat Packing</button>
+        <div id="hasilRiwayatPacking" style="display:none;margin-top:15px"></div>
+
+        <button class="logout" id="tutupPacking" type="button">Kembali ke Menu Utama</button>
+      </div>
+
+      <!-- Sterilisasi -->
+      <div id="isiSterilisasi" style="display:none;margin-top:0;">
+        <h3>♨️ Sterilisasi</h3>
+        <p>Dokumentasi proses sterilisasi alat.</p>
+
+        <label>Tanggal</label>
+        <input id="tanggalSterilisasi" type="date">
+        <label>Jam</label>
+        <input id="jamSterilisasi" type="time">
+        <label>Petugas CSSD</label>
+        <input id="petugasSterilisasi" type="text" readonly>
+        <label>Nama Alat / Set</label>
+        <select id="alatSterilisasi"><option value="">Pilih nama alat / set</option></select>
+        <label>Jumlah</label>
+        <input id="jumlahSterilisasi" type="number" min="1" placeholder="Masukkan jumlah">
+
+        <div id="daftarAlatSterilisasiTambahan"></div>
+        <button class="primary" id="tambahAlatSterilisasi" type="button">+ Tambah Alat / Set</button>
+
+        <label>Metode Sterilisasi</label>
+        <select id="metodeSterilisasi">
+          <option value="">Pilih metode sterilisasi</option>
+          <option>Suhu Tinggi</option>
+          <option>Suhu Rendah</option>
+        </select>
+        <label>Validasi Sterilisasi</label>
+        <label>Hasil Printout / Parameter Mesin</label>
+        <select id="validasiPrintout">
+          <option value="">Pilih hasil validasi</option>
+          <option>Sesuai</option>
+          <option>Tidak Sesuai</option>
+        </select>
+        <label>Hasil Indikator Kimia</label>
+        <select id="validasiIndikatorKimia">
+          <option value="">Pilih hasil validasi</option>
+          <option>Sesuai</option>
+          <option>Tidak Sesuai</option>
+        </select>
+        <label>Catatan Sterilisasi</label>
+        <textarea id="catatanSterilisasi" rows="4" placeholder="Masukkan catatan sterilisasi"></textarea>
+
+        <button class="primary" id="simpanSterilisasi" type="button">Simpan Sterilisasi</button>
+        <div id="pesanSterilisasi" style="margin-top:15px;color:#5f89b0;font-weight:bold"></div>
+
+        <button class="primary" id="riwayatSterilisasi" type="button">📋 Riwayat Sterilisasi</button>
+        <div id="hasilRiwayatSterilisasi" style="display:none;margin-top:15px"></div>
+
+        <button class="logout" id="tutupSterilisasi" type="button">Kembali ke Menu Utama</button>
+      </div>
+
+      <button class="logout" id="tutupProsesCssd" type="button">Kembali ke Menu Utama</button>
     </div>
 
-    <!-- Packing -->
-    <div id="isiPacking" style="display:none;margin-top:25px">
-      <h3>📋 Packing</h3>
-      <p>Pemeriksaan dan pengemasan alat sebelum proses sterilisasi.</p>
-
-      <label>Tanggal</label>
-      <input id="tanggalPacking" type="date">
-      <label>Waktu</label>
-      <input id="waktuPacking" type="time">
-      <label>Petugas CSSD</label>
-      <input id="petugasPacking" type="text" readonly>
-      <label>Nama Alat / Set</label>
-      <select id="alatPacking"><option value="">Pilih nama alat / set</option></select>
-      <label>Jumlah</label>
-      <input id="jumlahPacking" type="number" min="1" placeholder="Masukkan jumlah">
-      <label>Kondisi Alat</label>
-      <select id="kondisiPacking">
-        <option value="">Pilih kondisi alat</option>
-        <option>Lengkap</option>
-        <option>Tidak lengkap</option>
-        <option>Masih kotor</option>
-      </select>
-      <label>Jenis Kemasan</label>
-      <select id="kemasanPacking">
-        <option value="">Pilih jenis kemasan</option>
-        <option>Pouch</option>
-        <option>Linen</option>
-        <option>Wrapping</option>
-      </select>
-      <label>Indikator Suhu Tinggi</label>
-      <select id="indikatorTinggiPacking">
-        <option value="">Pilih penggunaan indikator</option>
-        <option>Pakai</option>
-        <option>Tidak Pakai</option>
-        <option>Stok Habis</option>
-      </select>
-      <label>Indikator Suhu Rendah</label>
-      <select id="indikatorRendahPacking">
-        <option value="">Pilih penggunaan indikator</option>
-        <option>Pakai</option>
-        <option>Tidak Pakai</option>
-        <option>Stok Habis</option>
-      </select>
-
-      <div id="daftarAlatPackingTambahan"></div>
-      <button class="primary" id="tambahAlatPacking" type="button">+ Tambah Alat / Set</button>
-
-      <label>Catatan</label>
-      <textarea id="catatanPacking" rows="4" placeholder="Masukkan catatan packing"></textarea>
-
-      <button class="primary" id="simpanPacking" type="button">Simpan Packing</button>
-      <div id="pesanPacking" style="margin-top:15px;color:#5f89b0;font-weight:bold"></div>
-
-      <button class="primary" id="riwayatPacking" type="button">📋 Riwayat Packing</button>
-      <div id="hasilRiwayatPacking" style="display:none;margin-top:15px"></div>
-
-      <button class="logout" id="tutupPacking" type="button">Kembali ke Menu Utama</button>
+    <!-- ==================== MENU UTAMA 5: GUDANG ALAT STERIL ==================== -->
+    <div id="isiGudangSteril" style="display:none;margin-top:25px">
+      <h3>🏭 Gudang Alat Steril</h3>
+      <p>Pantau parstok siap pakai dan sesuaikan jumlah parstok hasil proses sterilisasi.</p>
+      <div id="gridParstokCssd" class="stock-grid"></div>
+      <button class="logout" id="tutupGudangSteril" type="button">Kembali ke Menu Utama</button>
     </div>
 
-    <!-- Sterilisasi -->
-    <div id="isiSterilisasi" style="display:none;margin-top:25px">
-      <h3>♨️ Sterilisasi</h3>
-      <p>Dokumentasi proses sterilisasi alat.</p>
-
-      <label>Tanggal</label>
-      <input id="tanggalSterilisasi" type="date">
-      <label>Jam</label>
-      <input id="jamSterilisasi" type="time">
-      <label>Petugas CSSD</label>
-      <input id="petugasSterilisasi" type="text" readonly>
-      <label>Nama Alat / Set</label>
-      <select id="alatSterilisasi"><option value="">Pilih nama alat / set</option></select>
-      <label>Jumlah</label>
-      <input id="jumlahSterilisasi" type="number" min="1" placeholder="Masukkan jumlah">
-
-      <div id="daftarAlatSterilisasiTambahan"></div>
-      <button class="primary" id="tambahAlatSterilisasi" type="button">+ Tambah Alat / Set</button>
-
-      <label>Metode Sterilisasi</label>
-      <select id="metodeSterilisasi">
-        <option value="">Pilih metode sterilisasi</option>
-        <option>Suhu Tinggi</option>
-        <option>Suhu Rendah</option>
-      </select>
-      <label>Validasi Sterilisasi</label>
-      <label>Hasil Printout / Parameter Mesin</label>
-      <select id="validasiPrintout">
-        <option value="">Pilih hasil validasi</option>
-        <option>Sesuai</option>
-        <option>Tidak Sesuai</option>
-      </select>
-      <label>Hasil Indikator Kimia</label>
-      <select id="validasiIndikatorKimia">
-        <option value="">Pilih hasil validasi</option>
-        <option>Sesuai</option>
-        <option>Tidak Sesuai</option>
-      </select>
-      <label>Catatan Sterilisasi</label>
-      <textarea id="catatanSterilisasi" rows="4" placeholder="Masukkan catatan sterilisasi"></textarea>
-
-      <button class="primary" id="simpanSterilisasi" type="button">Simpan Sterilisasi</button>
-      <div id="pesanSterilisasi" style="margin-top:15px;color:#5f89b0;font-weight:bold"></div>
-
-      <button class="primary" id="riwayatSterilisasi" type="button">📋 Riwayat Sterilisasi</button>
-      <div id="hasilRiwayatSterilisasi" style="display:none;margin-top:15px"></div>
-
-      <button class="logout" id="tutupSterilisasi" type="button">Kembali ke Menu Utama</button>
-    </div>
-
-    <!-- Suhu & Kelembaban -->
+    <!-- ==================== MENU PENDUKUNG (TIDAK DIUBAH) ==================== -->
     <div id="isiSuhu" style="display:none;margin-top:25px">
       <h3>🌡️ Suhu &amp; Kelembaban</h3>
       <p>Monitoring suhu dan kelembaban area CSSD.</p>
@@ -2701,7 +2671,6 @@ table.suhu-data-table th{
       <button class="logout" id="tutupSuhu" type="button">Kembali ke menu</button>
     </div>
 
-    <!-- Mutu & Tindak Lanjut -->
     <div id="isiMutu" style="display:none;margin-top:25px">
       <h3>⚠️ Mutu &amp; Tindak Lanjut</h3>
       <p>Pencatatan temuan mutu, akar masalah &amp; tindak lanjut CSSD.</p>
@@ -2805,15 +2774,9 @@ table.suhu-data-table th{
       <button class="logout" id="tutupMutu" type="button">Kembali ke menu</button>
     </div>
 
-    <!-- Master Data Alat & Set + Manajemen Parstok Gudang -->
     <div id="isiMaster" style="display:none;margin-top:25px">
       <h3>🗂️ Master Data Alat &amp; Set</h3>
-      <p>Informasi standar alat, linen, kassa, rincian isi set &amp; parstok gudang CSSD.</p>
-
-      <div class="master-box">
-        <h4 style="margin:0 0 8px;color:#9a6736;">📦 Parstok Gudang Alat Steril (Siap Pakai)</h4>
-        <div id="gridParstokCssd" class="stock-grid"></div>
-      </div>
+      <p>Informasi standar alat, linen, kassa &amp; rincian isi set CSSD.</p>
 
       <div class="master-box">
         <label for="cariMaster" style="margin-top:0">Cari Alat / Set / Isi Komponen</label>
@@ -2846,7 +2809,6 @@ table.suhu-data-table th{
       <button class="logout" id="tutupMaster" type="button">Kembali ke menu</button>
     </div>
 
-    <!-- Kartu QR Ruangan (Khusus Admin) -->
     <div id="isiKartuQr" style="display:none;margin-top:25px">
       <div class="subcard-ui">
         <div class="subcard-head no-print">
@@ -2870,7 +2832,6 @@ table.suhu-data-table th{
       <button class="logout" id="tutupKartuQr" type="button">Kembali ke Menu Utama</button>
     </div>
 
-    <!-- Monitoring Reuse Alat Medis -->
     <div id="isiReuse" style="display:none;margin-top:25px">
       <h3>🔄 Monitoring Reuse Alat Medis</h3>
       <p>Pemantauan penggunaan ulang alat medis single-use reuse.</p>
@@ -3004,14 +2965,6 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL
-}
-from "https://www.gstatic.com/firebasejs/12.11.0/firebase-storage.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyBj2mYrTvHzVgVacGRUmchDjSa1H9-3OAw",
   authDomain: "cssd-beriman.firebaseapp.com",
@@ -3024,7 +2977,6 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const firebaseAuth = getAuth(firebaseApp);
 const firebaseDb = getFirestore(firebaseApp);
-const firebaseStorage = getStorage(firebaseApp);
 
 /* ===== DAFTAR 32 UNIT / RUANGAN & POLI ===== */
 const UNIT_QR_LIST = [
@@ -3157,11 +3109,11 @@ setInterval(perbaruiJamTanggalRealtime, 1000);
 
 /* ===== KONTROL TOMBOL BACK / KEMBALI DI HP ===== */
 var SUBMENU_IDS = [
+  "isiPermintaanMasuk",
   "isiDistribusi",
   "isiPenerimaan",
-  "isiDekontaminasi",
-  "isiPacking",
-  "isiSterilisasi",
+  "isiProsesCssd",
+  "isiGudangSteril",
   "isiSuhu",
   "isiMutu",
   "isiReuse",
@@ -3281,7 +3233,6 @@ var daftarAlatDekontaminasiTambahan = document.getElementById("daftarAlatDekonta
 var daftarAlatPenerimaanTambahan = document.getElementById("daftarAlatPenerimaanTambahan");
 var daftarAlatReuseTambahan = document.getElementById("daftarAlatReuseTambahan");
 
-/* ===== SET DEFAULT BULAN REKAPAN SUHU KE BULAN BERJALAN ===== */
 var nowDateObj = new Date();
 document.getElementById("pilihBulanSuhuRekap").value = String(nowDateObj.getMonth() + 1).padStart(2, "0");
 
@@ -3923,7 +3874,7 @@ window.renderStatusRuangan = function(){
   }).join("");
 };
 
-/* ===== KONFIRMASI PERMINTAAN, PARSTOK, PENGEMBALIAN & DISTRIBUSI CSSD ===== */
+/* ===== PERMINTAAN MENUNGGU KONFIRMASI, DISTRIBUSI, PENGEMBALIAN & GUDANG ALAT STERIL ===== */
 window.renderPermintaanCssd = function(){
   const pendingCount = state.permintaan.filter(p => p.status === "Menunggu Konfirmasi").length;
   const badgeEl = document.getElementById("badgeCountCssdReq");
@@ -4180,6 +4131,17 @@ window.tandaiDidistribusikan = function(reqId){
   refreshAllViews();
 };
 
+/* ===== SUB-PROSES CSSD (DEKONTAMINASI, PACKING, STERILISASI) ===== */
+window.gantiSubProsesCssd = function(sub){
+  document.getElementById("isiDekontaminasi").style.display = sub === "dekon" ? "block" : "none";
+  document.getElementById("isiPacking").style.display = sub === "packing" ? "block" : "none";
+  document.getElementById("isiSterilisasi").style.display = sub === "steril" ? "block" : "none";
+
+  document.getElementById("tabProses_Dekon").classList.toggle("active", sub === "dekon");
+  document.getElementById("tabProses_Packing").classList.toggle("active", sub === "packing");
+  document.getElementById("tabProses_Steril").classList.toggle("active", sub === "steril");
+};
+
 /* ===== KARTU QR RUANGAN (ADMIN) ===== */
 window.renderKartuQrAdmin = function(){
   const sel = document.getElementById("qrFilterSelect");
@@ -4351,28 +4313,15 @@ async function jalankanKeluarAplikasi(){
 document.getElementById("logout").onclick = jalankanKeluarAplikasi;
 document.getElementById("homeLogoutBtn").onclick = jalankanKeluarAplikasi;
 
-/* ===== NAVIGASI MENU UTAMA & PENDUKUNG ===== */
-document.getElementById("btnBeranda").onclick = function(){
-  var tombol = document.getElementById("btnBeranda");
-  var panel = document.getElementById("isiBeranda");
-  tombol.insertAdjacentElement("afterend", panel);
-  document.getElementById("isiAktivitas").style.display = "none";
-  panel.style.display = "block";
+/* ===== NAVIGASI 5 MENU UTAMA & MENU PENDUKUNG ===== */
+document.getElementById("homePermintaan").onclick = function(){
+  bukaSubmenuDariBeranda("isiPermintaanMasuk");
+  renderPermintaanCssd();
 };
-document.getElementById("tutupBeranda").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("btnAktivitas").onclick = function(){
-  var tombol = document.getElementById("btnAktivitas");
-  var panel = document.getElementById("isiAktivitas");
-  tombol.insertAdjacentElement("afterend", panel);
-  document.getElementById("isiBeranda").style.display = "none";
-  panel.style.display = "block";
-};
-document.getElementById("tutupAktivitas").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
+document.getElementById("tutupPermintaanMasuk").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
 
 document.getElementById("homeDistribusi").onclick = function(){
   bukaSubmenuDariBeranda("isiDistribusi");
-  renderPermintaanCssd();
   renderDistribusiCssd();
 };
 document.getElementById("tutupDistribusi").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
@@ -4385,21 +4334,26 @@ document.getElementById("homePenerimaan").onclick = function(){
 };
 document.getElementById("tutupPenerimaan").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
 
-document.getElementById("homeDekontaminasi").onclick = function(){ bukaSubmenuDariBeranda("isiDekontaminasi"); };
+document.getElementById("homeProsesCssd").onclick = function(){
+  bukaSubmenuDariBeranda("isiProsesCssd");
+  gantiSubProsesCssd("dekon");
+};
+document.getElementById("tutupProsesCssd").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
 document.getElementById("tutupDekontaminasi").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("homePacking").onclick = function(){ bukaSubmenuDariBeranda("isiPacking"); };
 document.getElementById("tutupPacking").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("homeSterilisasi").onclick = function(){ bukaSubmenuDariBeranda("isiSterilisasi"); };
 document.getElementById("tutupSterilisasi").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
+
+document.getElementById("homeGudangSteril").onclick = function(){
+  bukaSubmenuDariBeranda("isiGudangSteril");
+  renderParstokCssd();
+};
+document.getElementById("tutupGudangSteril").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
 
 document.getElementById("homeSuhu").onclick = function(){ bukaSubmenuDariBeranda("isiSuhu"); };
 document.getElementById("tutupSuhu").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
 
 document.getElementById("homeMaster").onclick = function(){
   bukaSubmenuDariBeranda("isiMaster");
-  renderParstokCssd();
   document.getElementById("cariMaster").value = "";
   document.getElementById("filterKategoriMaster").value = "";
   document.getElementById("areaPilihanItemMaster").style.display = "none";
@@ -4422,7 +4376,7 @@ document.getElementById("tutupMutu").onclick = function(){ tutupSemuaSubmenuKeBe
 document.getElementById("homeReuse").onclick = function(){ bukaSubmenuDariBeranda("isiReuse"); };
 document.getElementById("tutupReuse").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
 
-/* ===== SIMPAN & RIWAYAT MUTU, REUSE, SUHU, AKTIVITAS, DISTRIBUSI, PENERIMAAN, DEKON, PACKING, STERIL ===== */
+/* ===== SIMPAN & RIWAYAT MUTU, REUSE, SUHU ===== */
 document.getElementById("simpanMutu").onclick = async function(){
   var tanggal = document.getElementById("tanggalMutu").value;
   var jam = document.getElementById("jamMutu").value;
@@ -4637,7 +4591,7 @@ document.getElementById("btnResetPassword").onclick = function(){
     : "Reset kata sandi untuk " + petugas + " siap diproses.";
 };
 
-/* ===== LAPORAN & REKAP ANALITIK + SUHU ===== */
+/* ===== LAPORAN & REKAP ANALITIK + SUHU (TIDAK DIUBAH) ===== */
 var BENTUK_DIAGRAM_AKTIF = "SEMUA";
 var TERAKHIR_CSV_ROWS = [];
 
