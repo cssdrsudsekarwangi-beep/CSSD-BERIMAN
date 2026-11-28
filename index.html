@@ -887,6 +887,52 @@ input{
   padding:14px;
   margin-top:14px;
 }
+.master-kat-tabs{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.master-kat-btn{
+  border:1px solid #edd4b4;
+  border-radius:12px;
+  background:#ffffff;
+  color:#805a37;
+  font-weight:700;
+  padding:11px 12px;
+  font-size:13px;
+  text-align:center;
+  cursor:pointer;
+  transition:all .15s ease;
+}
+.master-kat-btn.active{
+  background:linear-gradient(135deg,#e3a360,#c97d38);
+  color:#ffffff;
+  border-color:#c97d38;
+}
+.master-set-btn{
+  width:100%;
+  border:1px solid #f3e4d0;
+  border-radius:12px;
+  background:#ffffff;
+  color:#65482f;
+  padding:11px 13px;
+  font-size:13px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  text-align:left;
+}
+.master-set-btn:hover{
+  border-color:#d99552;
+}
+.master-set-wrap{
+  margin-bottom:8px;
+}
+.master-set-wrap:last-child{
+  margin-bottom:0;
+}
 #btnCariMaster{
   width:100%;
   margin-top:10px;
@@ -2027,7 +2073,7 @@ table.suhu-data-table th{
         <button class="home-card card-master" id="homeMaster" type="button">
           <span class="home-icon">🗂️</span>
           <strong>Master Data Alat &amp; Set</strong>
-          <small>Informasi isi set, parstok &amp; standar alat CSSD</small>
+          <small>Inventarisir Set Instrumen OKA &amp; Set Instrumen Ruangan CSSD</small>
         </button>
 
         <button class="home-card card-qr-admin" id="homeKartuQr" type="button" style="display:none;">
@@ -2862,41 +2908,24 @@ table.suhu-data-table th{
       <button class="logout" id="tutupMutu" type="button">Kembali ke menu</button>
     </div>
 
-    <!-- Master Data Alat & Set + Manajemen Parstok Gudang -->
+    <!-- Master Data Alat & Set — Inventarisir CSSD (Set Instrumen OKA & Set Instrumen Ruangan) -->
     <div id="isiMaster" style="display:none;margin-top:25px">
       <h3>🗂️ Master Data Alat &amp; Set</h3>
-      <p>Informasi standar alat, linen, kassa, rincian isi set &amp; parstok gudang CSSD.</p>
+      <p>Inventarisir terpusat CSSD: <strong>SET INSTRUMEN OKA</strong> &amp; <strong>SET INSTRUMEN RUANGAN</strong> (klik set untuk melihat rincian komponen di dalamnya).</p>
 
       <div class="master-box">
-        <h4 style="margin:0 0 8px;color:#9a6736;">📦 Parstok Gudang Alat Steril (Siap Pakai)</h4>
-        <div id="gridParstokCssd" class="stock-grid"></div>
-      </div>
-
-      <div class="master-box">
-        <label for="cariMaster" style="margin-top:0">Cari Alat / Set / Isi Komponen</label>
-        <input id="cariMaster" type="text" placeholder="Ketik nama set, alat, kassa, atau pinset...">
-        <button id="btnCariMaster" type="button">🔍 Cari</button>
-      </div>
-
-      <div class="master-box">
-        <label for="filterKategoriMaster" style="margin-top:0">Kelompok / Kategori</label>
-        <select id="filterKategoriMaster">
-          <option value="">Pilih kelompok / kategori</option>
-          <option>KASSA</option>
-          <option>LINEN</option>
-          <option>SET INSTRUMEN</option>
-          <option>SET INSTRUMEN LAINNYA</option>
-          <option>BARANG LAINNYA</option>
-          <option>POLI RAWAT JALAN SATUAN</option>
-          <option>ALAT LAINNYA</option>
-        </select>
-
-        <div id="areaPilihanItemMaster" style="display:none;margin-top:14px">
-          <label for="pilihItemMaster" style="margin-top:0">Pilihan Alat / Set dalam Kelompok</label>
-          <select id="pilihItemMaster">
-            <option value="">Pilih alat / set</option>
-          </select>
+        <label style="margin-top:0">Kategori Inventarisir CSSD</label>
+        <div class="master-kat-tabs">
+          <button type="button" class="master-kat-btn active" id="tabKatOka" onclick="pilihKategoriInventarisCssd('OKA')">🏥 SET INSTRUMEN OKA</button>
+          <button type="button" class="master-kat-btn" id="tabKatRuangan" onclick="pilihKategoriInventarisCssd('RUANGAN')">🏥 SET INSTRUMEN RUANGAN</button>
         </div>
+        <div id="daftarSetInventarisCssd" style="margin-top:12px;"></div>
+      </div>
+
+      <div class="master-box">
+        <label for="cariMaster" style="margin-top:0">Cari Set / Komponen Instrumen</label>
+        <input id="cariMaster" type="text" placeholder="Ketik nama set, pinset, gunting, klem, bengkok, atau kom...">
+        <button id="btnCariMaster" type="button">🔍 Cari</button>
       </div>
 
       <div id="hasilDetailMaster" style="margin-top:14px"></div>
@@ -3351,1765 +3380,553 @@ var daftarAlatReuseTambahan = document.getElementById("daftarAlatReuseTambahan")
 var nowDateObj = new Date();
 document.getElementById("pilihBulanSuhuRekap").value = String(nowDateObj.getMonth() + 1).padStart(2, "0");
 
-/* ===== DATA INFORMASI MASTER DATA ALAT & SET ===== */
-var MASTER_INFO_DATA = [
-  {
-    id: "lap-kassa-5cm",
-    kategori: "KASSA",
-    nama: "Kassa 5 cm",
-    satuan: "Pcs / Lembar",
-    catatan: "Standar satuan lapangan: 1 pcs berisi 10 lembar kassa.",
-    komponen: [{ nama: "Isi per 1 pcs", jumlah: "10 lembar" }]
-  },
-  {
-    id: "lap-kassa-7-5cm",
-    kategori: "KASSA",
-    nama: "Kassa 7,5 cm",
-    satuan: "Pcs / Lembar",
-    catatan: "Standar satuan lapangan: 1 pcs berisi 10 lembar kassa.",
-    komponen: [{ nama: "Isi per 1 pcs", jumlah: "10 lembar" }]
-  },
-  {
-    id: "kassa-bigkassa",
-    kategori: "KASSA",
-    nama: "Bigkassa",
-    satuan: "Kassa",
-    catatan: "Kategori kassa CSSD.",
-    komponen: [{ nama: "Jenis Item", jumlah: "Bigkassa" }]
-  },
-  {
-    id: "kassa-tampon",
-    kategori: "KASSA",
-    nama: "Tampon",
-    satuan: "Kassa",
-    catatan: "Kategori kassa CSSD.",
-    komponen: [{ nama: "Jenis Item", jumlah: "Tampon" }]
-  },
-  {
-    id: "lap-linen-1set",
-    kategori: "LINEN",
-    nama: "Linen 1 Set",
-    satuan: "Set",
-    catatan: "Acuan standar isi 1 set linen di lapangan (total 9 pcs).",
-    komponen: [
-      { nama: "Duk samping", jumlah: "5 pcs" },
-      { nama: "Duk Bolong Besar", jumlah: "1 pcs" },
-      { nama: "Jas Oprasi", jumlah: "3 pcs" }
-    ]
-  },
-  {
-    id: "set-gv",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "SET GV",
-    satuan: "Set",
-    catatan: "Catatan lapangan: memakai Kassa 5 cm : 1 pcs (10 lembar).",
-    komponen: [
-      { nama: "Bak Instrumen Sedang + Tutup", jumlah: "1" },
-      { nama: "Pinset Anatomis", jumlah: "1" },
-      { nama: "Pinset Sirurgis", jumlah: "1" },
-      { nama: "Gunting Benang", jumlah: "1" },
-      { nama: "Kom", jumlah: "1" },
-      { nama: "Kassa 5 cm (catatan lapangan)", jumlah: "1 pcs" }
-    ]
-  },
-  {
-    id: "set-partus",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "SET PARTUS",
-    satuan: "Set",
-    catatan: "Catatan lapangan: memakai Kassa 5 cm : 5 lembar (0,5 pcs).",
-    komponen: [
-      { nama: "Bak Instrumen Sedang + Tutup", jumlah: "1" },
-      { nama: "Pinset anatomis", jumlah: "1" },
-      { nama: "Pinset cirurgis", jumlah: "1" },
-      { nama: "Gunting Benang", jumlah: "1" },
-      { nama: "Gunting tali pusat", jumlah: "1" },
-      { nama: "Gunting episiotomi", jumlah: "1" },
-      { nama: "Klem", jumlah: "1" },
-      { nama: "1/2 Koher", jumlah: "1" },
-      { nama: "Koher", jumlah: "1" },
-      { nama: "Needle holder", jumlah: "1" },
-      { nama: "Kassa 5 cm (catatan lapangan)", jumlah: "5 lembar" }
-    ]
-  },
-  {
-    id: "set-kuret",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "SET KURET",
-    satuan: "Set",
-    catatan: "Catatan lapangan: memakai Kassa 5 cm : 5 lembar (0,5 pcs).",
-    komponen: [
-      { nama: "Sendok kuret", jumlah: "6" },
-      { nama: "Sim", jumlah: "2" },
-      { nama: "Sonde", jumlah: "1" },
-      { nama: "Klem ovum (Foester)", jumlah: "1" },
-      { nama: "Tenakulum", jumlah: "1" },
-      { nama: "Tang abortus", jumlah: "1" },
-      { nama: "Kassa 5 cm (catatan lapangan)", jumlah: "5 lembar" }
-    ]
-  },
-  {
-    id: "set-cvc",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "SET CVC",
-    satuan: "Set",
-    catatan: "Catatan lapangan: memakai Kassa 5 cm : 1 pcs (10 lembar).",
-    komponen: [
-      { nama: "Bak Intrumen Besar + Tutup", jumlah: "1" },
-      { nama: "Scalpel", jumlah: "1" },
-      { nama: "Pinset Anatomis", jumlah: "1" },
-      { nama: "Pinset Sirurgis", jumlah: "1" },
-      { nama: "Needle Holder", jumlah: "1" },
-      { nama: "Gunting Jaringan", jumlah: "1" },
-      { nama: "Gunting Benang", jumlah: "1" },
-      { nama: "Klem Lurus", jumlah: "2" },
-      { nama: "Klem Bengkok", jumlah: "2" },
-      { nama: "Kocher", jumlah: "1" },
-      { nama: "Bowel", jumlah: "1" },
-      { nama: "Duklamp", jumlah: "2" },
-      { nama: "Kassa 5 cm (catatan lapangan)", jumlah: "1 pcs" }
-    ]
-  },
-  {
-    id: "set-hecting",
-    kategori: "SET INSTRUMEN LAINNYA",
-    nama: "SET HECTING",
-    satuan: "Set",
-    catatan: "Sumber: Daftar amprahan instrumen ruangan.",
-    komponen: [
-      { nama: "Bak Instrumen Sedang + Tutup", jumlah: "1" },
-      { nama: "Pinset Anatomis", jumlah: "1" },
-      { nama: "Pinset Sirurgis", jumlah: "1" },
-      { nama: "Needle Holder", jumlah: "1" },
-      { nama: "Gunting Benang", jumlah: "1" },
-      { nama: "Klem lurus", jumlah: "2" },
-      { nama: "Klem Bengkok", jumlah: "2" },
-      { nama: "Scalpel", jumlah: "1" }
-    ]
-  },
-  {
-    id: "oka-bedah-umum",
-    kategori: "SET INSTRUMEN",
-    nama: "SET BEDAH UMUM",
-    satuan: "Set",
-    catatan: "Inventaris Instrumen OKA (20 jenis instrumen, total 38).",
-    komponen: [
-      { nama: "Scalpel Hendles no.4", jumlah: "1" },
-      { nama: "Scalpel Hendles no.3", jumlah: "1" },
-      { nama: "Pinset Anatomis", jumlah: "2" },
-      { nama: "Pinset Cirurgis", jumlah: "1" },
-      { nama: "Gunting Jaringan", jumlah: "1" },
-      { nama: "Gunting Benang", jumlah: "1" },
-      { nama: "Needel Holder", jumlah: "2" },
-      { nama: "Bak Instrument", jumlah: "1" }
-    ]
-  }
-];
-
-function buatKartuDetailMaster(item){
-  var card = document.createElement("div");
-  card.className = "master-card";
-
-  var head = document.createElement("div");
-  head.className = "master-card-head";
-  head.innerHTML =
-    '<div class="master-card-title">' + item.nama + '</div>' +
-    '<span class="master-badge">' + (item.kategori || item.satuan || "Info") + '</span>';
-  card.appendChild(head);
-
-  if(item.komponen && item.komponen.length > 0){
-    var kompBox = document.createElement("div");
-    kompBox.className = "master-komp-list";
-    item.komponen.forEach(function(k){
-      var row = document.createElement("div");
-      row.className = "master-komp-row";
-      row.innerHTML = '<span>' + k.nama + '</span><strong>' + k.jumlah + '</strong>';
-      kompBox.appendChild(row);
-    });
-    card.appendChild(kompBox);
-  }
-
-  if(item.catatan){
-    var cat = document.createElement("div");
-    cat.className = "master-catatan";
-    cat.textContent = item.catatan;
-    card.appendChild(cat);
-  }
-  return card;
-}
-
-function tampilkanDetailItemMaster(itemId){
-  var detailBox = document.getElementById("hasilDetailMaster");
-  if(!detailBox) return;
-  if(!itemId){ detailBox.innerHTML = ""; return; }
-  var item = MASTER_INFO_DATA.find(function(x){ return x.id === itemId; });
-  detailBox.innerHTML = "";
-  if(item) detailBox.appendChild(buatKartuDetailMaster(item));
-}
-
-function isiPilihanItemDariKategori(){
-  var kategori = document.getElementById("filterKategoriMaster").value;
-  var areaItem = document.getElementById("areaPilihanItemMaster");
-  var selectItem = document.getElementById("pilihItemMaster");
-  var detailBox = document.getElementById("hasilDetailMaster");
-  detailBox.innerHTML = "";
-  selectItem.innerHTML = '<option value="">Pilih alat / set</option>';
-  if(!kategori){ areaItem.style.display = "none"; return; }
-  var items = MASTER_INFO_DATA.filter(function(x){ return x.kategori === kategori; });
-  areaItem.style.display = "block";
-  items.forEach(function(item){
-    var opt = document.createElement("option");
-    opt.value = item.id;
-    opt.textContent = item.nama;
-    selectItem.appendChild(opt);
-  });
-}
-
-function jalankanPencarianMaster(){
-  var kataKunci = (document.getElementById("cariMaster").value || "").trim().toLowerCase();
-  var detailBox = document.getElementById("hasilDetailMaster");
-  document.getElementById("filterKategoriMaster").value = "";
-  document.getElementById("areaPilihanItemMaster").style.display = "none";
-  detailBox.innerHTML = "";
-  if(!kataKunci){
-    detailBox.innerHTML = '<div class="master-card" style="text-align:center;color:#8b7562">Ketik nama alat, set, atau isi komponen lalu tekan 🔍 Cari.</div>';
-    return;
-  }
-  var hasil = MASTER_INFO_DATA.filter(function(item){
-    return (item.nama || "").toLowerCase().includes(kataKunci) ||
-           (item.kategori || "").toLowerCase().includes(kataKunci) ||
-           (item.catatan || "").toLowerCase().includes(kataKunci) ||
-           (item.komponen || []).some(function(k){
-             return (k.nama || "").toLowerCase().includes(kataKunci) || (k.jumlah || "").toLowerCase().includes(kataKunci);
-           });
-  });
-  if(hasil.length === 0){
-    detailBox.innerHTML = '<div class="master-card" style="text-align:center;color:#8b7562">Tidak ditemukan informasi untuk "' + document.getElementById("cariMaster").value + '".</div>';
-    return;
-  }
-  hasil.forEach(function(item){ detailBox.appendChild(buatKartuDetailMaster(item)); });
-}
-
-document.getElementById("btnCariMaster").onclick = jalankanPencarianMaster;
-document.getElementById("cariMaster").onkeydown = function(e){
-  if(e.key === "Enter"){ e.preventDefault(); jalankanPencarianMaster(); }
-};
-document.getElementById("filterKategoriMaster").onchange = isiPilihanItemDariKategori;
-document.getElementById("pilihItemMaster").onchange = function(){
-  tampilkanDetailItemMaster(this.value);
-  this.blur();
-};
-
-/* ===== TOMBOL TAMBAH ALAT DINAMIS ===== */
-document.getElementById("tambahAlatReuse").onclick = function(){
-  var item = document.createElement("div");
-  item.style.marginTop = "12px";
-  item.innerHTML =
-    '<label>Nama Alat / Set (dan Reuse Ke- / Kode Warna)</label>' +
-    '<select class="alatReuseTambahan">' + document.getElementById("alatReuse").innerHTML + '</select>' +
-    '<label>Jumlah</label>' +
-    '<input class="jumlahReuseTambahan" type="number" min="1" placeholder="Masukkan jumlah">' +
-    '<button type="button" class="hapusAlatReuse" style="margin-top:8px;border:0;border-radius:10px;background:#fde9e5;color:#8a544b;padding:8px 12px;font-weight:bold">Hapus</button>';
-  item.querySelector(".hapusAlatReuse").onclick = function(){ item.remove(); };
-  daftarAlatReuseTambahan.appendChild(item);
-};
-
-document.getElementById("tambahAlatSterilisasi").onclick = function(){
-  var item = document.createElement("div");
-  item.innerHTML =
-    '<label>Nama Alat / Set</label>' +
-    '<select class="alatSterilisasiTambahan">' + alatAsal.innerHTML + '</select>' +
-    '<label>Jumlah</label>' +
-    '<input class="jumlahSterilisasiTambahan" type="number" min="1" placeholder="Masukkan jumlah">' +
-    '<button type="button" class="hapusAlatSterilisasi">Hapus</button>';
-  item.querySelector(".hapusAlatSterilisasi").onclick = function(){ item.remove(); };
-  daftarAlatSterilisasiTambahan.appendChild(item);
-};
-
-document.getElementById("tambahAlatPacking").onclick = function(){
-  var item = document.createElement("div");
-  item.innerHTML =
-    '<label>Nama Alat / Set</label>' +
-    '<select class="alatPackingTambahan">' + alatAsal.innerHTML + '</select>' +
-    '<label>Jumlah</label>' +
-    '<input class="jumlahPackingTambahan" type="number" min="1" placeholder="Masukkan jumlah">' +
-    '<label>Kondisi Alat</label>' +
-    '<select class="kondisiPackingTambahan"><option value="">Pilih kondisi alat</option><option>Lengkap</option><option>Tidak lengkap</option><option>Masih kotor</option></select>' +
-    '<label>Jenis Kemasan</label>' +
-    '<select class="kemasanPackingTambahan"><option value="">Pilih jenis kemasan</option><option>Pouch</option><option>Linen</option><option>Wrapping</option></select>' +
-    '<label>Indikator Suhu Tinggi</label>' +
-    '<select class="indikatorTinggiPackingTambahan"><option value="">Pilih penggunaan indikator</option><option>Pakai</option><option>Tidak Pakai</option><option>Stok Habis</option></select>' +
-    '<label>Indikator Suhu Rendah</label>' +
-    '<select class="indikatorRendahPackingTambahan"><option value="">Pilih penggunaan indikator</option><option>Pakai</option><option>Tidak Pakai</option><option>Stok Habis</option></select>' +
-    '<button type="button" class="hapusAlatPacking">Hapus</button>';
-  daftarAlatPackingTambahan.appendChild(item);
-  item.querySelector(".hapusAlatPacking").onclick = function(){ item.remove(); };
-};
-
-document.getElementById("tambahAlatDekontaminasi").onclick = function(){
-  var item = document.createElement("div");
-  item.innerHTML =
-    '<label>Nama Alat / Set</label>' +
-    '<select class="alatDekontaminasiTambahan">' + alatAsal.innerHTML + '</select>' +
-    '<label>Jumlah</label>' +
-    '<input class="jumlahDekontaminasiTambahan" type="number" min="1" placeholder="Masukkan jumlah">' +
-    '<button type="button" class="hapusAlatDekontaminasi">Hapus</button>';
-  daftarAlatDekontaminasiTambahan.appendChild(item);
-  item.querySelector(".hapusAlatDekontaminasi").onclick = function(){ item.remove(); };
-};
-
-document.getElementById("tambahAlatPenerimaan").onclick = function(){
-  var item = document.createElement("div");
-  item.innerHTML =
-    '<label>Nama Alat / Set</label>' +
-    '<select class="alatPenerimaanTambahan">' + alatAsal.innerHTML + '</select>' +
-    '<label>Jumlah</label>' +
-    '<input class="jumlahPenerimaanTambahan" type="number" min="1" placeholder="Masukkan jumlah">' +
-    '<label>Kondisi Alat</label>' +
-    '<select class="kondisiPenerimaanTambahan"><option value="">Pilih kondisi alat</option><option>Baik</option><option>Rusak</option><option>Tidak lengkap</option><option>Perlu pemeriksaan</option></select>' +
-    '<button type="button" class="hapusAlatPenerimaan">Hapus</button>';
-  daftarAlatPenerimaanTambahan.appendChild(item);
-  item.querySelector(".hapusAlatPenerimaan").onclick = function(){ item.remove(); };
-};
-
-document.getElementById("tambahAlatDistribusi").onclick = function(){
-  var item = document.createElement("div");
-  item.innerHTML =
-    '<label>Nama Alat / Set</label>' +
-    '<select class="alatDistribusiTambahan">' + alatAsal.innerHTML + '</select>' +
-    '<label>Jumlah</label>' +
-    '<input class="jumlahDistribusiTambahan" type="number" min="1" placeholder="Masukkan jumlah">' +
-    '<button type="button" class="hapusAlatDistribusi">Hapus</button>';
-  daftarAlatTambahan.appendChild(item);
-  item.querySelector(".hapusAlatDistribusi").onclick = function(){ item.remove(); };
-};
-
-show.onclick = function(){
-  if(pass.type === "password"){
-    pass.type = "text";
-    show.innerText = "Tutup";
-  }else{
-    pass.type = "password";
-    show.innerText = "Lihat";
-  }
-};
-
-var penggunaAktif = null;
-
-var daftarAkun = [
-  { username:"handrigumelar", email:"cssdrsudsekarwangi@gmail.com", nama:"Handri Gumelar", role:"admin" },
-  { username:"endendessa", password:"ED-7314", nama:"Enden Dessa ", role:"pelaksana" },
-  { username:"nananmulyana", password:"NM-2468", nama:"Nanan Mulyana", role:"pelaksana" },
-  { username:"dedisyarieffudin", password:"DS-5193", nama:"Dedi Syarieffudin", role:"pelaksana" },
-  { username:"mpradifto", password:"MP-8642", nama:"M Pradifto", role:"pelaksana" },
-  { username:"yanamulyana", password:"YM-3571", nama:"Yana Mulyana", role:"pelaksana" },
-  { username:"helmimaulana", password:"HM-6285", nama:"Helmi Maulana", role:"pelaksana" },
-  { username:"wahyudin", password:"WH-1947", nama:"Wahyudin", role:"pelaksana" },
-  { username:"devaafrian", password:"DA-4056", nama:"Deva Afrian", role:"pelaksana" },
-  { username:"dudung", email:"ddhudung@gmail.com", nama:"Dudung", role:"pelaksana" },
-  { username:"dwipangestu", password:"DP-5804", nama:"Dwi Pangestu", role:"pelaksana" }
-];
-
-/* ===== AUTO-LOGIN RUANGAN VIA QR (?qr=...) ===== */
-function setLocalDatetime(elId){
-  const el = document.getElementById(elId);
-  if(!el) return;
-  const now = new Date();
-  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-  el.value = now.toISOString().slice(0, 16);
-}
-
-window.tutupPanelRuangan = function(){
-  document.getElementById("panelR_Buat").style.display = "none";
-  document.getElementById("panelR_Status").style.display = "none";
-  document.getElementById("cardR_Buat")?.classList.remove("is-selected");
-  document.getElementById("cardR_Status")?.classList.remove("is-selected");
-};
-
-function bukaWorkspaceRuangan(foundUnit){
-  currentSession = { type: "ruangan", role: "Ruangan", unit: foundUnit.unit, token: foundUnit.token };
-  sessionStorage.setItem("cssd_session", JSON.stringify(currentSession));
-
-  document.getElementById("login").style.display = "none";
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("workspaceRuangan").style.display = "block";
-
-  document.getElementById("badgeRuanganAktif").textContent = "Selamat Datang, " + foundUnit.unit + " 👋🏻";
-  document.getElementById("reqUnitInput").value = foundUnit.unit;
-  setLocalDatetime("reqWaktuInput");
-  if(document.getElementById("reqItemsContainer").children.length === 0){
-    tambahBarisPermintaan();
-  }
-  tutupPanelRuangan();
-  perbaruiJamTanggalRealtime();
-  refreshAllViews();
-}
-
-function cekAutoLoginQrSaatMuat(){
-  const params = new URLSearchParams(window.location.search);
-  const qrToken = (params.get("qr") || "").trim();
-  if(qrToken){
-    const found = UNIT_QR_LIST.find(u => u.token === qrToken);
-    if(found){
-      bukaWorkspaceRuangan(found);
-      return true;
-    }
-  }
-  const saved = sessionStorage.getItem("cssd_session");
-  if(saved){
-    try{
-      const parsed = JSON.parse(saved);
-      if(parsed && parsed.type === "ruangan" && parsed.unit){
-        const found = UNIT_QR_LIST.find(u => u.unit === parsed.unit) || { unit: parsed.unit, token: parsed.token || "" };
-        bukaWorkspaceRuangan(found);
-        return true;
-      }
-    }catch(e){}
-  }
-  return false;
-}
-
-document.getElementById("btnSimulasiScanQr").onclick = function(){
-  const token = document.getElementById("simulasiPilihUnit").value;
-  const found = UNIT_QR_LIST.find(u => u.token === token);
-  if(!found) return;
-  bukaWorkspaceRuangan(found);
-};
-
-document.getElementById("btnKeluarRuangan").onclick = function(){
-  sessionStorage.removeItem("cssd_session");
-  currentSession = null;
-  tutupPanelRuangan();
-  document.getElementById("workspaceRuangan").style.display = "none";
-  document.getElementById("login").style.display = "flex";
-  if(window.location.search.includes("qr=")){
-    window.history.replaceState({}, document.title, window.location.pathname);
-  }
-};
-
-/* ===== SELISIH SET, KOMPONEN KURANG & PERINGATAN DATA ===== */
-window.hitungPeringatanRuangan = function(unitName){
-  const confirmedByItem = {};
-  state.permintaan.forEach(req => {
-    if(req.unit !== unitName) return;
-    if(req.status === "Terkonfirmasi 🔥👍🏽" || req.status === "Didistribusikan"){
-      req.items.forEach(it => {
-        const master = state.gudang.find(g => g.nama.toUpperCase() === String(it.namaAlat || "").toUpperCase());
-        if(master && master.wajibKembali){
-          const qty = Number(it.jumlahDikonfirmasi ?? it.jumlahDiminta ?? 0);
-          confirmedByItem[it.namaAlat] = (confirmedByItem[it.namaAlat] || 0) + qty;
-        }
-      });
-    }
-  });
-
-  const returnedByItem = {};
-  const kekuranganKomponen = [];
-  const jejakPengembalian = [];
-
-  state.pengembalian.forEach(ret => {
-    if(ret.unit !== unitName) return;
-    returnedByItem[ret.namaAlat] = (returnedByItem[ret.namaAlat] || 0) + Number(ret.jumlahKembali || 0);
-    if(ret.komponenKurang && ret.komponenKurang.length > 0){
-      ret.komponenKurang.forEach(k => {
-        if(Number(k.jumlahKurang) > 0){
-          kekuranganKomponen.push({
-            namaAlat: ret.namaAlat,
-            komponen: k.komponen,
-            jumlahKurang: Number(k.jumlahKurang),
-            petugasRuangan: ret.petugasRuangan,
-            waktu: ret.waktu
-          });
-        }
-      });
-    }
-    jejakPengembalian.push(ret);
-  });
-
-  const selisihSet = [];
-  Object.keys(confirmedByItem).forEach(namaAlat => {
-    const dikonfirmasi = confirmedByItem[namaAlat] || 0;
-    const kembali = returnedByItem[namaAlat] || 0;
-    const kurang = dikonfirmasi - kembali;
-    if(kurang > 0){
-      const lastRet = [...jejakPengembalian].reverse().find(r => r.namaAlat === namaAlat);
-      selisihSet.push({
-        namaAlat,
-        dikonfirmasi,
-        kembali,
-        kurang,
-        petugasRuangan: lastRet ? lastRet.petugasRuangan : "Belum ada catatan pengembalian",
-        waktu: lastRet ? lastRet.waktu : "-"
-      });
-    }
-  });
-
-  return { selisihSet, kekuranganKomponen, jejakPengembalian };
-};
-
-window.renderPeringatanRuangan = function(unitName){
-  const box = document.getElementById("warningDataRuangan");
-  if(!box) return;
-  const { selisihSet, kekuranganKomponen } = hitungPeringatanRuangan(unitName);
-  if(selisihSet.length === 0 && kekuranganKomponen.length === 0){
-    box.style.display = "none";
-    box.innerHTML = "";
-    return;
-  }
-  const selisihHtml = selisihSet.map(s =>
-    `<li><strong>${s.namaAlat}</strong>: terkonfirmasi <strong>${s.dikonfirmasi}</strong>, baru kembali <strong>${s.kembali}</strong> (<strong>kurang ${s.kurang}</strong>) — dikembalikan oleh <strong>${s.petugasRuangan}</strong> (${String(s.waktu || "-").replace("T", " ")})</li>`
-  ).join("");
-  const kompHtml = kekuranganKomponen.map(k =>
-    `<li><strong>${k.namaAlat}</strong> kurang <strong>${k.komponen} (${k.jumlahKurang})</strong> — tercatat pada pengembalian oleh <strong>${k.petugasRuangan}</strong> (${String(k.waktu || "-").replace("T", " ")})</li>`
-  ).join("");
-
-  box.style.display = "block";
-  box.innerHTML =
-    `<div><strong>⚠️ Peringatan Data Pengembalian Alat — ${unitName}</strong> (Permintaan tetap bisa diajukan)</div>` +
-    `<ul>${selisihHtml}${kompHtml}</ul>` +
-    `<div style="font-size:12px;">Rincian ini otomatis tampil kepada petugas CSSD saat proses konfirmasi permintaan.</div>`;
-};
-
-/* ===== MENU RUANGAN (2 KARTU UTAMA, PANEL TERBUKA SAAT DIKLIK) ===== */
-window.gantiMenuRuangan = function(menu){
-  const panelBuat = document.getElementById("panelR_Buat");
-  const panelStatus = document.getElementById("panelR_Status");
-  const cardBuat = document.getElementById("cardR_Buat");
-  const cardStatus = document.getElementById("cardR_Status");
-
-  if(menu === "buat"){
-    const akanBuka = panelBuat.style.display !== "block";
-    tutupPanelRuangan();
-    if(akanBuka){
-      panelBuat.style.display = "block";
-      cardBuat.classList.add("is-selected");
-      if(currentSession?.unit) renderPeringatanRuangan(currentSession.unit);
-      panelBuat.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-  }else if(menu === "status"){
-    const akanBuka = panelStatus.style.display !== "block";
-    tutupPanelRuangan();
-    if(akanBuka){
-      panelStatus.style.display = "block";
-      cardStatus.classList.add("is-selected");
-      renderStatusRuangan();
-      panelStatus.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-  }
-};
-
-window.tambahBarisPermintaan = function(){
-  const container = document.getElementById("reqItemsContainer");
-  const row = document.createElement("div");
-  row.className = "item-row-ui";
-  row.innerHTML = `
-    <select class="req-alat" required>
-      ${getOpsiDropdownAlatLengkap()}
-    </select>
-    <input type="number" class="req-qty" min="1" value="1" required />
-    <button type="button" class="btn-ui btn-ui-danger btn-ui-sm" onclick="this.parentElement.remove()">✕</button>
-  `;
-  container.appendChild(row);
-};
-
-window.submitPermintaanRuangan = function(e){
-  e.preventDefault();
-  if(!currentSession || currentSession.type !== "ruangan") return;
-  const rows = [...document.querySelectorAll("#reqItemsContainer .item-row-ui")];
-  const items = rows.map(r => ({
-    namaAlat: r.querySelector(".req-alat").value,
-    jumlahDiminta: Number(r.querySelector(".req-qty").value),
-    jumlahDikonfirmasi: Number(r.querySelector(".req-qty").value)
-  })).filter(i => i.namaAlat && i.jumlahDiminta > 0);
-
-  if(items.length === 0){
-    alert("Pilih minimal 1 alat/set steril.");
-    return;
-  }
-
-  const newReq = {
-    id: "REQ-" + String(Date.now()).slice(-5),
-    unit: currentSession.unit,
-    waktu: document.getElementById("reqWaktuInput").value,
-    prioritas: document.getElementById("reqPrioritasInput").value,
-    pemohon: document.getElementById("reqPemohonInput").value.trim(),
-    catatan: document.getElementById("reqCatatanInput").value.trim(),
-    items,
-    status: "Menunggu Konfirmasi",
-    catatanCssd: ""
-  };
-
-  state.permintaan.unshift(newReq);
-  saveState();
-  document.getElementById("formPermintaanRuangan").reset();
-  document.getElementById("reqUnitInput").value = currentSession.unit;
-  setLocalDatetime("reqWaktuInput");
-  document.getElementById("reqItemsContainer").innerHTML = "";
-  tambahBarisPermintaan();
-  renderPeringatanRuangan(currentSession.unit);
-  refreshAllViews();
-  alert("Permintaan berhasil dikirim ke CSSD.");
-  tutupPanelRuangan();
-  gantiMenuRuangan("status");
-};
-
-window.renderStatusRuangan = function(){
-  const unit = currentSession?.unit;
-  const list = state.permintaan.filter(p => p.unit === unit);
-  const badgeEl = document.getElementById("badgeCountRuangan");
-  if(badgeEl) badgeEl.textContent = list.length;
-
-  const container = document.getElementById("listStatusRuangan");
-  if(!container) return;
-  if(list.length === 0){
-    container.innerHTML = `<p class="muted-ui">Belum ada permintaan untuk ${unit}.</p>`;
-    return;
-  }
-
-  container.innerHTML = list.map(req => {
-    const isConfirmed = req.status.includes("Terkonfirmasi");
-    const statusPill = isConfirmed
-      ? `<span class="pill-ui pill-ok">${req.status}</span>`
-      : req.status === "Didistribusikan"
-        ? `<span class="pill-ui pill-dist">${req.status}</span>`
-        : `<span class="pill-ui pill-wait">${req.status}</span>`;
-    const prioPill = req.prioritas === "Cito"
-      ? `<span class="pill-ui pill-cito">Cito</span>`
-      : `<span class="pill-ui pill-rutin">Rutin</span>`;
-
-    const itemsHtml = req.items.map(it => {
-      const konfText = (isConfirmed || req.status === "Didistribusikan")
-        ? ` → Dikonfirmasi CSSD: <strong>${it.jumlahDikonfirmasi}</strong>`
-        : "";
-      return `<li>${it.namaAlat} — Diminta: <strong>${it.jumlahDiminta}</strong>${konfText}</li>`;
-    }).join("");
-
-    return `
-      <div class="req-box">
-        <div class="req-top">
-          <div><strong>${req.id}</strong> ${prioPill}</div>
-          ${statusPill}
-        </div>
-        <div class="muted-ui" style="margin-bottom:6px;">Waktu: ${String(req.waktu || "").replace("T", " ")} | Pemohon: <strong>${req.pemohon}</strong></div>
-        <ul style="margin:6px 0;padding-left:18px;font-size:14px;">${itemsHtml}</ul>
-        ${req.catatan ? `<div class="muted-ui">Catatan Ruangan: ${req.catatan}</div>` : ""}
-        ${req.catatanCssd ? `<div style="font-size:13px;color:#0f766e;margin-top:4px;"><strong>Catatan CSSD:</strong> ${req.catatanCssd}</div>` : ""}
-      </div>
-    `;
-  }).join("");
-};
-
-/* ===== KONFIRMASI PERMINTAAN, PARSTOK, PENGEMBALIAN & DISTRIBUSI CSSD ===== */
-window.renderPermintaanCssd = function(){
-  const pendingCount = state.permintaan.filter(p => p.status === "Menunggu Konfirmasi").length;
-  const badgeEl = document.getElementById("badgeCountCssdReq");
-  if(badgeEl) badgeEl.textContent = pendingCount;
-
-  const container = document.getElementById("listPermintaanCssd");
-  if(!container) return;
-  if(state.permintaan.length === 0){
-    container.innerHTML = `<p class="muted-ui">Belum ada permintaan masuk dari ruangan.</p>`;
-    return;
-  }
-
-  container.innerHTML = state.permintaan.map((req, rIdx) => {
-    const isConfirmed = req.status.includes("Terkonfirmasi");
-    const isDist = req.status === "Didistribusikan";
-    const { selisihSet, kekuranganKomponen } = hitungPeringatanRuangan(req.unit);
-
-    let warningBadge = "";
-    if(selisihSet.length > 0 || kekuranganKomponen.length > 0){
-      const ringkasan = [
-        ...selisihSet.map(s => `${s.namaAlat} kurang ${s.kurang} set (pengembali: ${s.petugasRuangan})`),
-        ...kekuranganKomponen.map(k => `${k.namaAlat} kurang ${k.komponen} (${k.jumlahKurang}) [pengembali: ${k.petugasRuangan}]`)
-      ].join(" • ");
-      warningBadge = `<div class="warning-box" style="margin:8px 0;padding:10px 12px;"><strong>⚠️ Data Ruangan:</strong> ${ringkasan}</div>`;
-    }
-
-    const rowsHtml = req.items.map((it, iIdx) => {
-      const master = state.gudang.find(g => g.nama.toUpperCase() === String(it.namaAlat || "").toUpperCase());
-      const stokInfo = master ? `(Parstok siap pakai: ${master.parstok})` : `(Item non-parstok gudang)`;
-      return `
-        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed #e2e8f0;">
-          <div>
-            <strong>${it.namaAlat}</strong> — Diminta: <strong>${it.jumlahDiminta}</strong>
-            <span class="muted-ui">${stokInfo}</span>
-          </div>
-          <div>
-            <label style="font-size:12px;font-weight:700;margin:0 4px 0 0;display:inline;">Konfirmasi:</label>
-            <input type="number" min="0" id="konfQty_${rIdx}_${iIdx}" value="${it.jumlahDikonfirmasi ?? it.jumlahDiminta}" ${isConfirmed || isDist ? "disabled" : ""} style="width:76px;padding:5px 8px;border-radius:6px;border:1px solid #cbd5e1;font-weight:700;display:inline-block;" />
-          </div>
-        </div>
-      `;
-    }).join("");
-
-    const statusPill = isConfirmed
-      ? `<span class="pill-ui pill-ok">${req.status}</span>`
-      : isDist
-        ? `<span class="pill-ui pill-dist">${req.status}</span>`
-        : `<span class="pill-ui pill-wait">${req.status}</span>`;
-    const prioPill = req.prioritas === "Cito"
-      ? `<span class="pill-ui pill-cito">Cito</span>`
-      : `<span class="pill-ui pill-rutin">Rutin</span>`;
-
-    return `
-      <div class="req-box">
-        <div class="req-top">
-          <div><strong>${req.unit}</strong> • <span class="muted-ui">${req.id}</span> ${prioPill}</div>
-          ${statusPill}
-        </div>
-        <div class="muted-ui" style="margin-bottom:6px;">Waktu: ${String(req.waktu || "").replace("T", " ")} | Pemohon: <strong>${req.pemohon}</strong></div>
-        ${warningBadge}
-        <div style="margin:8px 0;">${rowsHtml}</div>
-        ${req.catatan ? `<div class="muted-ui" style="margin-bottom:8px;">Catatan Ruangan: ${req.catatan}</div>` : ""}
-        ${!isConfirmed && !isDist ? `
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center;">
-            <input type="text" id="konfNote_${rIdx}" placeholder="Catatan konfirmasi CSSD (opsional)..." value="${req.catatanCssd || ""}" style="flex:1;min-width:180px;padding:7px 10px;border-radius:8px;border:1px solid #cbd5e1;" />
-            <button type="button" class="btn-ui btn-ui-primary btn-ui-sm" onclick="konfirmasiPermintaanCssd(${rIdx})">Konfirmasi &amp; Potong Parstok</button>
-          </div>
-        ` : `
-          <div style="font-size:12px;color:#0f766e;margin-top:6px;">
-            ${req.catatanCssd ? `Catatan CSSD: <strong>${req.catatanCssd}</strong>` : "Sudah dikonfirmasi & parstok telah disesuaikan."}
-          </div>
-        `}
-      </div>
-    `;
-  }).join("");
-};
-
-window.konfirmasiPermintaanCssd = function(reqIndex){
-  const req = state.permintaan[reqIndex];
-  if(!req || req.status.includes("Terkonfirmasi") || req.status === "Didistribusikan") return;
-
-  const updatedItems = [];
-  for(let i = 0; i < req.items.length; i++){
-    const it = req.items[i];
-    const inputEl = document.getElementById(`konfQty_${reqIndex}_${i}`);
-    const qtyKonf = Math.max(0, Number(inputEl ? inputEl.value : it.jumlahDiminta));
-    const master = state.gudang.find(g => g.nama.toUpperCase() === String(it.namaAlat || "").toUpperCase());
-    if(master && qtyKonf > master.parstok){
-      alert(`Jumlah konfirmasi ${it.namaAlat} (${qtyKonf}) melebihi parstok siap pakai (${master.parstok}).`);
-      return;
-    }
-    updatedItems.push({ ...it, jumlahDikonfirmasi: qtyKonf });
-  }
-
-  updatedItems.forEach(it => {
-    const master = state.gudang.find(g => g.nama.toUpperCase() === String(it.namaAlat || "").toUpperCase());
-    if(master){
-      master.parstok = Math.max(0, master.parstok - it.jumlahDikonfirmasi);
-    }
-  });
-
-  const noteEl = document.getElementById(`konfNote_${reqIndex}`);
-  req.items = updatedItems;
-  req.catatanCssd = noteEl ? noteEl.value.trim() : "";
-  req.status = "Terkonfirmasi 🔥👍🏽";
-  saveState();
-  refreshAllViews();
-  alert(`Permintaan ${req.unit} berhasil diubah menjadi Terkonfirmasi 🔥👍🏽 dan parstok telah berkurang.`);
-};
-
-window.renderKomponenRetur = function(){
-  const setSel = document.getElementById("retSetSelect");
-  const container = document.getElementById("retKomponenContainer");
-  if(!setSel || !container) return;
-
-  if(setSel.options.length === 0){
-    const setOnly = state.gudang.filter(g => g.wajibKembali);
-    setSel.innerHTML = setOnly.map(g => `<option value="${g.nama}">${g.nama}</option>`).join("");
-  }
-
-  const master = state.gudang.find(g => g.nama.toUpperCase() === String(setSel.value || "").toUpperCase());
-  if(!master || !master.komponen || master.komponen.length === 0){
-    container.innerHTML = `<div class="muted-ui">Tidak ada komponen instrumen khusus untuk item ini.</div>`;
-    return;
-  }
-
-  container.innerHTML = master.komponen.map((komp, idx) => `
-    <div class="field-ui" style="margin-bottom:6px;">
-      <label>Kurang ${komp} (Qty)</label>
-      <input type="number" min="0" value="0" data-komp="${komp}" id="retKompQty_${idx}" />
-    </div>
-  `).join("");
-};
-
-window.submitPenerimaanAlat = function(e){
-  e.preventDefault();
-  const unit = document.getElementById("retUnitSelect").value;
-  const namaAlat = document.getElementById("retSetSelect").value;
-  const jumlahKembali = Number(document.getElementById("retJumlahSetInput").value || 0);
-  const petugasRuangan = document.getElementById("retPetugasRuanganInput").value.trim();
-  const waktu = document.getElementById("retWaktuInput").value;
-  const catatan = document.getElementById("retCatatanInput").value.trim();
-
-  const komponenKurang = [...document.querySelectorAll("#retKomponenContainer input[data-komp]")]
-    .map(inp => ({ komponen: inp.getAttribute("data-komp"), jumlahKurang: Number(inp.value || 0) }))
-    .filter(k => k.jumlahKurang > 0);
-
-  state.pengembalian.push({
-    id: "RET-" + String(Date.now()).slice(-5),
-    unit,
-    namaAlat,
-    jumlahKembali,
-    petugasRuangan,
-    waktu,
-    catatan,
-    komponenKurang
-  });
-  saveState();
-
-  document.getElementById("retJumlahSetInput").value = "0";
-  document.getElementById("retPetugasRuanganInput").value = "";
-  document.getElementById("retCatatanInput").value = "";
-  setLocalDatetime("retWaktuInput");
-  renderKomponenRetur();
-  renderJejakPengembalianCssd();
-  if(currentSession?.type === "ruangan" && currentSession.unit === unit){
-    renderPeringatanRuangan(unit);
-  }
-  alert("Catatan pengembalian alat tersimpan.");
-};
-
-window.renderJejakPengembalianCssd = function(){
-  const container = document.getElementById("ringkasanJejakPengembalian");
-  if(!container) return;
-  const unitsWithRecords = [...new Set(state.pengembalian.map(p => p.unit))];
-  if(unitsWithRecords.length === 0){
-    container.innerHTML = `<p class="muted-ui">Belum ada catatan pengembalian alat.</p>`;
-    return;
-  }
-
-  container.innerHTML = unitsWithRecords.map(u => {
-    const { selisihSet, kekuranganKomponen } = hitungPeringatanRuangan(u);
-    const sText = selisihSet.length
-      ? selisihSet.map(s => `${s.namaAlat} kurang ${s.kurang} set (oleh: ${s.petugasRuangan})`).join("; ")
-      : "Set lengkap";
-    const kText = kekuranganKomponen.length
-      ? kekuranganKomponen.map(k => `${k.namaAlat}: kurang ${k.komponen} (${k.jumlahKurang}) [oleh: ${k.petugasRuangan}]`).join("; ")
-      : "Komponen lengkap";
-
-    return `
-      <div class="req-box" style="padding:10px 14px;">
-        <strong>${u}</strong>
-        <div style="font-size:13px;margin-top:4px;">• Selisih set: ${sText}</div>
-        <div style="font-size:13px;">• Komponen instrumen: ${kText}</div>
-      </div>
-    `;
-  }).join("");
-};
-
-window.renderParstokCssd = function(){
-  const el = document.getElementById("gridParstokCssd");
-  if(!el) return;
-  el.innerHTML = state.gudang.map((item, idx) => `
-    <div class="stock-card">
-      <div class="stock-name">${item.nama}</div>
-      <div class="stock-qty">${item.parstok}</div>
-      <div class="stock-sub" style="margin-bottom:8px;">Parstok siap pakai</div>
-      <div style="display:flex;gap:6px;">
-        <input type="number" id="editParstok_${idx}" value="${item.parstok}" min="0" style="width:76px;padding:5px 8px;border-radius:6px;border:1px solid #cbd5e1;" />
-        <button type="button" class="btn-ui btn-ui-outline btn-ui-sm" onclick="updateParstokManual(${idx})">Simpan</button>
-      </div>
-    </div>
-  `).join("");
-};
-
-window.updateParstokManual = function(idx){
-  const val = Math.max(0, Number(document.getElementById(`editParstok_${idx}`).value || 0));
-  state.gudang[idx].parstok = val;
-  saveState();
-  refreshAllViews();
-  alert(`Parstok ${state.gudang[idx].nama} diperbarui menjadi ${val}.`);
-};
-
-window.renderDistribusiCssd = function(){
-  const siapDist = state.permintaan.filter(p => p.status.includes("Terkonfirmasi") || p.status === "Didistribusikan");
-  const container = document.getElementById("listDistribusiCssd");
-  if(!container) return;
-  if(siapDist.length === 0){
-    container.innerHTML = `<p class="muted-ui">Belum ada permintaan berstatus Terkonfirmasi 🔥👍🏽 untuk didistribusikan.</p>`;
-    return;
-  }
-
-  container.innerHTML = siapDist.map(req => {
-    const itemsText = req.items.map(i => `${i.namaAlat} (${i.jumlahDikonfirmasi})`).join(", ");
-    const done = req.status === "Didistribusikan";
-    return `
-      <div class="req-box">
-        <div class="req-top">
-          <div><strong>${req.unit}</strong> • <span class="muted-ui">${req.id}</span></div>
-          <span class="pill-ui ${done ? "pill-dist" : "pill-ok"}">${req.status}</span>
-        </div>
-        <div style="font-size:14px;margin-bottom:8px;">Alat: <strong>${itemsText}</strong></div>
-        ${!done ? `<button type="button" class="btn-ui btn-ui-primary btn-ui-sm" onclick="tandaiDidistribusikan('${req.id}')">Tandai Didistribusikan</button>` : ""}
-      </div>
-    `;
-  }).join("");
-};
-
-window.tandaiDidistribusikan = function(reqId){
-  const target = state.permintaan.find(p => p.id === reqId);
-  if(!target) return;
-  target.status = "Didistribusikan";
-  saveState();
-  refreshAllViews();
-};
-
-/* ===== KARTU QR RUANGAN (ADMIN) ===== */
-window.renderKartuQrAdmin = function(){
-  const sel = document.getElementById("qrFilterSelect");
-  if(sel && sel.options.length === 1){
-    UNIT_QR_LIST.forEach(u => {
-      const opt = document.createElement("option");
-      opt.value = u.token;
-      opt.textContent = u.unit;
-      sel.appendChild(opt);
-    });
-  }
-
-  const selectedToken = sel ? sel.value : "ALL";
-  const keyword = (document.getElementById("qrSearchInput")?.value || "").trim().toLowerCase();
-  const container = document.getElementById("qrGridContainer");
-  if(!container || typeof QRCode === "undefined") return;
-  container.innerHTML = "";
-
-  const list = UNIT_QR_LIST.filter(u => {
-    const matchToken = selectedToken === "ALL" || u.token === selectedToken;
-    const matchKey = !keyword || u.unit.toLowerCase().includes(keyword);
-    return matchToken && matchKey;
-  });
-
-  const baseUrl = window.location.origin + window.location.pathname;
-  list.forEach((u, idx) => {
-    const card = document.createElement("div");
-    card.className = "qr-card";
-    const boxId = `qrCanvas_${idx}_${u.token}`;
-    card.innerHTML = `
-      <div class="qr-brand">CSSD BERIMAN • AKSES RUANGAN</div>
-      <div class="qr-unit">${u.unit}</div>
-      <div id="${boxId}" class="qr-box"></div>
-      <div class="qr-caption">Scan QR untuk masuk ke menu permintaan ruangan</div>
-      <button type="button" class="btn-ui btn-ui-outline btn-ui-sm no-print" onclick="cetakSatuKartuQr('${u.token}')">🖨️ Cetak Kartu</button>
-    `;
-    container.appendChild(card);
-    new QRCode(document.getElementById(boxId), {
-      text: `${baseUrl}?qr=${encodeURIComponent(u.token)}`,
-      width: 132,
-      height: 132,
-      correctLevel: QRCode.CorrectLevel.M
-    });
-  });
-};
-
-window.cetakSatuKartuQr = function(token){
-  const sel = document.getElementById("qrFilterSelect");
-  if(sel) sel.value = token;
-  renderKartuQrAdmin();
-  setTimeout(() => window.print(), 150);
-};
-
-window.refreshAllViews = function(){
-  renderKomponenRetur();
-  renderParstokCssd();
-  renderPermintaanCssd();
-  renderDistribusiCssd();
-  renderJejakPengembalianCssd();
-  if(currentSession?.type === "ruangan"){
-    renderStatusRuangan();
-    renderPeringatanRuangan(currentSession.unit);
-  }
-};
-
-/* ===== SUBMIT LOGIN CSSD ===== */
-form.onsubmit = async function(e){
-  e.preventDefault();
-
-  var username = document.getElementById("user").value.trim().toLowerCase();
-  var password = pass.value;
-
-  penggunaAktif = daftarAkun.find(function(akun){
-    return akun.username === username;
-  });
-
-  if(!penggunaAktif){
-    msg.innerText = "Username atau kata sandi tidak sesuai.";
-    return;
-  }
-
-  if(penggunaAktif.email){
-    try{
-      await signInWithEmailAndPassword(firebaseAuth, penggunaAktif.email, password);
-    }catch(error){
-      msg.innerText = "Username atau kata sandi tidak sesuai.";
-      return;
-    }
-  }else{
-    if(penggunaAktif.password !== password){
-      msg.innerText = "Username atau kata sandi tidak sesuai.";
-      return;
-    }
-  }
-
-  document.getElementById("login").style.display = "none";
-  document.getElementById("workspaceRuangan").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
-  document.getElementById("homeModern").style.display = "block";
-  document.getElementById("homeWelcome").textContent = "Selamat Datang, " + penggunaAktif.nama + " 😎";
-  perbaruiJamTanggalRealtime();
-
-  try{
-    history.replaceState({ cssdView: "home" }, "", "#beranda");
-    history.pushState({ cssdView: "home" }, "", "#beranda");
-  }catch(err){}
-
-  SUBMENU_IDS.forEach(function(id){
-    var el = document.getElementById(id);
-    if(el) el.style.display = "none";
-  });
-  msg.innerText = "";
-
-  document.getElementById("pjLaporan").value = penggunaAktif.nama;
-  document.getElementById("petugasAktivitas").value = penggunaAktif.nama;
-  document.getElementById("petugasDistribusi").value = penggunaAktif.nama;
-  document.getElementById("petugasPenerimaan").value = penggunaAktif.nama;
-  document.getElementById("petugasDekontaminasi").value = penggunaAktif.nama;
-  document.getElementById("petugasPacking").value = penggunaAktif.nama;
-  document.getElementById("petugasSterilisasi").value = penggunaAktif.nama;
-  document.getElementById("petugasSuhu").value = penggunaAktif.nama;
-  document.getElementById("petugasMutu").value = penggunaAktif.nama;
-  document.getElementById("petugasReuse").value = penggunaAktif.nama;
-
-  var badge = document.querySelector(".badge");
-  var sapaan = document.querySelector(".panel > h2 + p");
-  var isAdmin = penggunaAktif.role === "admin";
-
-  if(isAdmin){
-    badge.innerText = "KEPALA INSTALASI / ADMIN";
-    sapaan.innerText = "Selamat datang, " + penggunaAktif.nama + ".";
-    document.getElementById("btnKelolaAkun").style.display = "flex";
-    document.getElementById("btnLaporan").style.display = "flex";
-    document.getElementById("homeKartuQr").style.display = "flex";
-  }else{
-    badge.innerText = "PELAKSANA";
-    sapaan.innerText = "Selamat datang, " + penggunaAktif.nama + ".";
-    document.getElementById("btnKelolaAkun").style.display = "none";
-    document.getElementById("isiKelolaAkun").style.display = "none";
-    document.getElementById("btnLaporan").style.display = "none";
-    document.getElementById("isiLaporan").style.display = "none";
-    document.getElementById("homeKartuQr").style.display = "none";
-  }
-
-  var profil = document.querySelectorAll("#isiProfil input");
-  if(profil.length >= 4){
-    profil[0].value = penggunaAktif.nama;
-    profil[1].value = isAdmin ? "Kepala Instalasi / Admin" : "Pelaksana";
-    profil[2].value = penggunaAktif.username;
-    profil[3].value = "Aktif";
-  }
-
-  setLocalDatetime("retWaktuInput");
-  refreshAllViews();
-};
-
-async function jalankanKeluarAplikasi(){
-  if(penggunaAktif && penggunaAktif.email){
-    try{ await signOut(firebaseAuth); }catch(error){ console.log(error); }
-  }
-  penggunaAktif = null;
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("login").style.display = "flex";
-  pass.value = "";
-  document.getElementById("user").value = "";
-}
-
-document.getElementById("logout").onclick = jalankanKeluarAplikasi;
-document.getElementById("homeLogoutBtn").onclick = jalankanKeluarAplikasi;
-
-/* ===== NAVIGASI MENU UTAMA & PENDUKUNG ===== */
-document.getElementById("btnBeranda").onclick = function(){
-  var tombol = document.getElementById("btnBeranda");
-  var panel = document.getElementById("isiBeranda");
-  tombol.insertAdjacentElement("afterend", panel);
-  document.getElementById("isiAktivitas").style.display = "none";
-  panel.style.display = "block";
-};
-document.getElementById("tutupBeranda").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("btnAktivitas").onclick = function(){
-  var tombol = document.getElementById("btnAktivitas");
-  var panel = document.getElementById("isiAktivitas");
-  tombol.insertAdjacentElement("afterend", panel);
-  document.getElementById("isiBeranda").style.display = "none";
-  panel.style.display = "block";
-};
-document.getElementById("tutupAktivitas").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("homeDistribusi").onclick = function(){
-  bukaSubmenuDariBeranda("isiDistribusi");
-  renderPermintaanCssd();
-  renderDistribusiCssd();
-};
-document.getElementById("tutupDistribusi").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("homePenerimaan").onclick = function(){
-  bukaSubmenuDariBeranda("isiPenerimaan");
-  setLocalDatetime("retWaktuInput");
-  renderKomponenRetur();
-  renderJejakPengembalianCssd();
-};
-document.getElementById("tutupPenerimaan").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("homeDekontaminasi").onclick = function(){ bukaSubmenuDariBeranda("isiDekontaminasi"); };
-document.getElementById("tutupDekontaminasi").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("homePacking").onclick = function(){ bukaSubmenuDariBeranda("isiPacking"); };
-document.getElementById("tutupPacking").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("homeSterilisasi").onclick = function(){ bukaSubmenuDariBeranda("isiSterilisasi"); };
-document.getElementById("tutupSterilisasi").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("homeSuhu").onclick = function(){ bukaSubmenuDariBeranda("isiSuhu"); };
-document.getElementById("tutupSuhu").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("homeMaster").onclick = function(){
-  bukaSubmenuDariBeranda("isiMaster");
-  renderParstokCssd();
-  document.getElementById("cariMaster").value = "";
-  document.getElementById("filterKategoriMaster").value = "";
-  document.getElementById("areaPilihanItemMaster").style.display = "none";
-  document.getElementById("hasilDetailMaster").innerHTML = "";
-};
-document.getElementById("tutupMaster").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("homeKartuQr").onclick = function(){
-  bukaSubmenuDariBeranda("isiKartuQr");
-  renderKartuQrAdmin();
-};
-document.getElementById("tutupKartuQr").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("homeMutu").onclick = function(){
-  bukaSubmenuDariBeranda("isiMutu");
-  if(penggunaAktif) document.getElementById("petugasMutu").value = penggunaAktif.nama;
-};
-document.getElementById("tutupMutu").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-document.getElementById("homeReuse").onclick = function(){ bukaSubmenuDariBeranda("isiReuse"); };
-document.getElementById("tutupReuse").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-/* ===== SIMPAN & RIWAYAT MUTU, REUSE, SUHU, AKTIVITAS, DISTRIBUSI, PENERIMAAN, DEKON, PACKING, STERIL ===== */
-document.getElementById("simpanMutu").onclick = async function(){
-  var tanggal = document.getElementById("tanggalMutu").value;
-  var jam = document.getElementById("jamMutu").value;
-  var petugasPelapor = document.getElementById("petugasMutu").value;
-  var jenisTemuan = document.getElementById("jenisTemuanMutu").value;
-  var akarMasalah = document.getElementById("akarMasalahMutu").value;
-  var tindakanMasalah = document.getElementById("tindakanMasalahMutu").value;
-  var rencanaTindakan = document.getElementById("rencanaTindakanMutu").value;
-  var catatan = document.getElementById("catatanMutu").value;
-
-  if(!tanggal || !jam || !petugasPelapor || !jenisTemuan || !akarMasalah || !tindakanMasalah || !rencanaTindakan){
-    document.getElementById("pesanMutu").innerText = "Lengkapi tanggal, jam, jenis temuan mutu, akar masalah, tindakan masalah, dan rencana tindakan.";
-    return;
-  }
-
-  try{
-    await addDoc(collection(firebaseDb, "mutuTindakLanjut"), {
-      tanggal, jam, petugasPelapor, jenisTemuan, akarMasalah, tindakanMasalah, rencanaTindakan, catatan,
-      dibuatPada: serverTimestamp(),
-      userId: firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : penggunaAktif.username
-    });
-    document.getElementById("pesanMutu").innerText = "✓ Data mutu & tindak lanjut berhasil disimpan.";
-    ["tanggalMutu","jamMutu","jenisTemuanMutu","akarMasalahMutu","tindakanMasalahMutu","rencanaTindakanMutu","catatanMutu"]
-      .forEach(id => document.getElementById(id).value = "");
-  }catch(error){
-    console.log(error);
-    document.getElementById("pesanMutu").innerText = "Data mutu & tindak lanjut gagal disimpan: " + error.code;
-  }
-};
-
-document.getElementById("riwayatMutu").onclick = async function(){
-  var hasilRiwayat = document.getElementById("hasilRiwayatMutu");
-  if(hasilRiwayat.style.display === "block"){ hasilRiwayat.style.display = "none"; return; }
-  hasilRiwayat.style.display = "block";
-  hasilRiwayat.innerHTML = "Memuat riwayat mutu & tindak lanjut...";
-  try{
-    var qMutu = query(collection(firebaseDb, "mutuTindakLanjut"), orderBy("dibuatPada", "desc"));
-    var snapshotMutu = await getDocs(qMutu);
-    hasilRiwayat.innerHTML = "";
-    var jumlahPribadi = 0;
-    snapshotMutu.forEach(function(dokumen){
-      var data = dokumen.data();
-      if(data.petugasPelapor !== penggunaAktif.nama) return;
-      jumlahPribadi++;
-      var kartu = document.createElement("div");
-      kartu.style.cssText = "background:linear-gradient(145deg,#ffffff,#fff9f2);border:1px solid #f3e4d0;border-radius:18px;padding:18px;margin-bottom:14px;";
-      kartu.innerHTML =
-        `<strong style="display:block;font-size:16px;color:#9a6736;margin-bottom:6px;">⚠️ ${data.jenisTemuan}</strong>` +
-        `<p style="font-size:13px;color:#96785c;margin:4px 0 12px;">${data.tanggal} • ${data.jam}</p>` +
-        `<div style="background:#fff5e8;border:1px solid #f3e4d0;padding:11px 12px;border-radius:11px;color:#805a37;font-size:13px;line-height:1.7;">` +
-        `<strong>Petugas Pelapor:</strong> ${data.petugasPelapor}<br>` +
-        `<strong>Akar Masalah:</strong> ${data.akarMasalah}<br>` +
-        `<strong>Tindakan Masalah:</strong> ${data.tindakanMasalah}<br>` +
-        `<strong>Rencana Tindakan:</strong> ${data.rencanaTindakan}</div>` +
-        (data.catatan ? `<p style="background:#fffaf4;border-left:2px solid #e3ba8b;padding:9px 11px;border-radius:8px;font-size:12px;color:#80664e;margin:10px 0 0;">Catatan: ${data.catatan}</p>` : "");
-      hasilRiwayat.appendChild(kartu);
-    });
-    if(jumlahPribadi === 0) hasilRiwayat.innerHTML = "Belum ada riwayat mutu & tindak lanjut Anda.";
-  }catch(error){
-    console.log(error);
-    hasilRiwayat.innerHTML = "Riwayat mutu & tindak lanjut gagal dimuat.";
-  }
-};
-
-document.getElementById("simpanReuse").onclick = async function(){
-  var tanggal = document.getElementById("tanggalReuse").value;
-  var jam = document.getElementById("jamReuse").value;
-  var petugas = document.getElementById("petugasReuse").value;
-  var alat = document.getElementById("alatReuse").value;
-  var jumlah = document.getElementById("jumlahReuse").value;
-  var ruang = document.getElementById("ruangReuse").value;
-  var kondisi = document.getElementById("kondisiReuse").value;
-  var catatan = document.getElementById("catatanReuse").value;
-
-  var items = [];
-  if(alat && jumlah) items.push({ alat: alat, jumlah: Number(jumlah) });
-  document.querySelectorAll("#daftarAlatReuseTambahan > div").forEach(function(item){
-    var nama = item.querySelector(".alatReuseTambahan").value;
-    var banyak = item.querySelector(".jumlahReuseTambahan").value;
-    if(nama && banyak) items.push({ alat: nama, jumlah: Number(banyak) });
-  });
-
-  if(!tanggal || !jam || !petugas || !ruang || !kondisi || items.length === 0){
-    document.getElementById("pesanReuse").innerText = "Lengkapi data monitoring reuse dan minimal 1 alat beserta jumlahnya.";
-    return;
-  }
-
-  try{
-    await addDoc(collection(firebaseDb, "monitoringReuse"), {
-      tanggal, jam, petugas, ruang, kondisi, catatan, items,
-      dibuatPada: serverTimestamp(),
-      userId: firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : penggunaAktif.username
-    });
-    document.getElementById("pesanReuse").innerText = "✓ Monitoring reuse berhasil disimpan.";
-    ["tanggalReuse","jamReuse","alatReuse","jumlahReuse","ruangReuse","kondisiReuse","catatanReuse"]
-      .forEach(id => document.getElementById(id).value = "");
-    daftarAlatReuseTambahan.innerHTML = "";
-  }catch(error){
-    console.log(error);
-    document.getElementById("pesanReuse").innerText = "Monitoring reuse gagal disimpan: " + error.code;
-  }
-};
-
-document.getElementById("riwayatReuse").onclick = async function(){
-  var hasilRiwayat = document.getElementById("hasilRiwayatReuse");
-  if(hasilRiwayat.style.display === "block"){ hasilRiwayat.style.display = "none"; return; }
-  hasilRiwayat.style.display = "block";
-  hasilRiwayat.innerHTML = "Memuat riwayat monitoring reuse...";
-  try{
-    var qReuse = query(collection(firebaseDb, "monitoringReuse"), orderBy("dibuatPada", "desc"));
-    var snapshotReuse = await getDocs(qReuse);
-    hasilRiwayat.innerHTML = "";
-    var jumlahPribadi = 0;
-    snapshotReuse.forEach(function(dokumen){
-      var data = dokumen.data();
-      if(data.petugas !== penggunaAktif.nama) return;
-      jumlahPribadi++;
-      var itemsHtml = (data.items || []).map(item =>
-        `<div style="background:#fff5e8;border:1px solid #f3e4d0;padding:9px 11px;border-radius:10px;margin-bottom:6px;color:#805a37;font-size:13px;">• ${item.alat} — Jumlah: ${item.jumlah}</div>`
-      ).join("");
-      var kartu = document.createElement("div");
-      kartu.style.cssText = "background:linear-gradient(145deg,#ffffff,#fff9f2);border:1px solid #f3e4d0;border-radius:18px;padding:18px;margin-bottom:14px;";
-      kartu.innerHTML =
-        `<strong style="display:block;font-size:16px;color:#9a6736;margin-bottom:6px;">🔄 ${data.ruang || "Monitoring Reuse"}</strong>` +
-        `<p style="font-size:13px;color:#96785c;margin:4px 0 12px;">${data.tanggal} • ${data.jam}</p>` +
-        `<div>${itemsHtml}</div>` +
-        `<span style="display:inline-block;margin:8px 0 4px;padding:6px 10px;background:#fff0dc;color:#9a6736;border-radius:999px;font-size:12px;font-weight:700;">Kondisi / Kelayakan: ${data.kondisi}</span>` +
-        `<p style="margin:10px 0 4px;font-size:13px;color:#805a37;font-weight:600;">Petugas CSSD: ${data.petugas}</p>` +
-        (data.catatan ? `<p style="background:#fffaf4;border-left:2px solid #e3ba8b;padding:9px 11px;border-radius:8px;font-size:12px;color:#80664e;margin:10px 0 0;">Catatan: ${data.catatan}</p>` : "");
-      hasilRiwayat.appendChild(kartu);
-    });
-    if(jumlahPribadi === 0) hasilRiwayat.innerHTML = "Belum ada riwayat monitoring reuse Anda.";
-  }catch(error){
-    console.log(error);
-    hasilRiwayat.innerHTML = "Riwayat monitoring reuse gagal dimuat.";
-  }
-};
-
-document.getElementById("simpanSuhu").onclick = async function(){
-  var tanggal = document.getElementById("tanggalSuhu").value;
-  var jam = document.getElementById("jamSuhu").value;
-  var petugas = document.getElementById("petugasSuhu").value;
-  var area = document.getElementById("areaSuhu").value;
-  var suhu = document.getElementById("nilaiSuhu").value;
-  var kelembaban = document.getElementById("kelembabanSuhu").value;
-  var catatan = document.getElementById("catatanSuhu").value;
-
-  if(!tanggal || !jam || !petugas || !area || !suhu || !kelembaban){
-    document.getElementById("pesanSuhu").innerText = "Lengkapi data suhu dan kelembaban terlebih dahulu.";
-    return;
-  }
-
-  try{
-    await addDoc(collection(firebaseDb, "monitoringLingkungan"), {
-      tanggal, jam, petugas, area, suhu, kelembaban, catatan,
-      dibuatPada: serverTimestamp(),
-      userId: firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : penggunaAktif.username
-    });
-    document.getElementById("pesanSuhu").innerText = "✓ Monitoring suhu & kelembaban berhasil disimpan.";
-    ["tanggalSuhu","jamSuhu","areaSuhu","nilaiSuhu","kelembabanSuhu","catatanSuhu"]
-      .forEach(id => document.getElementById(id).value = "");
-  }catch(error){
-    console.log(error);
-    document.getElementById("pesanSuhu").innerText = "Monitoring gagal disimpan: " + error.code;
-  }
-};
-
-document.getElementById("riwayatSuhu").onclick = async function(){
-  var hasilRiwayat = document.getElementById("hasilRiwayatSuhu");
-  if(hasilRiwayat.style.display === "block"){ hasilRiwayat.style.display = "none"; return; }
-  hasilRiwayat.style.display = "block";
-  hasilRiwayat.innerHTML = "Memuat riwayat suhu & kelembaban...";
-  try{
-    var qSuhu = query(collection(firebaseDb, "monitoringLingkungan"), orderBy("dibuatPada", "desc"));
-    var dataSuhu = await getDocs(qSuhu);
-    hasilRiwayat.innerHTML = "";
-    var jumlahPribadi = 0;
-    dataSuhu.forEach(function(dokumen){
-      var data = dokumen.data();
-      if(data.petugas !== penggunaAktif.nama) return;
-      jumlahPribadi++;
-      var kartu = document.createElement("div");
-      kartu.style.cssText = "background:linear-gradient(145deg,#ffffff,#fff9f2);border:1px solid #f3e4d0;border-radius:18px;padding:18px;margin-bottom:14px;";
-      kartu.innerHTML =
-        `<strong style="display:block;font-size:17px;color:#9a6736;margin-bottom:6px;">🌡️ ${data.area}</strong>` +
-        `<p style="font-size:13px;color:#96785c;margin:4px 0 14px;">${data.tanggal} • ${data.jam}</p>` +
-        `<div style="background:#fff5e8;border:1px solid #f3e4d0;padding:11px 12px;border-radius:11px;color:#805a37;font-size:13px;line-height:1.7;"><strong>Suhu:</strong> ${data.suhu}<br><strong>Kelembaban:</strong> ${data.kelembaban}</div>` +
-        `<p style="margin:12px 0 4px;font-size:13px;color:#805a37;font-weight:600;">Petugas CSSD: ${data.petugas}</p>` +
-        (data.catatan ? `<p style="background:#fffaf4;border-left:2px solid #e3ba8b;padding:9px 11px;border-radius:8px;font-size:12px;color:#80664e;margin:10px 0 0;">Catatan: ${data.catatan}</p>` : "");
-      hasilRiwayat.appendChild(kartu);
-    });
-    if(jumlahPribadi === 0) hasilRiwayat.innerHTML = "Belum ada riwayat suhu & kelembaban Anda.";
-  }catch(error){
-    console.log(error);
-    hasilRiwayat.innerHTML = "Riwayat suhu & kelembaban gagal dimuat.";
-  }
-};
-
-document.getElementById("btnKelolaAkun").onclick = function(){
-  var tombol = document.getElementById("btnKelolaAkun");
-  var panel = document.getElementById("isiKelolaAkun");
-  tombol.insertAdjacentElement("afterend", panel);
-  document.getElementById("isiBeranda").style.display = "none";
-  document.getElementById("isiAktivitas").style.display = "none";
-  panel.style.display = "block";
-};
-document.getElementById("tutupKelolaAkun").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-document.getElementById("btnResetPassword").onclick = function(){
-  var petugas = document.getElementById("akunPetugas").value;
-  document.getElementById("pesanAkun").innerText = !petugas
-    ? "Pilih nama petugas terlebih dahulu."
-    : "Reset kata sandi untuk " + petugas + " siap diproses.";
-};
-
-/* ===== LAPORAN & REKAP ANALITIK + SUHU ===== */
-var BENTUK_DIAGRAM_AKTIF = "SEMUA";
-var TERAKHIR_CSV_ROWS = [];
-
-var NAMA_BULAN_MAP = {
-  "01": "Januari", "02": "Februari", "03": "Maret", "04": "April",
-  "05": "Mei", "06": "Juni", "07": "Juli", "08": "Agustus",
-  "09": "September", "10": "Oktober", "11": "November", "12": "Desember"
-};
-
-var STANDAR_AREA_SUHU = {
-  "DEKONTAMINASI": { suhuMin: 18, suhuMax: 22, rhMin: 30, rhMax: 60, labelStandar: "Standar CSSD 2026 — Suhu 18°C–22°C, Kelembaban 30%–60%" },
-  "PACKING": { suhuMin: 20, suhuMax: 23, rhMin: 35, rhMax: 60, labelStandar: "Standar CSSD 2026 — Suhu 20°C–23°C, Kelembaban 35%–60%" },
-  "PENYIMPANAN ALAT STERIL": { suhuMin: 20, suhuMax: 24, rhMin: 35, rhMax: 60, labelStandar: "Standar CSSD 2026 — Suhu 20°C–24°C, Kelembaban 35%–60%" }
-};
-
-function perbaruiSubFilterLaporan(){
-  var kat = document.getElementById("kategoriRekapLaporan").value;
-  var pend = document.getElementById("pilihPendukungRekap").value;
-  document.getElementById("areaSubRuangan").style.display = kat === "RUANGAN" ? "block" : "none";
-  document.getElementById("areaSubProses").style.display = kat === "PROSES" ? "block" : "none";
-  document.getElementById("areaSubPendukung").style.display = kat === "PENDUKUNG" ? "block" : "none";
-  document.getElementById("areaSubSuhuKelembaban").style.display = (kat === "PENDUKUNG" && pend === "SUHU") ? "block" : "none";
-  document.getElementById("areaSubPetugas").style.display = kat === "PETUGAS" ? "block" : "none";
-}
-
-function bukaMenuLaporan(){
-  bukaSubmenuDariBeranda("isiLaporan");
-  if(penggunaAktif) document.getElementById("pjLaporan").value = penggunaAktif.nama;
-  perbaruiSubFilterLaporan();
-}
-
-document.getElementById("btnLaporan").onclick = bukaMenuLaporan;
-document.getElementById("homeLaporan").onclick = bukaMenuLaporan;
-document.getElementById("tutupLaporan").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-document.getElementById("kategoriRekapLaporan").onchange = function(){ perbaruiSubFilterLaporan(); this.blur(); };
-document.getElementById("pilihPendukungRekap").onchange = function(){ perbaruiSubFilterLaporan(); this.blur(); };
-
-document.querySelectorAll("#selectorBentukDiagram .rekap-chart-pill").forEach(function(pill){
-  pill.onclick = function(){
-    document.querySelectorAll("#selectorBentukDiagram .rekap-chart-pill").forEach(function(p){ p.classList.remove("active"); });
-    this.classList.add("active");
-    BENTUK_DIAGRAM_AKTIF = this.getAttribute("data-chart") || "SEMUA";
-    if(document.getElementById("hasilLaporan").innerHTML.trim()){
-      document.getElementById("btnTampilkanRekap").click();
-    }
-  };
-});
-
-document.getElementById("btnCetakRekap").onclick = function(){
-  if(!document.getElementById("hasilLaporan").innerHTML.trim()){
-    document.getElementById("hasilLaporan").innerHTML = '<div class="rekap-item-card" style="text-align:center;color:#8b7562">Tampilkan rekapan terlebih dahulu sebelum mencetak.</div>';
-    return;
-  }
-  window.print();
-};
-
-document.getElementById("btnExportCsvRekap").onclick = function(){
-  if(!TERAKHIR_CSV_ROWS || TERAKHIR_CSV_ROWS.length === 0){
-    document.getElementById("hasilLaporan").innerHTML = '<div class="rekap-item-card" style="text-align:center;color:#8b7562">Tampilkan rekapan terlebih dahulu sebelum export CSV.</div>';
-    return;
-  }
-  var csvContent = TERAKHIR_CSV_ROWS.map(function(row){
-    return row.map(function(cell){
-      return '"' + String(cell === undefined || cell === null ? "" : cell).replace(/"/g, '""') + '"';
-    }).join(",");
-  }).join("\n");
-
-  var blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
-  var url = URL.createObjectURL(blob);
-  var link = document.createElement("a");
-  link.href = url;
-  link.download = "Rekap_CSSD_" + (document.getElementById("kategoriRekapLaporan").value || "CSSD") + ".csv";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-};
-
-function sesuaiPeriode3(tanggalStr, periode){
-  if(!tanggalStr) return periode === "Tahunan";
-  var parts = String(tanggalStr).split("-");
-  if(parts.length < 3) return false;
-  var tgl = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-  var now = new Date();
-  if(periode === "Harian") return tgl.getFullYear() === now.getFullYear() && tgl.getMonth() === now.getMonth() && tgl.getDate() === now.getDate();
-  if(periode === "Bulanan") return tgl.getFullYear() === now.getFullYear() && tgl.getMonth() === now.getMonth();
-  if(periode === "Tahunan") return tgl.getFullYear() === now.getFullYear();
-  return true;
-}
-
-function getMillisDokumen(docData){
-  if(docData.dibuatPada && typeof docData.dibuatPada.toMillis === "function") return docData.dibuatPada.toMillis();
-  if(docData.tanggal){
-    var parsed = Date.parse(docData.tanggal + "T" + (docData.jam || docData.waktu || "00:00"));
-    if(!isNaN(parsed)) return parsed;
-  }
-  return 0;
-}
-
-async function ambilKoleksiAman(namaKoleksi){
-  try{
-    var snap = await getDocs(collection(firebaseDb, namaKoleksi));
-    var list = [];
-    snap.forEach(function(d){ var val = d.data(); val._id = d.id; list.push(val); });
-    list.sort(function(a, b){ return getMillisDokumen(b) - getMillisDokumen(a); });
-    return list;
-  }catch(err){
-    return [];
-  }
-}
-
-function parseAngkaNilai(strVal){
-  if(strVal === undefined || strVal === null) return null;
-  var clean = String(strVal).replace(",", ".").replace(/[^0-9.\-]/g, "");
-  if(!clean) return null;
-  var num = Number(clean);
-  return isNaN(num) ? null : num;
-}
-
-function getStandarArea(areaNama){
-  return STANDAR_AREA_SUHU[String(areaNama || "").toUpperCase()] || {
-    suhuMin: 20, suhuMax: 24, rhMin: 35, rhMax: 60,
-    labelStandar: "Standar CSSD 2026 — Suhu 20°C–24°C, Kelembaban 35%–60%"
-  };
-}
-
-function agregasiHarianRataRataSuhu(rowsArea){
-  var grouped = {};
-  rowsArea.forEach(function(r){
-    var tgl = r.tanggal || "";
-    if(!tgl) return;
-    if(!grouped[tgl]){
-      grouped[tgl] = { tanggal: tgl, suhuSum: 0, suhuCount: 0, rhSum: 0, rhCount: 0, jams: [], petugasList: [], catatans: [], rawCount: 0 };
-    }
-    var g = grouped[tgl];
-    g.rawCount++;
-    if(typeof r.suhuNum === "number"){ g.suhuSum += r.suhuNum; g.suhuCount++; }
-    if(typeof r.rhNum === "number"){ g.rhSum += r.rhNum; g.rhCount++; }
-    if(r.jam && g.jams.indexOf(r.jam) === -1) g.jams.push(r.jam);
-    var pTrim = String(r.petugas || "").trim();
-    if(pTrim && pTrim !== "-" && g.petugasList.indexOf(pTrim) === -1) g.petugasList.push(pTrim);
-    if(r.catatan && g.catatans.indexOf(r.catatan) === -1) g.catatans.push(r.catatan);
-  });
-
-  return Object.keys(grouped).sort().map(function(tgl){
-    var g = grouped[tgl];
-    var avgSuhuNum = g.suhuCount > 0 ? Math.round((g.suhuSum / g.suhuCount) * 10) / 10 : null;
-    var avgRhNum = g.rhCount > 0 ? Math.round((g.rhSum / g.rhCount) * 10) / 10 : null;
-    return {
-      tanggal: g.tanggal,
-      jam: g.jams.length > 0 ? g.jams.join(", ") : "-",
-      petugas: g.petugasList.length > 0 ? g.petugasList.join(", ") : "-",
-      area: rowsArea[0] ? rowsArea[0].area : "-",
-      suhu: (typeof avgSuhuNum === "number") ? (avgSuhuNum.toFixed(1).replace(".", ",") + "°C" + (g.rawCount > 1 ? " (rata-rata " + g.rawCount + "x)" : "")) : "-",
-      kelembaban: (typeof avgRhNum === "number") ? (avgRhNum.toFixed(1).replace(".", ",") + "%" + (g.rawCount > 1 ? " (rata-rata " + g.rawCount + "x)" : "")) : "-",
-      suhuNum: avgSuhuNum,
-      rhNum: avgRhNum,
-      jumlahInput: g.rawCount,
-      catatan: g.catatans.join(" • ")
-    };
-  });
-}
-
-function renderBlokMatriksSuhu(areaNama, bulanStr, tahunStr, rowsBulan, pj){
-  var std = getStandarArea(areaNama);
-  var namaBulan = NAMA_BULAN_MAP[bulanStr] || bulanStr;
-  var daysInMonth = new Date(Number(tahunStr), Number(bulanStr), 0).getDate();
-  var dailyAvgRows = agregasiHarianRataRataSuhu(rowsBulan);
-  var suhuAxis = [30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19];
-  var rhAxis = [85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30];
-
-  var byDay = {};
-  dailyAvgRows.forEach(function(r){
-    var dayNum = Number(String(r.tanggal || "").split("-")[2] || 0);
-    if(dayNum >= 1 && dayNum <= daysInMonth) byDay[dayNum] = r;
-  });
-
-  var headerDays = "";
-  for(var d = 1; d <= daysInMonth; d++) headerDays += '<th style="min-width:20px">' + d + '</th>';
-
-  var suhuRowsHtml = suhuAxis.map(function(tick, idx){
-    var nextTick = (idx < suhuAxis.length - 1) ? suhuAxis[idx + 1] : tick - 1;
-    var inBand = (tick >= std.suhuMin && tick <= std.suhuMax);
-    var cells = '<td class="suhu-axis-lbl">' + tick + '°C</td>';
-    for(var day = 1; day <= daysInMonth; day++){
-      var rec = byDay[day];
-      var hasDot = false, isOut = false;
-      if(rec && typeof rec.suhuNum === "number"){
-        var val = rec.suhuNum;
-        if((idx === 0 && val >= tick) || (idx === suhuAxis.length - 1 && val <= tick) || (val <= tick && val > nextTick)){
-          hasDot = true;
-          isOut = (val < std.suhuMin || val > std.suhuMax);
-        }
-      }
-      var dotHtml = hasDot ? '<span class="suhu-plot-dot ' + (isOut ? "out-std" : "") + '" title="Tgl ' + day + ': ' + rec.suhu + '"></span>' : "";
-      cells += '<td class="' + (inBand ? "suhu-band-cell" : "") + '">' + dotHtml + '</td>';
-    }
-    return '<tr>' + cells + '</tr>';
-  }).join("");
-
-  var rhRowsHtml = rhAxis.map(function(tick, idx){
-    var prevTick = (idx > 0) ? rhAxis[idx - 1] : tick + 5;
-    var nextTick = (idx < rhAxis.length - 1) ? rhAxis[idx + 1] : tick - 5;
-    var halfUp = (prevTick + tick) / 2;
-    var halfDown = (tick + nextTick) / 2;
-    var inBand = (tick >= std.rhMin && tick <= std.rhMax);
-    var cells = '<td class="suhu-axis-lbl">' + tick + '%</td>';
-    for(var day = 1; day <= daysInMonth; day++){
-      var rec = byDay[day];
-      var hasDot = false, isOut = false;
-      if(rec && typeof rec.rhNum === "number"){
-        var rhVal = rec.rhNum;
-        if((idx === 0 && rhVal >= halfDown) || (idx === rhAxis.length - 1 && rhVal < halfUp) || (rhVal >= halfDown && rhVal < halfUp)){
-          hasDot = true;
-          isOut = (rhVal < std.rhMin || rhVal > std.rhMax);
-        }
-      }
-      var dotHtml = hasDot ? '<span class="suhu-plot-dot ' + (isOut ? "out-std" : "") + '" title="Tgl ' + day + ': ' + rec.kelembaban + '"></span>' : "";
-      cells += '<td class="' + (inBand ? "suhu-band-cell" : "") + '">' + dotHtml + '</td>';
-    }
-    return '<tr>' + cells + '</tr>';
-  }).join("");
-
-  return (
-    '<div class="suhu-form-card">' +
-      '<div class="suhu-form-header"><div class="suhu-form-title">Pemeriksaan Harian Suhu dan Kelembaban — ' + areaNama + '</div>' +
-      '<div style="font-size:11px;color:#1b4f7a;font-weight:700">' + std.labelStandar + ' • Rata-Rata per Tanggal</div></div>' +
-      '<div class="suhu-form-meta"><span>Bulan : ' + namaBulan + ' ' + tahunStr + '</span><span>Area : ' + areaNama + '</span></div>' +
-      '<div class="suhu-matrix-scroll"><table class="suhu-matrix-table"><thead><tr><th rowspan="2" style="width:46px">Suhu</th><th colspan="' + daysInMonth + '">Tanggal</th></tr><tr>' + headerDays + '</tr></thead><tbody>' + suhuRowsHtml + '</tbody></table></div>' +
-      '<div class="suhu-matrix-scroll" style="margin-top:10px"><table class="suhu-matrix-table"><thead><tr><th rowspan="2" style="width:46px">Kelembaban</th><th colspan="' + daysInMonth + '">Tanggal</th></tr><tr>' + headerDays + '</tr></thead><tbody>' + rhRowsHtml + '</tbody></table></div>' +
-      '<div class="suhu-sign-block"><div>Mengetahui,</div><div class="suhu-sign-name">' + pj + '</div><div>Penanggung Jawab Rekap / CSSD</div></div>' +
-    '</div>'
-  );
-}
-
-function renderBlokRingkasanSuhu(areaNama, bulanStr, tahunStr, rowsBulan, pj){
-  var std = getStandarArea(areaNama);
-  var namaBulan = NAMA_BULAN_MAP[bulanStr] || bulanStr;
-  var dailyAvgRows = agregasiHarianRataRataSuhu(rowsBulan);
-  var outCount = 0;
-  var bodyRowsHtml = dailyAvgRows.length === 0
-    ? '<tr><td colspan="6" style="text-align:center;color:#3c6a92">Belum ada data monitoring suhu &amp; kelembaban untuk ' + areaNama + ' pada ' + namaBulan + ' ' + tahunStr + '.</td></tr>'
-    : dailyAvgRows.map(function(r){
-        var ok = ((typeof r.suhuNum !== "number") || (r.suhuNum >= std.suhuMin && r.suhuNum <= std.suhuMax)) &&
-                 ((typeof r.rhNum !== "number") || (r.rhNum >= std.rhMin && r.rhNum <= std.rhMax));
-        if(!ok) outCount++;
-        return '<tr><td>' + r.tanggal + '</td><td>' + r.jam + '</td><td>' + r.suhu + '</td><td>' + r.kelembaban + '</td><td>' +
-               (ok ? '<span class="suhu-badge-ok">Sesuai</span>' : '<span class="suhu-badge-warn">Di luar standar</span>') +
-               '</td><td>' + (r.catatan || "-") + '</td></tr>';
-      }).join("");
-
-  return (
-    '<div class="suhu-form-card">' +
-      '<div class="suhu-form-header"><div class="suhu-form-title">Tabel Rekap Angka &amp; Status — ' + areaNama + '</div>' +
-      '<div style="font-size:11px;color:#1b4f7a;font-weight:700">' + namaBulan + ' ' + tahunStr + ' • Hari Tercatat: ' + dailyAvgRows.length + ' • Di Luar Standar: ' + outCount + '</div></div>' +
-      '<div class="suhu-matrix-scroll"><table class="suhu-data-table"><thead><tr><th>Tanggal</th><th>Jam</th><th>Suhu</th><th>Kelembaban</th><th>Status</th><th>Catatan</th></tr></thead><tbody>' + bodyRowsHtml + '</tbody></table></div>' +
-      '<div class="suhu-sign-block"><div>Mengetahui,</div><div class="suhu-sign-name">' + pj + '</div><div>Penanggung Jawab Rekap / CSSD</div></div>' +
-    '</div>'
-  );
-}
-
-function renderRekapanSuhuKhusus(listSuhuRaw, areaDipilih, bulanStr, modeSuhu, pj, petugasSuhuDipilih){
-  var tahunDipilih = String(new Date().getFullYear());
-  var filteredSuhu = listSuhuRaw.filter(function(d){
-    var parts = String(d.tanggal || "").split("-");
-    if(parts.length < 2 || parts[1] !== bulanStr) return false;
-    if(areaDipilih !== "SEMUA_AREA" && String(d.area || "").toUpperCase() !== areaDipilih.toUpperCase()) return false;
-    if(petugasSuhuDipilih && petugasSuhuDipilih !== "SEMUA_PETUGAS" && String(d.petugas || "").trim().toLowerCase() !== petugasSuhuDipilih.trim().toLowerCase()) return false;
-    return true;
-  }).map(function(d){
-    return {
-      tanggal: d.tanggal || "", jam: d.jam || "", petugas: d.petugas || "-",
-      area: d.area || "-", suhu: d.suhu || "-", kelembaban: d.kelembaban || "-",
-      suhuNum: parseAngkaNilai(d.suhu), rhNum: parseAngkaNilai(d.kelembaban), catatan: d.catatan || ""
-    };
-  });
-
-  var daftarAreaRender = (areaDipilih === "SEMUA_AREA")
-    ? ["DEKONTAMINASI", "PACKING", "PENYIMPANAN ALAT STERIL"]
-    : [areaDipilih];
-
-  var exportRows = [];
-  var htmlBlocks = "";
-  daftarAreaRender.forEach(function(areaItem){
-    var rowsArea = filteredSuhu.filter(function(r){ return String(r.area || "").toUpperCase() === areaItem.toUpperCase(); });
-    agregasiHarianRataRataSuhu(rowsArea).forEach(function(agg){
-      exportRows.push([NAMA_BULAN_MAP[bulanStr] || bulanStr, tahunDipilih, areaItem, agg.tanggal, agg.jumlahInput + "x", agg.suhu, agg.kelembaban, agg.petugas, agg.catatan, pj]);
-    });
-    if(modeSuhu === "TABEL_STATUS"){
-      htmlBlocks += renderBlokRingkasanSuhu(areaItem, bulanStr, tahunDipilih, rowsArea, pj);
-    }else if(modeSuhu === "GABUNGAN"){
-      htmlBlocks += renderBlokMatriksSuhu(areaItem, bulanStr, tahunDipilih, rowsArea, pj);
-      htmlBlocks += renderBlokRingkasanSuhu(areaItem, bulanStr, tahunDipilih, rowsArea, pj);
-    }else{
-      htmlBlocks += renderBlokMatriksSuhu(areaItem, bulanStr, tahunDipilih, rowsArea, pj);
-    }
-  });
-
-  TERAKHIR_CSV_ROWS = [["Bulan", "Tahun", "Area CSSD", "Tanggal", "Jumlah Input", "Suhu Rata-Rata", "Kelembaban Rata-Rata", "Petugas", "Catatan", "Penanggung Jawab"]].concat(exportRows);
-  return htmlBlocks;
-}
-
-function normalisasiSemuaDataCssd(rawMap){
-  var records = [];
-  (rawMap.distribusi || []).forEach(function(d){
-    var items = Array.isArray(d.items) && d.items.length > 0 ? d.items : [{ alat: d.alat || "-", jumlah: Number(d.jumlah || 0) }];
-    records.push({
-      kategori: "DISTRIBUSI", arah: "KELUAR", labelKategori: "Distribusi Alat Steril",
-      tanggal: d.tanggal || "", jam: d.jam || "", petugas: d.petugas || "-", unit: d.ruang || "-",
-      jumlah: items.reduce((a, b) => a + Number(b.jumlah || 0), 0), items, status: d.status || "-", catatan: d.catatan || "",
-      ringkasan: items.map(it => `${it.alat} (${it.jumlah})`).join(", ") + (d.ruang ? ` • Tujuan: ${d.ruang}` : "")
-    });
-  });
-  (rawMap.penerimaan || []).forEach(function(d){
-    var items = Array.isArray(d.items) && d.items.length > 0 ? d.items : [{ alat: d.alat || "-", jumlah: Number(d.jumlah || 0), kondisi: d.kondisi || "-" }];
-    records.push({
-      kategori: "PENERIMAAN", arah: "MASUK", labelKategori: "Penerimaan Alat Kotor",
-      tanggal: d.tanggal || "", jam: d.jam || "", petugas: d.petugas || "-", unit: d.ruang || "-",
-      jumlah: items.reduce((a, b) => a + Number(b.jumlah || 0), 0), items, status: d.kondisi || "-", catatan: d.catatan || "",
-      ringkasan: items.map(it => `${it.alat} (${it.jumlah})`).join(", ") + (d.ruang ? ` • Asal: ${d.ruang}` : "")
-    });
-  });
-  return records;
-}
-
-function renderBarChartHtml(title, entries){
-  if(!entries || entries.length === 0) return '<div class="rekap-chart-card"><div class="rekap-chart-title">' + title + '</div><div style="font-size:12px;color:#8b7562">Belum ada data.</div></div>';
-  var maxVal = Math.max.apply(null, entries.map(e => e.value).concat([1]));
-  return '<div class="rekap-chart-card"><div class="rekap-chart-title">' + title + '</div>' + entries.map(e => {
-    var pct = Math.max(4, Math.round((e.value / maxVal) * 100));
-    return '<div class="rekap-bar-row"><div class="rekap-bar-meta"><span>' + e.label + '</span><span>' + e.value + '</span></div><div class="rekap-bar-track"><div class="rekap-bar-fill" style="width:' + pct + '%"></div></div></div>';
-  }).join("") + '</div>';
-}
-
-document.getElementById("btnTampilkanRekap").onclick = async function(){
-  var hasil = document.getElementById("hasilLaporan");
-  var pj = document.getElementById("pjLaporan").value || (penggunaAktif ? penggunaAktif.nama : "Handri Gumelar");
-  var periode = document.getElementById("periodeLaporan").value;
-  var kategori = document.getElementById("kategoriRekapLaporan").value;
-  var pendukungDipilih = document.getElementById("pilihPendukungRekap").value;
-
-  hasil.innerHTML = '<div class="rekap-item-card" style="text-align:center;color:#8b7562">Memuat rekapan CSSD...</div>';
-
-  var results = await Promise.all([
-    ambilKoleksiAman("distribusiAlat"),
-    ambilKoleksiAman("penerimaanAlat"),
-    ambilKoleksiAman("monitoringLingkungan")
-  ]);
-
-  if(kategori === "PENDUKUNG" && pendukungDipilih === "SUHU"){
-    hasil.innerHTML = renderRekapanSuhuKhusus(
-      results[2],
-      document.getElementById("pilihAreaSuhuRekap").value,
-      document.getElementById("pilihBulanSuhuRekap").value,
-      document.getElementById("pilihModeSuhuRekap").value,
-      pj,
-      document.getElementById("pilihPetugasSuhuRekap").value
-    );
-    return;
-  }
-
-  var records = normalisasiSemuaDataCssd({ distribusi: results[0], penerimaan: results[1] }).filter(r => sesuaiPeriode3(r.tanggal, periode));
-  var masukQty = records.filter(r => r.arah === "MASUK").reduce((a, b) => a + Number(b.jumlah || 0), 0);
-  var keluarQty = records.filter(r => r.arah === "KELUAR").reduce((a, b) => a + Number(b.jumlah || 0), 0);
-
-  TERAKHIR_CSV_ROWS = [["Periode", "Kategori", "Tanggal", "Jam", "Ruangan", "Petugas", "Jumlah", "Ringkasan", "PJ"]].concat(
-    records.map(r => [periode, kategori, r.tanggal, r.jam, r.unit, r.petugas, r.jumlah, r.ringkasan, pj])
-  );
-
-  hasil.innerHTML =
-    '<div class="rekap-kpi-grid">' +
-      '<div class="rekap-kpi"><span>Total Catatan</span><strong>' + records.length + '</strong><small>Periode: ' + periode + '</small></div>' +
-      '<div class="rekap-kpi"><span>Alat Kotor Masuk</span><strong>' + masukQty + '</strong><small>Penerimaan</small></div>' +
-      '<div class="rekap-kpi"><span>Alat Steril Keluar</span><strong>' + keluarQty + '</strong><small>Distribusi</small></div>' +
-      '<div class="rekap-kpi"><span>Parstok Aktif</span><strong>' + state.gudang.reduce((a, b) => a + Number(b.parstok || 0), 0) + '</strong><small>Total unit/set siap pakai</small></div>' +
-    '</div>' +
-    renderBarChartHtml("📶 Ringkasan Keluar vs Masuk", [
-      { label: "Alat Steril Keluar", value: keluarQty },
-      { label: "Alat Kotor Masuk", value: masukQty }
-    ]) +
-    (records.length ? records.map(r => `<div class="rekap-item-card"><div class="rekap-item-head"><div class="rekap-item-title">${r.labelKategori} — ${r.unit}</div><span class="rekap-item-badge">${r.tanggal} • ${r.jam}</span></div><div style="font-size:13px;color:#65482f;">${r.ringkasan}</div></div>`).join("")
-      : '<div class="rekap-item-card" style="text-align:center;color:#8b7562">Belum ada data pada periode ini.</div>');
-};
-
-document.getElementById("btnProfil").onclick = function(){
-  var tombol = document.getElementById("btnProfil");
-  var panel = document.getElementById("isiProfil");
-  tombol.insertAdjacentElement("afterend", panel);
-  panel.style.display = "block";
-};
-document.getElementById("tutupProfil").onclick = function(){ tutupSemuaSubmenuKeBeranda(false); };
-
-window.addEventListener("DOMContentLoaded", function(){
-  cekAutoLoginQrSaatMuat();
-  refreshAllViews();
-});
-</script>
-
-</body>
-</html>
+/* ===== INVENTARISIR MASTER DATA ALAT & SET CSSD (SET INSTRUMEN OKA & SET INSTRUMEN RUANGAN) ===== */
+var INVENTARIS_CSSD_DATA = {
+  OKA: [
+    {
+      id: "oka-1",
+      nama: "SET BEDAH MIKRO",
+      jumlahSet: 1,
+      komponen: [
+        { nama: "Scalpel Handle no.3", jumlah: 1 },
+        { nama: "Pinset Anatomis Mikro", jumlah: 1 },
+        { nama: "Pinset Sirurgis Mikro", jumlah: 1 },
+        { nama: "Pinset Anatomis Adson Mikro", jumlah: 1 },
+        { nama: "Pinset Sirurgis Adson Mikro", jumlah: 1 },
+        { nama: "Langen Back Minor", jumlah: 2 },
+        { nama: "Needle Holder Minor", jumlah: 2 },
+        { nama: "Gunting Jaringan Mikro", jumlah: 1 },
+        { nama: "Gunting Jaringan Iris Mikro", jumlah: 1 },
+        { nama: "Gunting Benang Mikro", jumlah: 1 },
+        { nama: "Sent Miller", jumlah: 2 },
+        { nama: "Pean Haemostatik Curved Minor", jumlah: 5 },
+        { nama: "Pean Haemostatik Straight Minor", jumlah: 2 },
+        { nama: "Kanul Suction Minor", jumlah: 1 },
+        { nama: "Mixter Minor", jumlah: 1 },
+        { nama: "Allis Klem Minor", jumlah: 1 },
+        { nama: "Babcohk Minor", jumlah: 1 },
+        { nama: "Hold Sonde", jumlah: 1 },
+        { nama: "Spongeholding", jumlah: 1 },
+        { nama: "Kedney Bacin/Bengkok", jumlah: 1 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Towel/Duk Klemp", jumlah: 4 },
+        { nama: "Bak Instrumen", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-2",
+      nama: "SET BEDAH MINOR",
+      jumlahSet: 5,
+      komponen: [
+        { nama: "Scalpel Handles no.3", jumlah: 1 },
+        { nama: "Pinset Anatomis", jumlah: 2 },
+        { nama: "Pinset Cirurgis", jumlah: 1 },
+        { nama: "Gunting Jaringan", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Needle Holders", jumlah: 2 },
+        { nama: "Pean Hemostatic Curved", jumlah: 5 },
+        { nama: "Pean Hemostatic Straigh", jumlah: 2 },
+        { nama: "Kocher Hemostatic Forceps", jumlah: 2 },
+        { nama: "Sent Miller/hak cakar", jumlah: 2 },
+        { nama: "Cottle 1/2 /Pielum Hak/Cussing", jumlah: 2 },
+        { nama: "Kidney Bacin/Bengkok", jumlah: 1 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Spong Holding Forceps", jumlah: 1 },
+        { nama: "Langen Back Minor", jumlah: 2 },
+        { nama: "Hold Sonde", jumlah: 1 },
+        { nama: "Towel/Duk Klemp", jumlah: 4 },
+        { nama: "Bak Instrument", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-3",
+      nama: "SET BEDAH ANAK",
+      jumlahSet: 3,
+      komponen: [
+        { nama: "Scalpel Handles no.3", jumlah: 1 },
+        { nama: "Pinset Anatomis", jumlah: 2 },
+        { nama: "Pinset Cirurgis", jumlah: 1 },
+        { nama: "Gunting Jaringan", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Needle Holders", jumlah: 2 },
+        { nama: "Langenback", jumlah: 2 },
+        { nama: "Langenback Minor", jumlah: 2 },
+        { nama: "Kocher Hemostatik forcep", jumlah: 4 },
+        { nama: "Pean Hemostatik Forcep Curved", jumlah: 8 },
+        { nama: "Pean Hemostatik Forcep Straight", jumlah: 2 },
+        { nama: "Allis Klemp", jumlah: 1 },
+        { nama: "Babcohk", jumlah: 1 },
+        { nama: "Poerster", jumlah: 1 },
+        { nama: "Towel/Duk klemp", jumlah: 5 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Kidney Bacin/Bengkok", jumlah: 1 },
+        { nama: "Mixter", jumlah: 1 },
+        { nama: "Spong Holding Forceps", jumlah: 1 },
+        { nama: "Bak Instrument", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-4",
+      nama: "SET BEDAH UMUM",
+      jumlahSet: 10,
+      komponen: [
+        { nama: "Scalpel Hendles no.4", jumlah: 1 },
+        { nama: "Scalpel Hendles no.3", jumlah: 1 },
+        { nama: "Pinset Anatomis", jumlah: 2 },
+        { nama: "Pinset Cirurgis", jumlah: 1 },
+        { nama: "Gunting Jaringan", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Needel Holder", jumlah: 2 },
+        { nama: "Langen Back", jumlah: 2 },
+        { nama: "Kocher Hemostatic Forceps", jumlah: 4 },
+        { nama: "Pean Hemostatic Forceps Curved", jumlah: 8 },
+        { nama: "Pean Hemostatic Forceps Stright", jumlah: 2 },
+        { nama: "Allis Klemp", jumlah: 1 },
+        { nama: "Babcohk", jumlah: 1 },
+        { nama: "Poerster", jumlah: 1 },
+        { nama: "Towel/Duk Klemp", jumlah: 5 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Kidney Bacin/Bengkok", jumlah: 1 },
+        { nama: "Spongholding", jumlah: 1 },
+        { nama: "Mixster", jumlah: 1 },
+        { nama: "Bak Instrument", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-5",
+      nama: "SET BEDAH LAPARATOMY",
+      jumlahSet: 3,
+      komponen: [
+        { nama: "Scalpel Handles no.3", jumlah: 1 },
+        { nama: "Scalpel Handles no.4", jumlah: 1 },
+        { nama: "Pinset Anatomis", jumlah: 2 },
+        { nama: "Pinset Cirurgis", jumlah: 1 },
+        { nama: "Gunting Jaringan", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Needle Holders", jumlah: 2 },
+        { nama: "Langenback", jumlah: 2 },
+        { nama: "Poerster", jumlah: 1 },
+        { nama: "Pean Hemostatic Straight", jumlah: 2 },
+        { nama: "Pean Hemostatic Forceps Curved", jumlah: 8 },
+        { nama: "Kocher Hemostatic Forceps", jumlah: 4 },
+        { nama: "Babcohk", jumlah: 1 },
+        { nama: "Richadson Easman", jumlah: 1 },
+        { nama: "Deaver Retraktor", jumlah: 3 },
+        { nama: "Allis Klemp", jumlah: 1 },
+        { nama: "Kidney bacin/Bengkok", jumlah: 1 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Towel/Duk klemp", jumlah: 5 },
+        { nama: "Spong Holding", jumlah: 1 },
+        { nama: "Mixster", jumlah: 1 },
+        { nama: "Bak Instrumen", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-6",
+      nama: "SET BEDAH APENDIKTOMY",
+      jumlahSet: 1,
+      komponen: [
+        { nama: "Scalpel Handles No.3", jumlah: 1 },
+        { nama: "Scalpel Handles No.4", jumlah: 1 },
+        { nama: "Pinset Anatomis", jumlah: 5 },
+        { nama: "Pinset Sirurgis", jumlah: 2 },
+        { nama: "Adenoid Recractor", jumlah: 2 },
+        { nama: "Babcohk", jumlah: 1 },
+        { nama: "Kidney Bacin/Bengkok", jumlah: 2 },
+        { nama: "Bengkok Recractor", jumlah: 1 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Kanul Suction", jumlah: 1 },
+        { nama: "Doyen Elevator", jumlah: 2 },
+        { nama: "Towel/Duk Klemp", jumlah: 5 },
+        { nama: "Ellis Klemp", jumlah: 1 },
+        { nama: "Gelas Ukur", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Gunting Jaringan", jumlah: 1 },
+        { nama: "Mixter", jumlah: 1 },
+        { nama: "Kocher Haemostatic Forceps", jumlah: 4 },
+        { nama: "Langenback", jumlah: 2 },
+        { nama: "Needle Holder", jumlah: 2 },
+        { nama: "Pean Hemostatic Curved", jumlah: 6 },
+        { nama: "Pean Hemostatic Straight", jumlah: 4 },
+        { nama: "Poester", jumlah: 1 },
+        { nama: "Spongholding", jumlah: 1 },
+        { nama: "Tenaculum Forcep 3 gigi", jumlah: 1 },
+        { nama: "Bak Instrumen", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-7",
+      nama: "SET BEDAH MAYOR SURGERY (SNNT)",
+      jumlahSet: 1,
+      komponen: [
+        { nama: "Scalpel Handles No.3", jumlah: 1 },
+        { nama: "Scalpel Handles No.4", jumlah: 1 },
+        { nama: "Pinset Anatomis", jumlah: 3 },
+        { nama: "Pinset Sirurgis", jumlah: 2 },
+        { nama: "Doyen Elevator", jumlah: 1 },
+        { nama: "Towel/Duk Klemp", jumlah: 4 },
+        { nama: "Ellis Klamp", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Kocher Hemostatic Forceps", jumlah: 4 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Langenback", jumlah: 4 },
+        { nama: "Gunting Jaringan", jumlah: 2 },
+        { nama: "Kidney Bacin/Bengkok", jumlah: 1 },
+        { nama: "Needle Holder", jumlah: 3 },
+        { nama: "Pean Hemostatic Curved", jumlah: 8 },
+        { nama: "Mixter", jumlah: 2 },
+        { nama: "Pean Hemostatic Straight", jumlah: 2 },
+        { nama: "Cottle 1/2 /Pielum Hak/Cussing", jumlah: 2 },
+        { nama: "Gelas Ukur", jumlah: 1 },
+        { nama: "Sent Miller", jumlah: 2 },
+        { nama: "Hak Cakar", jumlah: 2 },
+        { nama: "SpongHolding", jumlah: 1 },
+        { nama: "Poester", jumlah: 1 },
+        { nama: "Bak Instrumen", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-8",
+      nama: "SET BEDAH LAPARASKOPIK",
+      jumlahSet: 1,
+      komponen: [
+        { nama: "Scalpel Handle no. 3", jumlah: 1 },
+        { nama: "Scalpel Handle no. 4", jumlah: 1 },
+        { nama: "Pinset Anatomis", jumlah: 2 },
+        { nama: "Pinset Sirurgis", jumlah: 2 },
+        { nama: "Needle Holder", jumlah: 2 },
+        { nama: "Gunting Jaringan", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Pean Haemostatic Curved", jumlah: 5 },
+        { nama: "Pean Haemostatic Straight", jumlah: 2 },
+        { nama: "kocher Haemostatic Stright", jumlah: 4 },
+        { nama: "Langenback Minor", jumlah: 2 },
+        { nama: "Langenback", jumlah: 2 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Kedney Bacin/Bengkok", jumlah: 1 },
+        { nama: "Spongeholding", jumlah: 1 },
+        { nama: "Towel/Duk Klemp", jumlah: 7 },
+        { nama: "Bak Instrumen", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-9",
+      nama: "SET BEDAH UROLOGI MINOR",
+      jumlahSet: 1,
+      komponen: [
+        { nama: "Scalpel Handle no.3", jumlah: 1 },
+        { nama: "Pinset Anatomis Mikro", jumlah: 1 },
+        { nama: "Pinset sirurgis Mikro", jumlah: 1 },
+        { nama: "Pinset Anatomis Adson Mikro", jumlah: 1 },
+        { nama: "Pinset Sirurgis Adson Mikro", jumlah: 1 },
+        { nama: "Langenback Minor", jumlah: 2 },
+        { nama: "Needle Holder Minor", jumlah: 2 },
+        { nama: "Gunting Jaringan Iris Mikro", jumlah: 1 },
+        { nama: "Gunting Jaringan Minor", jumlah: 1 },
+        { nama: "Gunting Benang Minor", jumlah: 1 },
+        { nama: "Sent Miller/ Hak Cakar", jumlah: 2 },
+        { nama: "Pean Hemostatic Curved Minor", jumlah: 8 },
+        { nama: "Pean Hemostatic Straight Minor", jumlah: 2 },
+        { nama: "Kanul Suction Minor", jumlah: 2 },
+        { nama: "Kocher Forceps Straight", jumlah: 1 },
+        { nama: "Babcohk Minor", jumlah: 1 },
+        { nama: "Mixter Minor", jumlah: 1 },
+        { nama: "Poester Minor", jumlah: 1 },
+        { nama: "Jarum Pean Cauter", jumlah: 1 },
+        { nama: "Allis Klemp", jumlah: 1 },
+        { nama: "Spongeholding", jumlah: 1 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Kidney Bacin/Bengkok", jumlah: 1 },
+        { nama: "Towel/Duk Klemp", jumlah: 4 },
+        { nama: "Bak Instrumen", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-10",
+      nama: "SET BEDAH UROLOGI BESAR",
+      jumlahSet: 2,
+      komponen: [
+        { nama: "Scalpel Handle no 3L", jumlah: 1 },
+        { nama: "Scalpel Handle no 4", jumlah: 1 },
+        { nama: "Pinset Anatomis", jumlah: 2 },
+        { nama: "Pinset Cirurgis", jumlah: 2 },
+        { nama: "Gunting Jaringan", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Needle Holder", jumlah: 2 },
+        { nama: "Rocheester Pean (Krom)", jumlah: 5 },
+        { nama: "Pean Hemostatic Curved", jumlah: 3 },
+        { nama: "kocher hemostatic Forceps", jumlah: 4 },
+        { nama: "Allis Klemp", jumlah: 1 },
+        { nama: "Babcohk", jumlah: 1 },
+        { nama: "Poester", jumlah: 2 },
+        { nama: "Langenback", jumlah: 2 },
+        { nama: "Cottle 1/2 /Pielum Hak/Cussing", jumlah: 2 },
+        { nama: "Mixter", jumlah: 2 },
+        { nama: "Towel/Duk klemp", jumlah: 5 },
+        { nama: "Spongholding", jumlah: 1 },
+        { nama: "Richadson Easman", jumlah: 2 },
+        { nama: "Hak Otomatis Besar", jumlah: 1 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Kedney Bacin/Bengkok", jumlah: 1 },
+        { nama: "Satinsky Klemp", jumlah: 1 },
+        { nama: "Hemoroid Idem", jumlah: 1 },
+        { nama: "Klem Ginjak/klem L", jumlah: 1 },
+        { nama: "Gunting Costa Wire", jumlah: 1 },
+        { nama: "Zanleer", jumlah: 1 },
+        { nama: "Yankuer", jumlah: 1 },
+        { nama: "Deaver Hak", jumlah: 1 },
+        { nama: "Randal/Stunetang", jumlah: 7 }
+      ]
+    },
+    {
+      id: "oka-11",
+      nama: "SET BEDAH SARAF MINOR",
+      jumlahSet: 1,
+      komponen: [
+        { nama: "Scalpel Handle No.3", jumlah: 1 },
+        { nama: "Pinset Anatomis Mikro", jumlah: 2 },
+        { nama: "Pinset Sirurgis Mikro", jumlah: 1 },
+        { nama: "Pinset Adson Anatomis", jumlah: 1 },
+        { nama: "Pinset Adson Sirurgis", jumlah: 1 },
+        { nama: "Gunting Jaringan Mikro", jumlah: 1 },
+        { nama: "Gunting Jaringan Iris Mikro", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Needle Holder", jumlah: 2 },
+        { nama: "Sent Miller/Hak Cakar", jumlah: 2 },
+        { nama: "Cottle 1/2 /Hak Peilum/Cussing", jumlah: 2 },
+        { nama: "Pean Hemostatic Curved", jumlah: 5 },
+        { nama: "Pean Hemostatic Straight", jumlah: 2 },
+        { nama: "Kocher Hemostatic Forceps", jumlah: 2 },
+        { nama: "Langenback", jumlah: 2 },
+        { nama: "Langenback Minor", jumlah: 2 },
+        { nama: "Kanul Suction", jumlah: 2 },
+        { nama: "Probe Sonde", jumlah: 1 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Kydney Bacin/Bengkok", jumlah: 1 },
+        { nama: "Towel/Duk Klamp", jumlah: 5 },
+        { nama: "Spongholding", jumlah: 1 },
+        { nama: "Bak Instrumen", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-12",
+      nama: "SET BEDAH SARAF BESAR",
+      jumlahSet: 1,
+      komponen: [
+        { nama: "Scalpel Handle No.3", jumlah: 1 },
+        { nama: "Scalpel Handle No. 4", jumlah: 1 },
+        { nama: "Pinset Anatomis", jumlah: 2 },
+        { nama: "Pinset Sirurgis", jumlah: 2 },
+        { nama: "Pinset Adson Anatomis", jumlah: 1 },
+        { nama: "Pinset Adson Sirurgis", jumlah: 1 },
+        { nama: "Gunting Jaringan", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Needle Holder", jumlah: 2 },
+        { nama: "Sent Miller/Hak Cakar", jumlah: 2 },
+        { nama: "Pean Hemostatic Curved", jumlah: 8 },
+        { nama: "Pean Hemostatic Straight", jumlah: 6 },
+        { nama: "Kocher Hemostatic Forceps", jumlah: 8 },
+        { nama: "Langen Back Minor", jumlah: 2 },
+        { nama: "Raspatorium", jumlah: 1 },
+        { nama: "Kanul Suction", jumlah: 2 },
+        { nama: "Probe Sonde", jumlah: 1 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Bowel/Kom Kecil", jumlah: 2 },
+        { nama: "Kydney Bacin/Bengkok", jumlah: 1 },
+        { nama: "Knable Tang", jumlah: 1 },
+        { nama: "Towel/Duk Klamp", jumlah: 5 },
+        { nama: "Mixter", jumlah: 1 },
+        { nama: "Spongholding", jumlah: 1 },
+        { nama: "Bak Instrumen", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-13",
+      nama: "SET BEDAH ORTHOPEDI MIKRO",
+      jumlahSet: 1,
+      komponen: [
+        { nama: "scalpel no.3", jumlah: 1 },
+        { nama: "pinset anatomis", jumlah: 2 },
+        { nama: "pinset sirurgis", jumlah: 1 },
+        { nama: "Pinset Adson Anatomis", jumlah: 1 },
+        { nama: "Pinset Adson Sirurgis", jumlah: 1 },
+        { nama: "gunting Jaringan", jumlah: 1 },
+        { nama: "Gunting Iris Jaringan", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "needle holder", jumlah: 2 },
+        { nama: "Pean Hemostatic Curved", jumlah: 5 },
+        { nama: "Pean Hemostatic Straight", jumlah: 2 },
+        { nama: "Kocher Hemostatic Forcefs", jumlah: 2 },
+        { nama: "Hold Sonde", jumlah: 1 },
+        { nama: "Hak Cakar gigi 3", jumlah: 2 },
+        { nama: "Hak Cakar gigi 4", jumlah: 2 },
+        { nama: "Langen Back Minor", jumlah: 2 },
+        { nama: "Flathead", jumlah: 1 },
+        { nama: "Retraktor Bedah", jumlah: 1 },
+        { nama: "Retraktor Tulang", jumlah: 1 },
+        { nama: "Bone Wire Cutting", jumlah: 1 },
+        { nama: "Depth Gauge (Micrometers)", jumlah: 1 },
+        { nama: "Kanul Suction Kecil", jumlah: 2 },
+        { nama: "Allis Klemp", jumlah: 1 },
+        { nama: "Towel/Duk Lamp", jumlah: 4 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Kidney Bacin/Bengkok", jumlah: 1 },
+        { nama: "Spongholding", jumlah: 1 },
+        { nama: "Bak Instrumen", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-14",
+      nama: "SET BEDAH ORTHOPEDI MINOR",
+      jumlahSet: 1,
+      komponen: [
+        { nama: "Scalpel Handle No.3", jumlah: 1 },
+        { nama: "Scalpel Handle No.4", jumlah: 1 },
+        { nama: "Pinset Anatomis", jumlah: 3 },
+        { nama: "Pinset Sirurgis", jumlah: 1 },
+        { nama: "Gunting Jaringan Mazembum", jumlah: 1 },
+        { nama: "Gunting Jaringan Mayo", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Needle Holder", jumlah: 2 },
+        { nama: "Kocher Haemostatic Forceps", jumlah: 4 },
+        { nama: "Pean Hemostatic Curved", jumlah: 8 },
+        { nama: "Pean Hemostatic Straight", jumlah: 2 },
+        { nama: "Pean Hemostatic Straight Minor", jumlah: 2 },
+        { nama: "Allis Klemp", jumlah: 1 },
+        { nama: "Spongeholding", jumlah: 1 },
+        { nama: "Towel/Duk Klemp", jumlah: 5 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Kidney Bacin/Bengkok", jumlah: 1 },
+        { nama: "Kocher Langenback ( Hak L )", jumlah: 2 },
+        { nama: "Retractor Volkman ( Hak 1 Gigi )", jumlah: 2 },
+        { nama: "Retracror Cakar ( Hak 3 Gigi)", jumlah: 2 },
+        { nama: "Retraktor Koerte ( Hak 6 Gigi )", jumlah: 2 },
+        { nama: "Bone Wire Forceps", jumlah: 1 },
+        { nama: "Bone Wire Cutting", jumlah: 1 },
+        { nama: "Gums Scissors/Gunting Gums", jumlah: 1 },
+        { nama: "Dental Tang", jumlah: 1 },
+        { nama: "Depth Gauge (Micrometers)", jumlah: 1 },
+        { nama: "Screw Drivers (obeng)", jumlah: 2 },
+        { nama: "Screw Drivers Tanpa Handle", jumlah: 1 },
+        { nama: "Periosteal Elevators", jumlah: 1 },
+        { nama: "Adson Elevators", jumlah: 1 },
+        { nama: "Jansen Elevators", jumlah: 1 },
+        { nama: "Bone Livers", jumlah: 3 },
+        { nama: "Bone Plates", jumlah: 2 },
+        { nama: "Bone Rounger Besar", jumlah: 1 },
+        { nama: "Bone Rounger Kecil", jumlah: 1 },
+        { nama: "Bone Holding Sequestrum Forceps", jumlah: 2 },
+        { nama: "Bone Holding Self Centering", jumlah: 2 },
+        { nama: "Bone Holding Reduction", jumlah: 2 },
+        { nama: "Bak Instrumen", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-15",
+      nama: "SET BEDAH ORTHOPEDI BESAR",
+      jumlahSet: 1,
+      komponen: [
+        { nama: "Scalpel Handle No.4", jumlah: 1 },
+        { nama: "Pinset Anatomis", jumlah: 2 },
+        { nama: "Pinset Sirurgis", jumlah: 2 },
+        { nama: "Gunting Jaringan", jumlah: 2 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Needle Holder", jumlah: 2 },
+        { nama: "Kocher Haemostatic Forceps", jumlah: 2 },
+        { nama: "Pean Haemostatic Curved", jumlah: 3 },
+        { nama: "Langen Back 1/2", jumlah: 2 },
+        { nama: "Hak Cakar Gigi 6", jumlah: 2 },
+        { nama: "Pahat Bedah", jumlah: 1 },
+        { nama: "Pahat Tulang", jumlah: 1 },
+        { nama: "Pahat Lengkung", jumlah: 1 },
+        { nama: "Kikir Logam", jumlah: 1 },
+        { nama: "Screw Drivers (Obeng)", jumlah: 3 },
+        { nama: "Scoop Spatula", jumlah: 1 },
+        { nama: "Depth Gauge (Micrometers)", jumlah: 1 },
+        { nama: "Hammer/Palu", jumlah: 1 },
+        { nama: "Retractor Bedah Presisi", jumlah: 2 },
+        { nama: "Artery Klemp", jumlah: 1 },
+        { nama: "Bone Holding Klemp", jumlah: 2 },
+        { nama: "Bone Dental Holding Klemp", jumlah: 4 },
+        { nama: "Rounger", jumlah: 1 },
+        { nama: "Bone Wire Cutting", jumlah: 1 },
+        { nama: "Hook Retractor", jumlah: 1 },
+        { nama: "Elevator Dental", jumlah: 2 },
+        { nama: "Bone Plate", jumlah: 2 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Kidney Bacin/Bengkok", jumlah: 1 },
+        { nama: "Poester", jumlah: 1 },
+        { nama: "Spongholding", jumlah: 1 },
+        { nama: "Bak Instrumen", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-16",
+      nama: "SET THT TONSIL",
+      jumlahSet: 2,
+      komponen: [
+        { nama: "Scalpel Handle No 3", jumlah: 1 },
+        { nama: "Pinset Anatomis", jumlah: 2 },
+        { nama: "Pinset Sirugis", jumlah: 1 },
+        { nama: "Needle Holder", jumlah: 2 },
+        { nama: "Gunting Jaringan", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Pean Hemostatic Curved", jumlah: 1 },
+        { nama: "Mixter", jumlah: 1 },
+        { nama: "Poester", jumlah: 1 },
+        { nama: "Spongholding", jumlah: 1 },
+        { nama: "Alis Klamp", jumlah: 2 },
+        { nama: "Towel/Duk Klamp", jumlah: 3 },
+        { nama: "Kanul suction", jumlah: 1 },
+        { nama: "Pean Hemostatic Straight", jumlah: 1 },
+        { nama: "Tongue Spatel", jumlah: 1 },
+        { nama: "Tongue Depr Boyle 92 mm", jumlah: 1 },
+        { nama: "Mouth Gag Boyle", jumlah: 1 },
+        { nama: "Tongue Gepr Boyle 62 mm", jumlah: 1 },
+        { nama: "Tongue Depr Boyle 75 mm", jumlah: 1 },
+        { nama: "Dissector", jumlah: 1 },
+        { nama: "Guide Needle", jumlah: 1 },
+        { nama: "Adenoid ForcepS", jumlah: 1 },
+        { nama: "Elevator Periosteal", jumlah: 1 },
+        { nama: "Beaver Blade", jumlah: 1 },
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Kidney bacin/Bengkok", jumlah: 1 },
+        { nama: "Bak Instrumen", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-17",
+      nama: "SET THT SINUS",
+      jumlahSet: 1,
+      komponen: [
+        { nama: "Bowel/Kom", jumlah: 1 },
+        { nama: "Gunting Benang", jumlah: 1 },
+        { nama: "Kidney Bachin/Bengkok", jumlah: 1 },
+        { nama: "Mixter", jumlah: 1 },
+        { nama: "Gunting Jaringan", jumlah: 1 },
+        { nama: "Pinset Anatomis", jumlah: 1 },
+        { nama: "Pean hemostatic forcep curved 14cm", jumlah: 1 },
+        { nama: "Pean hemostatic forcep curved 19cm", jumlah: 1 },
+        { nama: "Spongeholding", jumlah: 1 },
+        { nama: "Speculum Nasal 12cm", jumlah: 1 },
+        { nama: "Speculum Nasal 14cm", jumlah: 1 },
+        { nama: "Scapel handles no 3", jumlah: 1 },
+        { nama: "Towel/Duk Klemp", jumlah: 1 },
+        { nama: "Trocar 19cm", jumlah: 1 },
+        { nama: "Bak Instrumen", jumlah: 1 },
+        { nama: "Kanul Suction", jumlah: 1 }
+      ]
+    },
+    {
+      id: "oka-18",
+      nama: "SET THT FEES",
+      jumlahSet: 1,
+      komponen: []
+    },
+    {
+      id: "oka-19",
+      nama: "SET OBGIN SC",
+      jumlahSet: 10,
+      komponen: [
+        { nama: "Scalpel Handles No.4", jumlah: 1 },
+        { nama:
