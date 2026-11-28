@@ -1539,7 +1539,7 @@ table.suhu-data-table th{
 }
 
 /* ===== HOMEPAGE MODERN CSSD + AKSEN LEMBUT & JAM REALTIME ===== */
-#homeModern{
+.home-modern-box{
   background:#f8fbfa;
   border:1px solid #e4eeea;
   border-radius:22px;
@@ -1615,7 +1615,8 @@ table.suhu-data-table th{
   flex-shrink:0;
   box-shadow:0 0 0 2px rgba(78,168,137,.14);
 }
-#homeTanggalRealtime{
+#homeTanggalRealtime,
+#ruanganTanggalRealtime{
   font-size:12px;
   font-weight:700;
   color:#4c6e65;
@@ -1623,7 +1624,8 @@ table.suhu-data-table th{
   overflow:hidden;
   text-overflow:ellipsis;
 }
-#homeJamRealtime{
+#homeJamRealtime,
+#ruanganJamRealtime{
   font-size:13px;
   font-weight:800;
   color:#35665a;
@@ -1649,7 +1651,7 @@ table.suhu-data-table th{
 }
 .home-welcome strong{ color:#4b7067; font-size:15px; }
 .home-welcome span{ color:#7b8d87; font-size:12px; line-height:1.5; }
-#homeModern h3{ margin:20px 2px 12px; font-size:15px; color:#52756c; }
+.home-modern-box h3{ margin:20px 2px 12px; font-size:15px; color:#52756c; }
 .home-grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -1667,10 +1669,14 @@ table.suhu-data-table th{
   gap:6px;
   text-align:center;
   color:#48665e;
-  transition:transform .14s ease;
+  transition:transform .14s ease, box-shadow .14s ease, border-color .14s ease;
   cursor:pointer;
 }
 .home-card:active{ transform:scale(.98); }
+.home-card.is-selected{
+  border-color:#0f766e;
+  box-shadow:0 0 0 2px rgba(15,118,110,.16);
+}
 .home-icon{ font-size:25px; line-height:1; }
 .home-card strong{ font-size:14px; line-height:1.3; }
 .home-card small{ color:#7c8e88; font-size:11px; line-height:1.4; }
@@ -1717,8 +1723,54 @@ table.suhu-data-table th{
   text-align:center !important;
   box-shadow:0 2px 6px rgba(70,105,95,.03) !important;
   transition:transform .14s ease !important;
+  cursor:pointer;
 }
 .home-logout-btn:active{ transform:scale(.985) !important; }
+
+/* Panel Ruangan disesuaikan nuansa tema CSSD */
+.ruangan-panel-card{
+  background:#ffffff;
+  border:1px solid #dcece6;
+  border-radius:18px;
+  padding:18px;
+  margin-top:16px;
+  box-shadow:0 2px 8px rgba(70,105,95,.03);
+}
+.ruangan-panel-head{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:12px;
+}
+.ruangan-panel-head h4{
+  margin:0;
+  font-size:16px;
+  color:#426b61;
+}
+.ruangan-panel-card label{
+  color:#456b62;
+  font-size:12px;
+  font-weight:700;
+  margin:0 0 5px;
+}
+.ruangan-panel-card input,
+.ruangan-panel-card select,
+.ruangan-panel-card textarea{
+  width:100%;
+  background:#ffffff;
+  border:1px solid #dce9e4;
+  border-radius:12px;
+  padding:11px 13px;
+  color:#28483f;
+  font-size:14px;
+}
+.ruangan-panel-card input[readonly]{
+  background:#f4f9f7;
+  font-weight:700;
+  color:#35665a;
+}
 
 @media(max-width:420px){
   .home-datetime{ flex-direction:column; align-items:flex-start; gap:6px; }
@@ -1782,102 +1834,107 @@ table.suhu-data-table th{
 <!-- ==================== WORKSPACE AUTO-LOGIN RUANGAN VIA QR ==================== -->
 <section class="dashboard" id="workspaceRuangan" style="display:none;">
   <div class="panel">
-    <div class="topbar-app">
-      <div>
-        <div class="topbar-app-brand">CSSD BERIMAN • PORTAL RUANGAN</div>
-        <div class="topbar-app-sub">Auto-Login QR • 3 Menu Utama Ruangan</div>
-      </div>
-      <div class="topbar-app-right">
-        <span id="badgeRuanganAktif" class="role-chip">RUANGAN</span>
-        <button type="button" class="btn-ui btn-ui-light btn-ui-sm" id="btnKeluarRuangan">Keluar</button>
-      </div>
-    </div>
+    <div id="homeRuanganModern" class="home-modern-box" style="margin-top:0;">
 
-    <div class="home-datetime" aria-label="Tanggal dan jam realtime ruangan">
-      <div class="home-date-wrap">
-        <span class="home-live-dot" aria-hidden="true"></span>
-        <span id="ruanganTanggalRealtime">-</span>
+      <div class="home-head">
+        <div class="home-kicker">PORTAL RUANGAN CSSD</div>
+        <h2>CSSD SEKARWANGI BERIMAN</h2>
+        <p>BERSIH • STERIL • AMAN</p>
       </div>
-      <span id="ruanganJamRealtime">00:00:00 WIB</span>
-    </div>
 
-    <div class="nav-group-label">Menu Utama Ruangan</div>
-    <div class="nav-tabs">
-      <button type="button" id="tabR_Gudang" class="nav-tab active" onclick="gantiMenuRuangan('gudang')">📦 Gudang Alat Steril</button>
-      <button type="button" id="tabR_Buat" class="nav-tab" onclick="gantiMenuRuangan('buat')">📝 Buat Permintaan</button>
-      <button type="button" id="tabR_Status" class="nav-tab" onclick="gantiMenuRuangan('status')">📌 Status Permintaan (<span id="badgeCountRuangan">0</span>)</button>
-    </div>
-
-    <!-- 1. Ruangan: Gudang Alat Steril -->
-    <div id="panelR_Gudang" class="subcard-ui">
-      <div class="subcard-head">
-        <div>
-          <h3 style="margin:0;color:#12372e">Gudang Alat Steril — Parstok Siap Pakai</h3>
-          <div class="muted-ui">Parstok berkurang otomatis setelah permintaan dikonfirmasi oleh petugas CSSD.</div>
+      <div class="home-datetime" aria-label="Tanggal dan jam realtime ruangan">
+        <div class="home-date-wrap">
+          <span class="home-live-dot" aria-hidden="true"></span>
+          <span id="ruanganTanggalRealtime">-</span>
         </div>
-      </div>
-      <div id="gridParstokRuangan" class="stock-grid"></div>
-    </div>
-
-    <!-- 2. Ruangan: Buat Permintaan -->
-    <div id="panelR_Buat" class="subcard-ui" style="display:none;">
-      <div class="subcard-head">
-        <div>
-          <h3 style="margin:0;color:#12372e">Buat Permintaan Alat Steril</h3>
-          <div class="muted-ui">Permintaan tetap bisa diajukan meski ada catatan selisih set/komponen kembali (ditampilkan sebagai peringatan data).</div>
-        </div>
+        <span id="ruanganJamRealtime">00:00:00 WIB</span>
       </div>
 
-      <div id="warningDataRuangan" class="warning-box" style="display:none;"></div>
+      <div class="home-welcome">
+        <strong id="badgeRuanganAktif">RUANGAN</strong>
+        <span>Auto-Login QR • Pilih kartu menu utama untuk membuka panel permintaan.</span>
+      </div>
 
-      <form id="formPermintaanRuangan" onsubmit="submitPermintaanRuangan(event)">
-        <div class="grid-3-ui">
-          <div class="field-ui">
-            <label>Ruangan Pemohon</label>
-            <input type="text" id="reqUnitInput" readonly />
+      <h3>Menu Utama</h3>
+
+      <div class="home-grid">
+        <button type="button" class="home-card card-distribusi" id="cardR_Buat" onclick="gantiMenuRuangan('buat')">
+          <span class="home-icon">📝</span>
+          <strong>Buat Permintaan</strong>
+          <small>Ajukan permintaan alat / set steril ke CSSD</small>
+        </button>
+
+        <button type="button" class="home-card card-packing" id="cardR_Status" onclick="gantiMenuRuangan('status')">
+          <span class="home-icon">📌</span>
+          <strong>Status Permintaan (<span id="badgeCountRuangan">0</span>)</strong>
+          <small>Pantau status &amp; konfirmasi alat dari CSSD</small>
+        </button>
+      </div>
+
+      <!-- Panel Buat Permintaan (terbuka saat kartu Buat Permintaan diklik) -->
+      <div id="panelR_Buat" class="ruangan-panel-card" style="display:none;">
+        <div class="ruangan-panel-head">
+          <div>
+            <h4>📝 Buat Permintaan Alat Steril</h4>
+            <div class="muted-ui">Permintaan tetap bisa diajukan meski ada catatan selisih set/komponen kembali (ditampilkan sebagai peringatan data).</div>
           </div>
-          <div class="field-ui">
-            <label>Tanggal &amp; Jam Permintaan</label>
-            <input type="datetime-local" id="reqWaktuInput" required />
+          <button type="button" class="btn-ui btn-ui-outline btn-ui-sm" onclick="tutupPanelRuangan()">Tutup</button>
+        </div>
+
+        <div id="warningDataRuangan" class="warning-box" style="display:none;"></div>
+
+        <form id="formPermintaanRuangan" onsubmit="submitPermintaanRuangan(event)">
+          <div class="grid-3-ui">
+            <div class="field-ui">
+              <label>Ruangan Pemohon</label>
+              <input type="text" id="reqUnitInput" readonly />
+            </div>
+            <div class="field-ui">
+              <label>Tanggal &amp; Jam Permintaan</label>
+              <input type="datetime-local" id="reqWaktuInput" required />
+            </div>
+            <div class="field-ui">
+              <label>Prioritas</label>
+              <select id="reqPrioritasInput" required>
+                <option value="Rutin">Rutin</option>
+                <option value="Cito">Cito / Segera</option>
+              </select>
+            </div>
           </div>
+
           <div class="field-ui">
-            <label>Prioritas</label>
-            <select id="reqPrioritasInput" required>
-              <option value="Rutin">Rutin</option>
-              <option value="Cito">Cito / Segera</option>
-            </select>
+            <label>Nama Petugas Ruangan Pemohon</label>
+            <input type="text" id="reqPemohonInput" placeholder="Contoh: Ns. Budi / Siti" required />
           </div>
-        </div>
 
-        <div class="field-ui">
-          <label>Nama Petugas Ruangan Pemohon</label>
-          <input type="text" id="reqPemohonInput" placeholder="Contoh: Ns. Budi / Siti" required />
-        </div>
+          <div class="field-ui">
+            <label>Pilih Alat / Set Steril &amp; Jumlah Diminta</label>
+            <div id="reqItemsContainer"></div>
+            <button type="button" class="btn-ui btn-ui-outline btn-ui-sm" onclick="tambahBarisPermintaan()">+ Tambah Baris Alat / Set</button>
+          </div>
 
-        <div class="field-ui">
-          <label>Pilih Alat / Set Steril &amp; Jumlah Diminta</label>
-          <div id="reqItemsContainer"></div>
-          <button type="button" class="btn-ui btn-ui-outline btn-ui-sm" onclick="tambahBarisPermintaan()">+ Tambah Baris Alat / Set</button>
-        </div>
+          <div class="field-ui">
+            <label>Catatan Permintaan (Opsional)</label>
+            <textarea id="reqCatatanInput" rows="2" placeholder="Keterangan tambahan untuk petugas CSSD..."></textarea>
+          </div>
 
-        <div class="field-ui">
-          <label>Catatan Permintaan (Opsional)</label>
-          <textarea id="reqCatatanInput" rows="2" placeholder="Keterangan tambahan untuk petugas CSSD..."></textarea>
-        </div>
-
-        <button type="submit" class="btn-ui btn-ui-primary">Kirim Permintaan ke CSSD</button>
-      </form>
-    </div>
-
-    <!-- 3. Ruangan: Status Permintaan -->
-    <div id="panelR_Status" class="subcard-ui" style="display:none;">
-      <div class="subcard-head">
-        <div>
-          <h3 style="margin:0;color:#12372e">Status Permintaan Ruangan</h3>
-          <div class="muted-ui">Pantau status hingga <strong>Terkonfirmasi 🔥👍🏽</strong> dan jumlah konfirmasi CSSD.</div>
-        </div>
+          <button type="submit" class="btn-ui btn-ui-primary">Kirim Permintaan ke CSSD</button>
+        </form>
       </div>
-      <div id="listStatusRuangan"></div>
+
+      <!-- Panel Status Permintaan (terbuka saat kartu Status Permintaan diklik) -->
+      <div id="panelR_Status" class="ruangan-panel-card" style="display:none;">
+        <div class="ruangan-panel-head">
+          <div>
+            <h4>📌 Status Permintaan Ruangan</h4>
+            <div class="muted-ui">Pantau status hingga <strong>Terkonfirmasi 🔥👍🏽</strong> dan jumlah konfirmasi CSSD.</div>
+          </div>
+          <button type="button" class="btn-ui btn-ui-outline btn-ui-sm" onclick="tutupPanelRuangan()">Tutup</button>
+        </div>
+        <div id="listStatusRuangan"></div>
+      </div>
+
+      <button type="button" class="logout home-logout-btn" id="btnKeluarRuangan">Keluar</button>
     </div>
   </div>
 </section>
@@ -1891,7 +1948,7 @@ table.suhu-data-table th{
     <p>Selamat datang, Handri Gumelar.</p>
     <hr>
 
-    <div id="homeModern" style="display:block">
+    <div id="homeModern" class="home-modern-box" style="display:block">
 
       <div class="home-head">
         <div class="home-kicker">APLIKASI INTERNAL CSSD</div>
@@ -3063,10 +3120,10 @@ const UNIT_QR_LIST = [
 ];
 
 const DEFAULT_GUDANG = [
-  { id: "SET_GV", nama: "Set GV", parstok: 40, wajibKembali: true, komponen: ["Pinset Anatomis", "Pinset Sirurgis", "Gunting Benang", "Kom Kecil"] },
-  { id: "SET_HECTING", nama: "Set Hecting", parstok: 25, wajibKembali: true, komponen: ["Needle Holder", "Gunting Jaringan", "Pinset Sirurgis", "Klem Arteri"] },
-  { id: "SET_PARTUS", nama: "Set Partus", parstok: 18, wajibKembali: true, komponen: ["Gunting Episiotomi", "Klem Kocher", "1/2 Kocher", "Pinset Anatomis"] },
-  { id: "KASSA_STERIL", nama: "Kassa Steril (Pack)", parstok: 120, wajibKembali: false, komponen: [] }
+  { id: "SET_GV", nama: "SET GV", parstok: 40, wajibKembali: true, komponen: ["Pinset Anatomis", "Pinset Sirurgis", "Gunting Benang", "Kom Kecil"] },
+  { id: "SET_HECTING", nama: "SET HECTING", parstok: 25, wajibKembali: true, komponen: ["Needle Holder", "Gunting Jaringan", "Pinset Sirurgis", "Klem Arteri"] },
+  { id: "SET_PARTUS", nama: "SET PARTUS", parstok: 18, wajibKembali: true, komponen: ["Gunting Episiotomi", "Klem Kocher", "1/2 Kocher", "Pinset Anatomis"] },
+  { id: "KASSA_STERIL", nama: "KASSA 5 CM", parstok: 120, wajibKembali: false, komponen: [] }
 ];
 
 const STORAGE_KEY = "cssd_beriman_state_v1";
@@ -3084,7 +3141,7 @@ function getDefaultState() {
         prioritas: "Rutin",
         pemohon: "Ns. Dian",
         catatan: "Kebutuhan rawat luka pagi",
-        items: [{ namaAlat: "Set GV", jumlahDiminta: 15, jumlahDikonfirmasi: 15 }],
+        items: [{ namaAlat: "SET GV", jumlahDiminta: 15, jumlahDikonfirmasi: 15 }],
         status: "Terkonfirmasi 🔥👍🏽",
         catatanCssd: "Dikonfirmasi penuh"
       }
@@ -3093,7 +3150,7 @@ function getDefaultState() {
       {
         id: "RET-2001",
         unit: "NAS LT 1",
-        namaAlat: "Set GV",
+        namaAlat: "SET GV",
         jumlahKembali: 10,
         petugasRuangan: "Ns. Rina",
         waktu: "2026-11-27T14:20",
@@ -3273,6 +3330,15 @@ alatPenerimaan.options[0].text = "Pilih nama alat / set";
 var alatDekontaminasi = document.getElementById("alatDekontaminasi");
 alatDekontaminasi.innerHTML = alatAsal.innerHTML;
 alatDekontaminasi.options[0].text = "Pilih nama alat / set";
+
+function getOpsiDropdownAlatLengkap(){
+  var tempSelect = document.createElement("select");
+  tempSelect.innerHTML = alatAsal.innerHTML;
+  if(tempSelect.options.length > 0){
+    tempSelect.options[0].text = "-- Pilih Alat / Set Steril --";
+  }
+  return tempSelect.innerHTML;
+}
 
 var daftarAlatSterilisasiTambahan = document.getElementById("daftarAlatSterilisasiTambahan");
 var daftarAlatPackingTambahan = document.getElementById("daftarAlatPackingTambahan");
@@ -3653,6 +3719,13 @@ function setLocalDatetime(elId){
   el.value = now.toISOString().slice(0, 16);
 }
 
+window.tutupPanelRuangan = function(){
+  document.getElementById("panelR_Buat").style.display = "none";
+  document.getElementById("panelR_Status").style.display = "none";
+  document.getElementById("cardR_Buat")?.classList.remove("is-selected");
+  document.getElementById("cardR_Status")?.classList.remove("is-selected");
+};
+
 function bukaWorkspaceRuangan(foundUnit){
   currentSession = { type: "ruangan", role: "Ruangan", unit: foundUnit.unit, token: foundUnit.token };
   sessionStorage.setItem("cssd_session", JSON.stringify(currentSession));
@@ -3661,14 +3734,15 @@ function bukaWorkspaceRuangan(foundUnit){
   document.getElementById("dashboard").style.display = "none";
   document.getElementById("workspaceRuangan").style.display = "block";
 
-  document.getElementById("badgeRuanganAktif").textContent = "RUANGAN: " + foundUnit.unit;
+  document.getElementById("badgeRuanganAktif").textContent = "RUANGAN: " + foundUnit.unit + " 👋";
   document.getElementById("reqUnitInput").value = foundUnit.unit;
   setLocalDatetime("reqWaktuInput");
   if(document.getElementById("reqItemsContainer").children.length === 0){
     tambahBarisPermintaan();
   }
+  tutupPanelRuangan();
+  perbaruiJamTanggalRealtime();
   refreshAllViews();
-  gantiMenuRuangan("gudang");
 }
 
 function cekAutoLoginQrSaatMuat(){
@@ -3705,6 +3779,7 @@ document.getElementById("btnSimulasiScanQr").onclick = function(){
 document.getElementById("btnKeluarRuangan").onclick = function(){
   sessionStorage.removeItem("cssd_session");
   currentSession = null;
+  tutupPanelRuangan();
   document.getElementById("workspaceRuangan").style.display = "none";
   document.getElementById("login").style.display = "flex";
   if(window.location.search.includes("qr=")){
@@ -3719,7 +3794,7 @@ window.hitungPeringatanRuangan = function(unitName){
     if(req.unit !== unitName) return;
     if(req.status === "Terkonfirmasi 🔥👍🏽" || req.status === "Didistribusikan"){
       req.items.forEach(it => {
-        const master = state.gudang.find(g => g.nama === it.namaAlat);
+        const master = state.gudang.find(g => g.nama.toUpperCase() === String(it.namaAlat || "").toUpperCase());
         if(master && master.wajibKembali){
           const qty = Number(it.jumlahDikonfirmasi ?? it.jumlahDiminta ?? 0);
           confirmedByItem[it.namaAlat] = (confirmedByItem[it.namaAlat] || 0) + qty;
@@ -3795,41 +3870,41 @@ window.renderPeringatanRuangan = function(unitName){
     `<div style="font-size:12px;">Rincian ini otomatis tampil kepada petugas CSSD saat proses konfirmasi permintaan.</div>`;
 };
 
-/* ===== MENU RUANGAN ===== */
+/* ===== MENU RUANGAN (2 KARTU UTAMA, PANEL TERBUKA SAAT DIKLIK) ===== */
 window.gantiMenuRuangan = function(menu){
-  document.getElementById("panelR_Gudang").style.display = menu === "gudang" ? "block" : "none";
-  document.getElementById("panelR_Buat").style.display = menu === "buat" ? "block" : "none";
-  document.getElementById("panelR_Status").style.display = menu === "status" ? "block" : "none";
-  document.getElementById("tabR_Gudang").classList.toggle("active", menu === "gudang");
-  document.getElementById("tabR_Buat").classList.toggle("active", menu === "buat");
-  document.getElementById("tabR_Status").classList.toggle("active", menu === "status");
+  const panelBuat = document.getElementById("panelR_Buat");
+  const panelStatus = document.getElementById("panelR_Status");
+  const cardBuat = document.getElementById("cardR_Buat");
+  const cardStatus = document.getElementById("cardR_Status");
 
-  if(menu === "buat" && currentSession?.unit) renderPeringatanRuangan(currentSession.unit);
-  if(menu === "status") renderStatusRuangan();
-  if(menu === "gudang") renderParstokRuangan();
-};
-
-window.renderParstokRuangan = function(){
-  const el = document.getElementById("gridParstokRuangan");
-  if(!el) return;
-  el.innerHTML = state.gudang.map(item => `
-    <div class="stock-card">
-      <div class="stock-name">${item.nama}</div>
-      <div class="stock-qty">${item.parstok}</div>
-      <div class="stock-sub">Parstok siap pakai di CSSD</div>
-    </div>
-  `).join("");
+  if(menu === "buat"){
+    const akanBuka = panelBuat.style.display !== "block";
+    tutupPanelRuangan();
+    if(akanBuka){
+      panelBuat.style.display = "block";
+      cardBuat.classList.add("is-selected");
+      if(currentSession?.unit) renderPeringatanRuangan(currentSession.unit);
+      panelBuat.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }else if(menu === "status"){
+    const akanBuka = panelStatus.style.display !== "block";
+    tutupPanelRuangan();
+    if(akanBuka){
+      panelStatus.style.display = "block";
+      cardStatus.classList.add("is-selected");
+      renderStatusRuangan();
+      panelStatus.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }
 };
 
 window.tambahBarisPermintaan = function(){
   const container = document.getElementById("reqItemsContainer");
   const row = document.createElement("div");
   row.className = "item-row-ui";
-  const opts = state.gudang.map(g => `<option value="${g.nama}">${g.nama} (Stok: ${g.parstok})</option>`).join("");
   row.innerHTML = `
     <select class="req-alat" required>
-      <option value="">-- Pilih Alat / Set Steril --</option>
-      ${opts}
+      ${getOpsiDropdownAlatLengkap()}
     </select>
     <input type="number" class="req-qty" min="1" value="1" required />
     <button type="button" class="btn-ui btn-ui-danger btn-ui-sm" onclick="this.parentElement.remove()">✕</button>
@@ -3874,6 +3949,7 @@ window.submitPermintaanRuangan = function(e){
   renderPeringatanRuangan(currentSession.unit);
   refreshAllViews();
   alert("Permintaan berhasil dikirim ke CSSD.");
+  tutupPanelRuangan();
   gantiMenuRuangan("status");
 };
 
@@ -3951,13 +4027,13 @@ window.renderPermintaanCssd = function(){
     }
 
     const rowsHtml = req.items.map((it, iIdx) => {
-      const master = state.gudang.find(g => g.nama === it.namaAlat);
-      const stokTersedia = master ? master.parstok : 0;
+      const master = state.gudang.find(g => g.nama.toUpperCase() === String(it.namaAlat || "").toUpperCase());
+      const stokInfo = master ? `(Parstok siap pakai: ${master.parstok})` : `(Item non-parstok gudang)`;
       return `
         <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed #e2e8f0;">
           <div>
             <strong>${it.namaAlat}</strong> — Diminta: <strong>${it.jumlahDiminta}</strong>
-            <span class="muted-ui">(Parstok siap pakai: ${stokTersedia})</span>
+            <span class="muted-ui">${stokInfo}</span>
           </div>
           <div>
             <label style="font-size:12px;font-weight:700;margin:0 4px 0 0;display:inline;">Konfirmasi:</label>
@@ -4010,7 +4086,7 @@ window.konfirmasiPermintaanCssd = function(reqIndex){
     const it = req.items[i];
     const inputEl = document.getElementById(`konfQty_${reqIndex}_${i}`);
     const qtyKonf = Math.max(0, Number(inputEl ? inputEl.value : it.jumlahDiminta));
-    const master = state.gudang.find(g => g.nama === it.namaAlat);
+    const master = state.gudang.find(g => g.nama.toUpperCase() === String(it.namaAlat || "").toUpperCase());
     if(master && qtyKonf > master.parstok){
       alert(`Jumlah konfirmasi ${it.namaAlat} (${qtyKonf}) melebihi parstok siap pakai (${master.parstok}).`);
       return;
@@ -4019,7 +4095,7 @@ window.konfirmasiPermintaanCssd = function(reqIndex){
   }
 
   updatedItems.forEach(it => {
-    const master = state.gudang.find(g => g.nama === it.namaAlat);
+    const master = state.gudang.find(g => g.nama.toUpperCase() === String(it.namaAlat || "").toUpperCase());
     if(master){
       master.parstok = Math.max(0, master.parstok - it.jumlahDikonfirmasi);
     }
@@ -4044,7 +4120,7 @@ window.renderKomponenRetur = function(){
     setSel.innerHTML = setOnly.map(g => `<option value="${g.nama}">${g.nama}</option>`).join("");
   }
 
-  const master = state.gudang.find(g => g.nama === setSel.value);
+  const master = state.gudang.find(g => g.nama.toUpperCase() === String(setSel.value || "").toUpperCase());
   if(!master || !master.komponen || master.komponen.length === 0){
     container.innerHTML = `<div class="muted-ui">Tidak ada komponen instrumen khusus untuk item ini.</div>`;
     return;
@@ -4235,7 +4311,6 @@ window.cetakSatuKartuQr = function(token){
 
 window.refreshAllViews = function(){
   renderKomponenRetur();
-  renderParstokRuangan();
   renderParstokCssd();
   renderPermintaanCssd();
   renderDistribusiCssd();
@@ -5038,4 +5113,3 @@ window.addEventListener("DOMContentLoaded", function(){
 
 </body>
 </html>
-
