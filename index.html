@@ -1851,9 +1851,8 @@ table.suhu-data-table th{
       </div>
 
       <div class="home-welcome">
-        <strong>Selamat Datang, <span id="badgeRuanganAktif">NAS LT 1</span> 👋🏻</strong>
-        <span>Auto-Login QR • Pilih kartu menu untuk membuka panel permintaan.</span>
-      </div>
+  <strong id="badgeRuanganAktif">Selamat Datang 👋🏻</strong>
+</div>
 
       <h3>Menu Utama</h3>
 
@@ -3734,7 +3733,8 @@ function bukaWorkspaceRuangan(foundUnit){
   document.getElementById("dashboard").style.display = "none";
   document.getElementById("workspaceRuangan").style.display = "block";
 
-  document.getElementById("badgeRuanganAktif").textContent = "RUANGAN: " + foundUnit.unit + " 👋";
+  document.getElementById("badgeRuanganAktif").textContent = Selamat Datang,
+    " + foundUnit.unit + " 👋";
   document.getElementById("reqUnitInput").value = foundUnit.unit;
   setLocalDatetime("reqWaktuInput");
   if(document.getElementById("reqItemsContainer").children.length === 0){
