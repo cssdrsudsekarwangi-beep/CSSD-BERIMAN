@@ -2011,6 +2011,22 @@ table.suhu-data-table th{
               <option value="PENYIMPANAN ALAT STERIL">PENYIMPANAN ALAT STERIL</option>
             </select>
 
+            <label for="pilihPetugasSuhuRekap">Petugas CSSD (1 Shif Harian / Rata-Rata)</label>
+            <select id="pilihPetugasSuhuRekap">
+              <option value="SEMUA_PETUGAS">Semua Petugas (Menyambung Rata-Rata per Tanggal)</option>
+              <option value="Handri Gumelar">Handri Gumelar</option>
+              <option value="Enden Dessa">Enden Dessa</option>
+              <option value="Nanan Mulyana">Nanan Mulyana</option>
+              <option value="Dedi Syarieffudin">Dedi Syarieffudin</option>
+              <option value="M Pradifto">M Pradifto</option>
+              <option value="Yana Mulyana">Yana Mulyana</option>
+              <option value="Helmi Maulana">Helmi Maulana</option>
+              <option value="Wahyudin">Wahyudin</option>
+              <option value="Deva Afrian">Deva Afrian</option>
+              <option value="Dudung">Dudung</option>
+              <option value="Dwi Pangestu">Dwi Pangestu</option>
+            </select>
+
             <label for="pilihBulanSuhuRekap">Pilih Bulan</label>
             <select id="pilihBulanSuhuRekap">
               <option value="01">Januari</option>
@@ -4729,6 +4745,7 @@ document.getElementById("periodeLaporan").onchange = function(){ this.blur(); };
 document.getElementById("pilihRuanganRekap").onchange = function(){ this.blur(); };
 document.getElementById("pilihProsesRekap").onchange = function(){ this.blur(); };
 document.getElementById("pilihAreaSuhuRekap").onchange = function(){ this.blur(); };
+document.getElementById("pilihPetugasSuhuRekap").onchange = function(){ this.blur(); };
 document.getElementById("pilihBulanSuhuRekap").onchange = function(){ this.blur(); };
 document.getElementById("pilihModeSuhuRekap").onchange = function(){ this.blur(); };
 document.getElementById("petugasLaporan").onchange = function(){ this.blur(); };
@@ -4851,16 +4868,78 @@ function getStandarArea(areaNama){
   };
 }
 
+function agregasiHarianRataRataSuhu(rowsArea){
+  var grouped = {};
+  rowsArea.forEach(function(r){
+    var tgl = r.tanggal || "";
+    if(!tgl) return;
+    if(!grouped[tgl]){
+      grouped[tgl] = {
+        tanggal: tgl,
+        suhuSum: 0,
+        suhuCount: 0,
+        rhSum: 0,
+        rhCount: 0,
+        jams: [],
+        petugasList: [],
+        catatans: [],
+        rawCount: 0
+      };
+    }
+    var g = grouped[tgl];
+    g.rawCount++;
+    if(typeof r.suhuNum === "number"){
+      g.suhuSum += r.suhuNum;
+      g.suhuCount++;
+    }
+    if(typeof r.rhNum === "number"){
+      g.rhSum += r.rhNum;
+      g.rhCount++;
+    }
+    if(r.jam && g.jams.indexOf(r.jam) === -1) g.jams.push(r.jam);
+    var pTrim = String(r.petugas || "").trim();
+    if(pTrim && pTrim !== "-" && g.petugasList.indexOf(pTrim) === -1) g.petugasList.push(pTrim);
+    if(r.catatan && g.catatans.indexOf(r.catatan) === -1) g.catatans.push(r.catatan);
+  });
+
+  return Object.keys(grouped).sort().map(function(tgl){
+    var g = grouped[tgl];
+    var avgSuhuNum = g.suhuCount > 0 ? Math.round((g.suhuSum / g.suhuCount) * 10) / 10 : null;
+    var avgRhNum = g.rhCount > 0 ? Math.round((g.rhSum / g.rhCount) * 10) / 10 : null;
+
+    var suhuLabel = (typeof avgSuhuNum === "number")
+      ? (avgSuhuNum.toFixed(1).replace(".", ",") + "°C" + (g.rawCount > 1 ? " (rata-rata " + g.rawCount + "x)" : ""))
+      : "-";
+    var rhLabel = (typeof avgRhNum === "number")
+      ? (avgRhNum.toFixed(1).replace(".", ",") + "%" + (g.rawCount > 1 ? " (rata-rata " + g.rawCount + "x)" : ""))
+      : "-";
+
+    return {
+      tanggal: g.tanggal,
+      jam: g.jams.length > 0 ? g.jams.join(", ") : "-",
+      petugas: g.petugasList.length > 0 ? g.petugasList.join(", ") : "-",
+      area: rowsArea[0] ? rowsArea[0].area : "-",
+      suhu: suhuLabel,
+      kelembaban: rhLabel,
+      suhuNum: avgSuhuNum,
+      rhNum: avgRhNum,
+      jumlahInput: g.rawCount,
+      catatan: g.catatans.join(" • ")
+    };
+  });
+}
+
 function renderBlokMatriksSuhu(areaNama, bulanStr, tahunStr, rowsBulan, pj){
   var std = getStandarArea(areaNama);
   var namaBulan = NAMA_BULAN_MAP[bulanStr] || bulanStr;
   var daysInMonth = new Date(Number(tahunStr), Number(bulanStr), 0).getDate();
+  var dailyAvgRows = agregasiHarianRataRataSuhu(rowsBulan);
 
   var suhuAxis = [30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19];
   var rhAxis = [85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30];
 
   var byDay = {};
-  rowsBulan.forEach(function(r){
+  dailyAvgRows.forEach(function(r){
     var parts = String(r.tanggal || "").split("-");
     var dayNum = Number(parts[2] || 0);
     if(dayNum >= 1 && dayNum <= daysInMonth){
@@ -4942,7 +5021,7 @@ function renderBlokMatriksSuhu(areaNama, bulanStr, tahunStr, rowsBulan, pj){
     '<div class="suhu-form-card">' +
       '<div class="suhu-form-header">' +
         '<div class="suhu-form-title">Pemeriksaan Harian Suhu dan Kelembaban — ' + areaNama + '</div>' +
-        '<div style="font-size:11px;color:#1b4f7a;font-weight:700">' + std.labelStandar + '</div>' +
+        '<div style="font-size:11px;color:#1b4f7a;font-weight:700">' + std.labelStandar + ' • Rata-Rata per Tanggal</div>' +
       '</div>' +
       '<div class="suhu-form-meta">' +
         '<span>Bulan : ' + namaBulan + ' ' + tahunStr + '</span>' +
@@ -4984,10 +5063,11 @@ function renderBlokPlotGarisSuhu(areaNama, bulanStr, tahunStr, rowsBulan, pj){
   var std = getStandarArea(areaNama);
   var namaBulan = NAMA_BULAN_MAP[bulanStr] || bulanStr;
   var daysInMonth = new Date(Number(tahunStr), Number(bulanStr), 0).getDate();
+  var dailyAvgRows = agregasiHarianRataRataSuhu(rowsBulan);
 
   var suhuByDay = {};
   var rhByDay = {};
-  rowsBulan.forEach(function(r){
+  dailyAvgRows.forEach(function(r){
     var parts = String(r.tanggal || "").split("-");
     var d = Number(parts[2] || 0);
     if(d >= 1 && d <= daysInMonth){
@@ -5057,10 +5137,10 @@ function renderBlokPlotGarisSuhu(areaNama, bulanStr, tahunStr, rowsBulan, pj){
     '<div class="suhu-form-card">' +
       '<div class="suhu-form-header">' +
         '<div class="suhu-form-title">Grafik Garis / Plot Suhu &amp; Kelembaban — ' + areaNama + '</div>' +
-        '<div style="font-size:11px;color:#1b4f7a;font-weight:700">' + namaBulan + ' ' + tahunStr + ' • ' + std.labelStandar + '</div>' +
+        '<div style="font-size:11px;color:#1b4f7a;font-weight:700">' + namaBulan + ' ' + tahunStr + ' • Rata-Rata Harian • ' + std.labelStandar + '</div>' +
       '</div>' +
-      buildSvgPlot("Plot Suhu Harian", "°C", 15, 32, std.suhuMin, std.suhuMax, suhuByDay) +
-      buildSvgPlot("Plot Kelembaban Harian", "%", 25, 85, std.rhMin, std.rhMax, rhByDay) +
+      buildSvgPlot("Plot Suhu Harian (Rata-Rata per Tanggal)", "°C", 15, 32, std.suhuMin, std.suhuMax, suhuByDay) +
+      buildSvgPlot("Plot Kelembaban Harian (Rata-Rata per Tanggal)", "%", 25, 85, std.rhMin, std.rhMax, rhByDay) +
       '<div class="suhu-sign-block">' +
         '<div>Mengetahui,</div>' +
         '<div class="suhu-sign-name">' + pj + '</div>' +
@@ -5073,9 +5153,10 @@ function renderBlokPlotGarisSuhu(areaNama, bulanStr, tahunStr, rowsBulan, pj){
 function renderBlokRingkasanSuhu(areaNama, bulanStr, tahunStr, rowsBulan, pj){
   var std = getStandarArea(areaNama);
   var namaBulan = NAMA_BULAN_MAP[bulanStr] || bulanStr;
+  var dailyAvgRows = agregasiHarianRataRataSuhu(rowsBulan);
 
-  var suhuVals = rowsBulan.map(function(r){ return r.suhuNum; }).filter(function(n){ return typeof n === "number"; });
-  var rhVals = rowsBulan.map(function(r){ return r.rhNum; }).filter(function(n){ return typeof n === "number"; });
+  var suhuVals = dailyAvgRows.map(function(r){ return r.suhuNum; }).filter(function(n){ return typeof n === "number"; });
+  var rhVals = dailyAvgRows.map(function(r){ return r.rhNum; }).filter(function(n){ return typeof n === "number"; });
 
   var avgSuhu = suhuVals.length
     ? (suhuVals.reduce(function(a,b){ return a+b; }, 0) / suhuVals.length).toFixed(1).replace(".", ",") + "°C"
@@ -5085,7 +5166,7 @@ function renderBlokRingkasanSuhu(areaNama, bulanStr, tahunStr, rowsBulan, pj){
     : "-";
 
   var avgRh = rhVals.length
-    ? Math.round(rhVals.reduce(function(a,b){ return a+b; }, 0) / rhVals.length) + "%"
+    ? (rhVals.reduce(function(a,b){ return a+b; }, 0) / rhVals.length).toFixed(1).replace(".", ",") + "%"
     : "-";
   var minMaxRh = rhVals.length
     ? (Math.min.apply(null, rhVals) + "% – " + Math.max.apply(null, rhVals) + "%")
@@ -5094,10 +5175,10 @@ function renderBlokRingkasanSuhu(areaNama, bulanStr, tahunStr, rowsBulan, pj){
   var outCount = 0;
   var bodyRowsHtml = "";
 
-  if(rowsBulan.length === 0){
+  if(dailyAvgRows.length === 0){
     bodyRowsHtml = '<tr><td colspan="6" style="text-align:center;color:#3c6a92">Belum ada data monitoring suhu &amp; kelembaban untuk ' + areaNama + ' pada bulan ' + namaBulan + ' ' + tahunStr + '.</td></tr>';
   }else{
-    rowsBulan.forEach(function(r){
+    dailyAvgRows.forEach(function(r){
       var suhuOk = (typeof r.suhuNum === "number") ? (r.suhuNum >= std.suhuMin && r.suhuNum <= std.suhuMax) : true;
       var rhOk = (typeof r.rhNum === "number") ? (r.rhNum >= std.rhMin && r.rhNum <= std.rhMax) : true;
       var sesuai = suhuOk && rhOk;
@@ -5123,21 +5204,21 @@ function renderBlokRingkasanSuhu(areaNama, bulanStr, tahunStr, rowsBulan, pj){
     '<div class="suhu-form-card">' +
       '<div class="suhu-form-header">' +
         '<div class="suhu-form-title">Tabel Rekap Angka &amp; Status — ' + areaNama + '</div>' +
-        '<div style="font-size:11px;color:#1b4f7a;font-weight:700">' + namaBulan + ' ' + tahunStr + ' • ' + std.labelStandar + '</div>' +
+        '<div style="font-size:11px;color:#1b4f7a;font-weight:700">' + namaBulan + ' ' + tahunStr + ' • Rata-Rata Harian • ' + std.labelStandar + '</div>' +
       '</div>' +
       '<div class="suhu-summary-box">' +
         '<strong>Ringkasan ' + areaNama + ' (' + namaBulan + ' ' + tahunStr + ')</strong>' +
         '<div class="suhu-summary-grid">' +
           '<div class="suhu-summary-pill">Rata-rata Suhu: <strong>' + avgSuhu + '</strong><br><span style="font-size:11px">Rentang: ' + minMaxSuhu + '</span></div>' +
           '<div class="suhu-summary-pill">Rata-rata Kelembaban: <strong>' + avgRh + '</strong><br><span style="font-size:11px">Rentang: ' + minMaxRh + '</span></div>' +
-          '<div class="suhu-summary-pill">Jumlah Pencatatan: <strong>' + rowsBulan.length + ' kali</strong></div>' +
-          '<div class="suhu-summary-pill">Di Luar Standar: <strong>' + outCount + ' kali</strong></div>' +
+          '<div class="suhu-summary-pill">Hari Tercatat: <strong>' + dailyAvgRows.length + ' hari (' + rowsBulan.length + 'x input)</strong></div>' +
+          '<div class="suhu-summary-pill">Di Luar Standar: <strong>' + outCount + ' hari</strong></div>' +
         '</div>' +
       '</div>' +
       '<div class="suhu-matrix-scroll" style="margin-top:10px">' +
         '<table class="suhu-data-table">' +
           '<thead>' +
-            '<tr><th>Tanggal</th><th>Jam</th><th>Suhu</th><th>Kelembaban</th><th>Status</th><th>Catatan</th></tr>' +
+            '<tr><th>Tanggal</th><th>Jam</th><th>Suhu (Rata-Rata)</th><th>Kelembaban (Rata-Rata)</th><th>Status</th><th>Catatan</th></tr>' +
           '</thead>' +
           '<tbody>' + bodyRowsHtml + '</tbody>' +
         '</table>' +
@@ -5151,7 +5232,7 @@ function renderBlokRingkasanSuhu(areaNama, bulanStr, tahunStr, rowsBulan, pj){
   );
 }
 
-function renderRekapanSuhuKhusus(listSuhuRaw, areaDipilih, bulanStr, modeSuhu, pj){
+function renderRekapanSuhuKhusus(listSuhuRaw, areaDipilih, bulanStr, modeSuhu, pj, petugasSuhuDipilih){
   var tahunDipilih = String(new Date().getFullYear());
   var filteredSuhu = listSuhuRaw.filter(function(d){
     var tgl = String(d.tanggal || "");
@@ -5159,7 +5240,10 @@ function renderRekapanSuhuKhusus(listSuhuRaw, areaDipilih, bulanStr, modeSuhu, p
     var cocokBulan = (parts.length >= 2 && parts[1] === bulanStr);
     if(!cocokBulan) return false;
     if(areaDipilih !== "SEMUA_AREA"){
-      return String(d.area || "").toUpperCase() === areaDipilih.toUpperCase();
+      if(String(d.area || "").toUpperCase() !== areaDipilih.toUpperCase()) return false;
+    }
+    if(petugasSuhuDipilih && petugasSuhuDipilih !== "SEMUA_PETUGAS"){
+      if(String(d.petugas || "").trim().toLowerCase() !== String(petugasSuhuDipilih || "").trim().toLowerCase()) return false;
     }
     return true;
   }).map(function(d){
@@ -5181,12 +5265,26 @@ function renderRekapanSuhuKhusus(listSuhuRaw, areaDipilih, bulanStr, modeSuhu, p
     : [areaDipilih];
 
   var namaBulan = NAMA_BULAN_MAP[bulanStr] || bulanStr;
+  var labelPetugas = (petugasSuhuDipilih && petugasSuhuDipilih !== "SEMUA_PETUGAS")
+    ? petugasSuhuDipilih
+    : "Semua Petugas";
+
+  var exportRows = [];
+  daftarAreaRender.forEach(function(areaItem){
+    var rowsArea = filteredSuhu.filter(function(r){
+      return String(r.area || "").toUpperCase() === areaItem.toUpperCase();
+    });
+    agregasiHarianRataRataSuhu(rowsArea).forEach(function(agg){
+      exportRows.push([
+        namaBulan, tahunDipilih, areaItem, labelPetugas, agg.tanggal,
+        agg.jumlahInput + "x", agg.suhu, agg.kelembaban, agg.petugas, agg.catatan, pj
+      ]);
+    });
+  });
 
   TERAKHIR_CSV_ROWS = [
-    ["Bulan", "Tahun", "Area CSSD", "Tanggal", "Jam", "Suhu", "Kelembaban", "Petugas", "Catatan", "Penanggung Jawab"]
-  ].concat(filteredSuhu.map(function(r){
-    return [namaBulan, tahunDipilih, r.area, r.tanggal, r.jam, r.suhu, r.kelembaban, r.petugas, r.catatan, pj];
-  }));
+    ["Bulan", "Tahun", "Area CSSD", "Filter Petugas", "Tanggal", "Jumlah Input", "Suhu Rata-Rata", "Kelembaban Rata-Rata", "Petugas", "Catatan", "Penanggung Jawab"]
+  ].concat(exportRows);
 
   var htmlBlocks = "";
   daftarAreaRender.forEach(function(areaItem){
@@ -5308,9 +5406,7 @@ function normalisasiSemuaDataCssd(rawMap){
       ? d.items
       : [{ alat: d.alat || "-", jumlah: Number(d.jumlah || 0) }];
     var totalQty = items.reduce(function(acc, it){ return acc + Number(it.jumlah || 0); }, 0);
-    var valOk = (d.validasiPrintout === "Sesuai" && d.validasiIndikatorKimia === "Sesuai")
-      ? "Validasi Sesuai"
-      : "Perlu Cek Validasi";
+    var valStr = "Printout: " + (d.validasiPrintout || "-") + ", Indikator Kimia: " + (d.validasiIndikatorKimia || "-");
     records.push({
       kategori: "STERILISASI",
       arah: "PROSES",
@@ -5318,19 +5414,18 @@ function normalisasiSemuaDataCssd(rawMap){
       tanggal: d.tanggal || "",
       jam: d.jam || "",
       petugas: d.petugas || "-",
-      unit: d.metode || "Mesin Sterilisasi",
+      unit: "Area Sterilisasi",
       jumlah: totalQty,
       items: items,
-      status: valOk,
+      status: d.metode || "-",
       catatan: d.catatan || "",
       ringkasan: items.map(function(it){ return it.alat + " (" + it.jumlah + ")"; }).join(", ") +
-                 " • Metode: " + (d.metode || "-") +
-                 " • Printout: " + (d.validasiPrintout || "-") +
-                 " • Indikator Kimia: " + (d.validasiIndikatorKimia || "-")
+                 (d.metode ? " • Metode: " + d.metode : "") +
+                 " • " + valStr
     });
   });
 
-  (rawMap.monitoringLingkungan || []).forEach(function(d){
+  (rawMap.suhu || []).forEach(function(d){
     records.push({
       kategori: "SUHU",
       arah: "PENDUKUNG",
@@ -5343,11 +5438,11 @@ function normalisasiSemuaDataCssd(rawMap){
       items: [],
       status: (d.suhu || "-") + " / " + (d.kelembaban || "-"),
       catatan: d.catatan || "",
-      ringkasan: "Area: " + (d.area || "-") + " • Suhu: " + (d.suhu || "-") + " • Kelembaban: " + (d.kelembaban || "-")
+      ringkasan: (d.area || "-") + " • Suhu: " + (d.suhu || "-") + " • Kelembaban: " + (d.kelembaban || "-")
     });
   });
 
-  (rawMap.mutuTindakLanjut || []).forEach(function(d){
+  (rawMap.mutu || []).forEach(function(d){
     records.push({
       kategori: "MUTU",
       arah: "PENDUKUNG",
@@ -5355,27 +5450,22 @@ function normalisasiSemuaDataCssd(rawMap){
       tanggal: d.tanggal || "",
       jam: d.jam || "",
       petugas: d.petugasPelapor || d.petugas || "-",
-      unit: d.akarMasalah || "-",
+      unit: d.akarMasalah || "Mutu CSSD",
       jumlah: 1,
       items: [],
       status: d.tindakanMasalah || "-",
       catatan: d.catatan || "",
-      ringkasan: "Temuan: " + (d.jenisTemuan || "-") +
-                 " • Akar: " + (d.akarMasalah || "-") +
-                 " • Tindakan: " + (d.tindakanMasalah || "-") +
-                 " • Rencana: " + (d.rencanaTindakan || "-")
+      ringkasan: (d.jenisTemuan || "-") + " • Akar: " + (d.akarMasalah || "-") + " • Rencana: " + (d.rencanaTindakan || "-")
     });
   });
 
-  (rawMap.monitoringReuse || []).forEach(function(d){
-    var items = Array.isArray(d.items) && d.items.length > 0
-      ? d.items
-      : [{ alat: d.alat || "-", jumlah: Number(d.jumlah || 0) }];
-    var totalQty = items.reduce(function(acc, it){ return acc + Number(it.jumlah || 0); }, 0);
+  (rawMap.reuse || []).forEach(function(d){
+    var items = Array.isArray(d.items) ? d.items : [];
+    var totalQty = items.reduce(function(acc, it){ return acc + Number(it.jumlah || 0); }, 0) || 1;
     records.push({
       kategori: "REUSE",
       arah: "PENDUKUNG",
-      labelKategori: "Monitoring Reuse",
+      labelKategori: "Monitoring Reuse Alat Medis",
       tanggal: d.tanggal || "",
       jam: d.jam || "",
       petugas: d.petugas || "-",
@@ -5385,219 +5475,142 @@ function normalisasiSemuaDataCssd(rawMap){
       status: d.kondisi || "-",
       catatan: d.catatan || "",
       ringkasan: items.map(function(it){ return it.alat + " (" + it.jumlah + ")"; }).join(", ") +
-                 (d.ruang ? " • Ruang: " + d.ruang : "") +
+                 (d.ruang ? " • Unit: " + d.ruang : "") +
                  (d.kondisi ? " • " + d.kondisi : "")
     });
   });
 
-  (rawMap.aktivitasCssd || []).forEach(function(d){
+  (rawMap.aktivitas || []).forEach(function(d){
     records.push({
       kategori: "AKTIVITAS",
       arah: "PROSES",
-      labelKategori: d.jenisAktivitas || "Aktivitas CSSD",
+      labelKategori: "Aktivitas CSSD",
       tanggal: d.tanggal || "",
       jam: d.jam || "",
       petugas: d.petugas || "-",
       unit: d.unit || "-",
-      jumlah: Number(d.jumlah || 0),
-      items: d.namaAlat ? [{ alat: d.namaAlat, jumlah: Number(d.jumlah || 0) }] : [],
-      status: d.status || d.kondisi || "-",
+      jumlah: Number(d.jumlah || 1),
+      items: d.alat ? [{ alat: d.alat, jumlah: Number(d.jumlah || 1) }] : [],
+      status: d.status || "-",
       catatan: d.catatan || "",
-      ringkasan: (d.namaAlat ? d.namaAlat + " (" + Number(d.jumlah || 0) + ")" : "-") +
-                 (d.unit ? " • Unit: " + d.unit : "")
+      ringkasan: (d.jenis || "-") + (d.alat ? " • " + d.alat + " (" + (d.jumlah || 0) + ")" : "") + (d.unit ? " • " + d.unit : "")
     });
   });
 
   return records;
 }
 
-function ekstrakRingkasanKassaDanLinen(records){
-  var kassa5Pcs = 0;
-  var kassa75Pcs = 0;
+function hitungRingkasanKassaDanLinen(records){
+  var kassa5Lembar = 0;
+  var kassa75Lembar = 0;
   var bigkassaQty = 0;
   var tamponQty = 0;
   var linenSetQty = 0;
-  var dukBolongQty = 0;
-  var jasKoanQty = 0;
-  var jasCathlabQty = 0;
+  var linenSatuanQty = 0;
 
-  var setGvQty = 0;
-  var setPartusQty = 0;
-  var setKuretQty = 0;
+  var distribusiOnly = records.filter(function(r){ return r.kategori === "DISTRIBUSI"; });
 
-  var perRuangan = {};
-
-  function pastikanRuang(namaRuang){
-    var key = namaRuang || "Tidak Tercatat";
-    if(!perRuangan[key]){
-      perRuangan[key] = {
-        ruang: key,
-        kassa5Pcs: 0,
-        kassa75Pcs: 0,
-        linenSet: 0,
-        setGv: 0,
-        setPartus: 0,
-        setKuret: 0,
-        totalLembarKassa5: 0,
-        totalLembarKassa75: 0
-      };
-    }
-    return perRuangan[key];
-  }
-
-  records.forEach(function(rec){
-    if(rec.arah !== "KELUAR" && rec.kategori !== "DISTRIBUSI") return;
-    var rObj = pastikanRuang(rec.unit);
-
+  distribusiOnly.forEach(function(rec){
     (rec.items || []).forEach(function(it){
-      var nama = String(it.alat || "").toUpperCase();
+      var namaUpper = String(it.alat || "").toUpperCase();
       var qty = Number(it.jumlah || 0);
-      if(!qty) return;
 
-      if(nama.indexOf("KASSA 5") !== -1){
-        kassa5Pcs += qty;
-        rObj.kassa5Pcs += qty;
-      }else if(nama.indexOf("KASSA 7,5") !== -1 || nama.indexOf("KASSA 7.5") !== -1){
-        kassa75Pcs += qty;
-        rObj.kassa75Pcs += qty;
-      }else if(nama.indexOf("BIGKASSA") !== -1){
+      if(namaUpper === "KASSA 5 CM"){
+        kassa5Lembar += qty * 10;
+      }else if(namaUpper === "KASSA 7,5 CM"){
+        kassa75Lembar += qty * 10;
+      }else if(namaUpper === "BIGKASSA"){
         bigkassaQty += qty;
-      }else if(nama.indexOf("TAMPON") !== -1){
+      }else if(namaUpper === "TAMPON"){
         tamponQty += qty;
-      }else if(nama.indexOf("SET LINEN") !== -1){
+      }else if(namaUpper === "SET GV"){
+        kassa5Lembar += qty * 10;
+      }else if(namaUpper === "SET PARTUS" || namaUpper === "SET KURET"){
+        kassa5Lembar += qty * 5;
+      }else if(namaUpper === "SET CVC"){
+        kassa5Lembar += qty * 10;
+      }else if(namaUpper.indexOf("SET LINEN") !== -1){
         linenSetQty += qty;
-        rObj.linenSet += qty;
-      }else if(nama.indexOf("DUK BOLONG") !== -1){
-        dukBolongQty += qty;
-      }else if(nama.indexOf("JAS KOAN") !== -1){
-        jasKoanQty += qty;
-      }else if(nama.indexOf("JAS CATHLAB") !== -1){
-        jasCathlabQty += qty;
-      }else if(nama.indexOf("SET GV") !== -1){
-        setGvQty += qty;
-        rObj.setGv += qty;
-      }else if(nama.indexOf("SET PARTUS") !== -1){
-        setPartusQty += qty;
-        rObj.setPartus += qty;
-      }else if(nama.indexOf("SET KURET") !== -1){
-        setKuretQty += qty;
-        rObj.setKuret += qty;
+      }else if(namaUpper.indexOf("DUK BOLONG") !== -1 || namaUpper.indexOf("JAS KOAN") !== -1 || namaUpper.indexOf("JAS CATHLAB") !== -1){
+        linenSatuanQty += qty;
       }
     });
   });
 
-  var kassa5LembarLangsung = kassa5Pcs * 10;
-  var kassa5LembarDariSet = (setGvQty * 10) + ((setPartusQty + setKuretQty) * 5);
-  var totalKassa5Lembar = kassa5LembarLangsung + kassa5LembarDariSet;
-  var totalKassa75Lembar = kassa75Pcs * 10;
-
-  var totalDukSamping = linenSetQty * 5;
-  var totalDukBolongBesar = linenSetQty * 1;
-  var totalJasOperasi = linenSetQty * 3;
-  var totalPcsLinenSet = linenSetQty * 9;
-
-  Object.keys(perRuangan).forEach(function(k){
-    var r = perRuangan[k];
-    r.totalLembarKassa5 = (r.kassa5Pcs * 10) + (r.setGv * 10) + ((r.setPartus + r.setKuret) * 5);
-    r.totalLembarKassa75 = r.kassa75Pcs * 10;
-  });
-
-  var listRuanganKassa = Object.keys(perRuangan).map(function(k){ return perRuangan[k]; })
-    .filter(function(r){
-      return r.totalLembarKassa5 > 0 || r.totalLembarKassa75 > 0 || r.linenSet > 0;
-    })
-    .sort(function(a, b){
-      return (b.totalLembarKassa5 + b.totalLembarKassa75 + b.linenSet) -
-             (a.totalLembarKassa5 + a.totalLembarKassa75 + a.linenSet);
-    });
-
   return {
-    kassa5Pcs: kassa5Pcs,
-    kassa75Pcs: kassa75Pcs,
+    kassa5Lembar: kassa5Lembar,
+    kassa5PcsSetara: (kassa5Lembar / 10).toFixed(1).replace(".0", ""),
+    kassa75Lembar: kassa75Lembar,
+    kassa75PcsSetara: (kassa75Lembar / 10).toFixed(1).replace(".0", ""),
     bigkassaQty: bigkassaQty,
     tamponQty: tamponQty,
-    setGvQty: setGvQty,
-    setPartusQty: setPartusQty,
-    setKuretQty: setKuretQty,
-    kassa5LembarLangsung: kassa5LembarLangsung,
-    kassa5LembarDariSet: kassa5LembarDariSet,
-    totalKassa5Lembar: totalKassa5Lembar,
-    totalKassa75Lembar: totalKassa75Lembar,
     linenSetQty: linenSetQty,
-    dukBolongQty: dukBolongQty,
-    jasKoanQty: jasKoanQty,
-    jasCathlabQty: jasCathlabQty,
-    totalDukSamping: totalDukSamping,
-    totalDukBolongBesar: totalDukBolongBesar,
-    totalJasOperasi: totalJasOperasi,
-    totalPcsLinenSet: totalPcsLinenSet,
-    listRuanganKassa: listRuanganKassa
+    linenSatuanQty: linenSatuanQty
   };
 }
 
-function renderBarChartCard(judul, entries){
-  if(!entries || entries.length === 0) return "";
+function renderBarChartHtml(title, entries){
+  if(!entries || entries.length === 0){
+    return '<div class="rekap-chart-card"><div class="rekap-chart-title">' + title + '</div><div style="font-size:12px;color:#8b7562">Belum ada data pada rentang ini.</div></div>';
+  }
   var maxVal = Math.max.apply(null, entries.map(function(e){ return e.value; }).concat([1]));
-  var rowsHtml = entries.slice(0, 8).map(function(item){
-    var pct = Math.max(4, Math.round((item.value / maxVal) * 100));
+  var rowsHtml = entries.map(function(e){
+    var pct = Math.max(4, Math.round((e.value / maxVal) * 100));
     return (
       '<div class="rekap-bar-row">' +
-        '<div class="rekap-bar-meta"><span>' + item.label + '</span><span>' + item.value + '</span></div>' +
+        '<div class="rekap-bar-meta"><span>' + e.label + '</span><span>' + e.value + '</span></div>' +
         '<div class="rekap-bar-track"><div class="rekap-bar-fill" style="width:' + pct + '%"></div></div>' +
       '</div>'
     );
   }).join("");
 
-  return (
-    '<div class="rekap-chart-card">' +
-      '<div class="rekap-chart-title">📶 ' + judul + '</div>' +
-      rowsHtml +
-    '</div>'
-  );
+  return '<div class="rekap-chart-card"><div class="rekap-chart-title">' + title + '</div>' + rowsHtml + '</div>';
 }
 
-function renderDonutChartCard(judul, entries){
-  var valid = (entries || []).filter(function(e){ return e.value > 0; });
-  if(valid.length === 0) return "";
-  var total = valid.reduce(function(acc, e){ return acc + e.value; }, 0);
-  var palette = ["#d99552", "#4ea889", "#5f89b0", "#c97d38", "#805a37", "#79ad9d"];
+function renderDonutChartHtml(title, entries){
+  var total = entries.reduce(function(acc, e){ return acc + e.value; }, 0);
+  if(!entries || entries.length === 0 || total === 0){
+    return '<div class="rekap-chart-card"><div class="rekap-chart-title">' + title + '</div><div style="font-size:12px;color:#8b7562">Belum ada proporsi data untuk ditampilkan.</div></div>';
+  }
 
-  var radius = 42;
-  var circumference = 2 * Math.PI * radius;
-  var offset = 0;
+  var palette = ["#d99552", "#5f89b0", "#a85f55", "#569682", "#b87c4c", "#7c98b3", "#c47d72"];
+  var radius = 38;
+  var circ = 2 * Math.PI * radius;
+  var offsetAcc = 0;
 
-  var circlesSvg = valid.slice(0, 6).map(function(item, idx){
-    var frac = item.value / total;
-    var dash = frac * circumference;
+  var circlesSvg = entries.map(function(e, idx){
+    var frac = e.value / total;
+    var dash = frac * circ;
     var color = palette[idx % palette.length];
-    var circle =
-      '<circle cx="56" cy="56" r="' + radius + '" fill="transparent" stroke="' + color + '" stroke-width="14" ' +
-      'stroke-dasharray="' + dash.toFixed(2) + ' ' + circumference.toFixed(2) + '" ' +
-      'stroke-dashoffset="' + (-offset).toFixed(2) + '" transform="rotate(-90 56 56)"></circle>';
-    offset += dash;
-    return circle;
+    var circleHtml =
+      '<circle cx="50" cy="50" r="' + radius + '" fill="transparent" stroke="' + color + '" stroke-width="14" ' +
+      'stroke-dasharray="' + dash.toFixed(2) + ' ' + circ.toFixed(2) + '" ' +
+      'stroke-dashoffset="' + (-offsetAcc).toFixed(2) + '" ' +
+      'transform="rotate(-90 50 50)"></circle>';
+    offsetAcc += dash;
+    return circleHtml;
   }).join("");
 
-  var legendHtml = valid.slice(0, 6).map(function(item, idx){
-    var pct = Math.round((item.value / total) * 100);
+  var legendHtml = entries.map(function(e, idx){
     var color = palette[idx % palette.length];
+    var pct = Math.round((e.value / total) * 100);
     return (
       '<div class="rekap-legend-item">' +
-        '<span><span class="rekap-dot" style="background:' + color + '"></span>' + item.label + '</span>' +
-        '<strong>' + item.value + ' (' + pct + '%)</strong>' +
+        '<span><span class="rekap-dot" style="background:' + color + '"></span>' + e.label + '</span>' +
+        '<strong>' + e.value + ' (' + pct + '%)</strong>' +
       '</div>'
     );
   }).join("");
 
   return (
     '<div class="rekap-chart-card">' +
-      '<div class="rekap-chart-title">🍩 ' + judul + '</div>' +
+      '<div class="rekap-chart-title">' + title + '</div>' +
       '<div class="rekap-donut-layout">' +
-        '<svg width="112" height="112" viewBox="0 0 112 112" style="flex-shrink:0">' +
-          '<circle cx="56" cy="56" r="' + radius + '" fill="transparent" stroke="#fff0dc" stroke-width="14"></circle>' +
+        '<svg width="104" height="104" viewBox="0 0 100 100" style="flex-shrink:0">' +
+          '<circle cx="50" cy="50" r="' + radius + '" fill="transparent" stroke="#fff0dc" stroke-width="14"></circle>' +
           circlesSvg +
-          '<text x="56" y="53" text-anchor="middle" font-size="11" font-weight="700" fill="#805a37">Total</text>' +
-          '<text x="56" y="67" text-anchor="middle" font-size="12" font-weight="800" fill="#9a6736">' + total + '</text>' +
+          '<text x="50" y="48" text-anchor="middle" font-size="11" font-weight="700" fill="#805a37">Total</text>' +
+          '<text x="50" y="61" text-anchor="middle" font-size="12" font-weight="800" fill="#9a6736">' + total + '</text>' +
         '</svg>' +
         '<div class="rekap-legend">' + legendHtml + '</div>' +
       '</div>' +
@@ -5605,241 +5618,254 @@ function renderDonutChartCard(judul, entries){
   );
 }
 
-function renderTrendChartCard(judul, records){
-  if(!records || records.length === 0) return "";
-  var mapTanggal = {};
+function renderTrendChartHtml(title, records){
+  if(!records || records.length === 0){
+    return '<div class="rekap-chart-card"><div class="rekap-chart-title">' + title + '</div><div style="font-size:12px;color:#8b7562">Belum ada tren tanggal pada periode ini.</div></div>';
+  }
+
+  var byDate = {};
   records.forEach(function(r){
     var tgl = r.tanggal || "Tanpa Tgl";
-    mapTanggal[tgl] = (mapTanggal[tgl] || 0) + (Number(r.jumlah || 0) || 1);
+    byDate[tgl] = (byDate[tgl] || 0) + Number(r.jumlah || 1);
   });
 
-  var keys = Object.keys(mapTanggal).sort().slice(-10);
-  if(keys.length === 0) return "";
-  var maxVal = Math.max.apply(null, keys.map(function(k){ return mapTanggal[k]; }).concat([1]));
+  var keys = Object.keys(byDate).sort().slice(-10);
+  var maxVal = Math.max.apply(null, keys.map(function(k){ return byDate[k]; }).concat([1]));
 
-  var colsHtml = keys.map(function(tgl){
-    var val = mapTanggal[tgl];
-    var hPx = Math.max(8, Math.round((val / maxVal) * 72));
-    var shortLbl = tgl.length >= 10 ? tgl.slice(5) : tgl;
+  var colsHtml = keys.map(function(k){
+    var val = byDate[k];
+    var hPx = Math.max(8, Math.round((val / maxVal) * 76));
+    var shortLbl = k.length >= 10 ? k.slice(5) : k;
     return (
       '<div class="rekap-trend-col">' +
-        '<div class="rekap-trend-val">' + val + '</div>' +
-        '<div class="rekap-trend-bar" style="height:' + hPx + 'px"></div>' +
-        '<div class="rekap-trend-lbl">' + shortLbl + '</div>' +
+        '<span class="rekap-trend-val">' + val + '</span>' +
+        '<div class="rekap-trend-bar" style="height:' + hPx + 'px" title="' + k + ': ' + val + '"></div>' +
+        '<span class="rekap-trend-lbl">' + shortLbl + '</span>' +
       '</div>'
     );
   }).join("");
 
-  return (
-    '<div class="rekap-chart-card">' +
-      '<div class="rekap-chart-title">📈 ' + judul + '</div>' +
-      '<div class="rekap-trend-wrap">' + colsHtml + '</div>' +
-    '</div>'
-  );
-}
-
-function renderKassaLinenSummaryCard(kassaInfo){
-  var rowsRuangHtml = kassaInfo.listRuanganKassa.length > 0
-    ? kassaInfo.listRuanganKassa.slice(0, 10).map(function(r){
-        return (
-          '<div class="rekap-kassa-row">' +
-            '<span><strong>' + r.ruang + '</strong><br><small style="color:#80664e">Kassa 5cm: ' + r.totalLembarKassa5 + ' lbr • Kassa 7,5cm: ' + r.totalLembarKassa75 + ' lbr • Linen Set: ' + r.linenSet + ' set</small></span>' +
-            '<strong>' + (r.totalLembarKassa5 + r.totalLembarKassa75) + ' lbr</strong>' +
-          '</div>'
-        );
-      }).join("")
-    : '<div style="font-size:12px;color:#8b7562">Belum ada pemakaian kassa / linen keluar pada periode terpilih.</div>';
-
-  return (
-    '<div class="rekap-chart-card">' +
-      '<div class="rekap-chart-title">🧵 Rekap Kassa &amp; Linen Keluar (Termasuk Set GV, Partus &amp; Kuret)</div>' +
-      '<div class="rekap-kassa-box">' +
-        '<div class="rekap-kassa-row"><span>Kassa 5 cm (1 pcs = 10 lbr)</span><strong>' + kassaInfo.kassa5Pcs + ' pcs (' + kassaInfo.kassa5LembarLangsung + ' lbr)</strong></div>' +
-        '<div class="rekap-kassa-row"><span>Kassa 5 cm dari Set GV (' + kassaInfo.setGvQty + 'x10) + Partus/Kuret (' + (kassaInfo.setPartusQty + kassaInfo.setKuretQty) + 'x5)</span><strong>' + kassaInfo.kassa5LembarDariSet + ' lbr</strong></div>' +
-        '<div class="rekap-kassa-row"><span><strong>Total Kassa 5 cm Keluar</strong></span><strong>' + kassaInfo.totalKassa5Lembar + ' lembar</strong></div>' +
-        '<div class="rekap-kassa-row"><span>Total Kassa 7,5 cm Keluar (1 pcs = 10 lbr)</span><strong>' + kassaInfo.kassa75Pcs + ' pcs (' + kassaInfo.totalKassa75Lembar + ' lbr)</strong></div>' +
-        '<div class="rekap-kassa-row"><span>Bigkassa / Tampon Keluar</span><strong>' + kassaInfo.bigkassaQty + ' / ' + kassaInfo.tamponQty + '</strong></div>' +
-        '<div class="rekap-kassa-row"><span>Set Linen Keluar (1 set = 5 duk samping + 1 duk besar + 3 jas)</span><strong>' + kassaInfo.linenSetQty + ' set (' + kassaInfo.totalPcsLinenSet + ' pcs)</strong></div>' +
-        '<div class="rekap-kassa-row"><span>Rincian Komponen Set Linen</span><strong>Duk Samping: ' + kassaInfo.totalDukSamping + ' • Duk Besar: ' + kassaInfo.totalDukBolongBesar + ' • Jas: ' + kassaInfo.totalJasOperasi + '</strong></div>' +
-        '<div class="rekap-kassa-row"><span>Linen Satuan (Duk Bolong / Jas Koan / Jas Cathlab)</span><strong>' + kassaInfo.dukBolongQty + ' / ' + kassaInfo.jasKoanQty + ' / ' + kassaInfo.jasCathlabQty + '</strong></div>' +
-      '</div>' +
-      '<div style="margin-top:10px;font-size:12px;font-weight:700;color:#805a37">Pemakaian Kassa &amp; Linen per Ruangan</div>' +
-      '<div class="rekap-kassa-box">' + rowsRuangHtml + '</div>' +
-    '</div>'
-  );
+  return '<div class="rekap-chart-card"><div class="rekap-chart-title">' + title + '</div><div class="rekap-trend-wrap">' + colsHtml + '</div></div>';
 }
 
 document.getElementById("btnTampilkanRekap").onclick = async function(){
-  var pj = document.getElementById("pjLaporan").value || "Handri Gumelar";
+  var hasil = document.getElementById("hasilLaporan");
+  var pj = document.getElementById("pjLaporan").value || (penggunaAktif ? penggunaAktif.nama : "Handri Gumelar");
   var periode = document.getElementById("periodeLaporan").value;
   var kategori = document.getElementById("kategoriRekapLaporan").value;
-  var ruangDipilih = document.getElementById("pilihRuanganRekap").value;
+  var ruanganDipilih = document.getElementById("pilihRuanganRekap").value;
   var prosesDipilih = document.getElementById("pilihProsesRekap").value;
   var pendukungDipilih = document.getElementById("pilihPendukungRekap").value;
   var areaSuhuDipilih = document.getElementById("pilihAreaSuhuRekap").value;
+  var petugasSuhuDipilih = document.getElementById("pilihPetugasSuhuRekap").value;
   var bulanSuhuDipilih = document.getElementById("pilihBulanSuhuRekap").value;
   var modeSuhuDipilih = document.getElementById("pilihModeSuhuRekap").value;
   var petugasDipilih = document.getElementById("petugasLaporan").value;
 
-  var hasil = document.getElementById("hasilLaporan");
-  hasil.innerHTML = '<div class="rekap-item-card" style="text-align:center;color:#805a37">Memuat &amp; mengolah data rekapitulasi CSSD...</div>';
-
   if(kategori === "PETUGAS" && !petugasDipilih){
-    hasil.innerHTML = '<div class="rekap-item-card" style="text-align:center;color:#991b1b">Pilih nama pelaksana CSSD terlebih dahulu.</div>';
+    hasil.innerHTML = '<div class="rekap-item-card" style="text-align:center;color:#8b7562">Pilih nama pelaksana CSSD terlebih dahulu.</div>';
     return;
   }
 
-  var rawResults = await Promise.all([
-    ambilKoleksiAman("distribusi"),
-    ambilKoleksiAman("penerimaan"),
-    ambilKoleksiAman("dekontaminasi"),
-    ambilKoleksiAman("packing"),
-    ambilKoleksiAman("sterilisasi"),
+  hasil.innerHTML = '<div class="rekap-item-card" style="text-align:center;color:#8b7562">Memuat &amp; mengolah data rekapan CSSD...</div>';
+
+  var results = await Promise.all([
+    ambilKoleksiAman("distribusiAlat"),
+    ambilKoleksiAman("penerimaanAlat"),
+    ambilKoleksiAman("dekontaminasiAlat"),
+    ambilKoleksiAman("packingAlat"),
+    ambilKoleksiAman("sterilisasiAlat"),
     ambilKoleksiAman("monitoringLingkungan"),
     ambilKoleksiAman("mutuTindakLanjut"),
     ambilKoleksiAman("monitoringReuse"),
-    ambilKoleksiAman("aktivitasCssd")
+    ambilKoleksiAman("aktivitasCSSD")
   ]);
 
   var rawMap = {
-    distribusi: rawResults[0],
-    penerimaan: rawResults[1],
-    dekontaminasi: rawResults[2],
-    packing: rawResults[3],
-    sterilisasi: rawResults[4],
-    monitoringLingkungan: rawResults[5],
-    mutuTindakLanjut: rawResults[6],
-    monitoringReuse: rawResults[7],
-    aktivitasCssd: rawResults[8]
+    distribusi: results[0],
+    penerimaan: results[1],
+    dekontaminasi: results[2],
+    packing: results[3],
+    sterilisasi: results[4],
+    suhu: results[5],
+    mutu: results[6],
+    reuse: results[7],
+    aktivitas: results[8]
   };
 
+  /* ===== JALUR KHUSUS REKAPAN SUHU & KELEMBABAN (BIRU CSSD 2026) ===== */
   if(kategori === "PENDUKUNG" && pendukungDipilih === "SUHU"){
     hasil.innerHTML = renderRekapanSuhuKhusus(
-      rawMap.monitoringLingkungan,
+      rawMap.suhu,
       areaSuhuDipilih,
       bulanSuhuDipilih,
       modeSuhuDipilih,
-      pj
+      pj,
+      petugasSuhuDipilih
     );
     return;
   }
 
-  var allRecords = normalisasiSemuaDataCssd(rawMap).filter(function(rec){
-    return sesuaiPeriode3(rec.tanggal, periode);
-  });
+  var allRecords = normalisasiSemuaDataCssd(rawMap);
 
-  var filtered = allRecords.filter(function(rec){
-    if(kategori === "MENYELURUH") return true;
+  var filtered = allRecords.filter(function(r){
+    if(!sesuaiPeriode3(r.tanggal, periode)) return false;
+
     if(kategori === "RUANGAN"){
-      var adaUnit = rec.unit && rec.unit !== "-" && rec.unit !== "Area Dekontaminasi" && rec.unit !== "Area Packing";
-      if(!adaUnit) return false;
-      if(ruangDipilih === "SEMUA_RUANGAN") return true;
-      return String(rec.unit || "").toUpperCase() === ruangDipilih.toUpperCase();
+      var isUnitRecord = (r.kategori === "DISTRIBUSI" || r.kategori === "PENERIMAAN" || r.kategori === "REUSE" || r.kategori === "AKTIVITAS");
+      if(!isUnitRecord) return false;
+      if(ruanganDipilih !== "SEMUA_RUANGAN" && r.unit !== ruanganDipilih) return false;
+      return true;
     }
+
     if(kategori === "PROSES"){
-      var prosesList = ["DISTRIBUSI", "PENERIMAAN", "DEKONTAMINASI", "PACKING", "STERILISASI"];
-      if(prosesDipilih === "SEMUA_PROSES"){
-        return prosesList.indexOf(rec.kategori) !== -1;
-      }
-      return rec.kategori === prosesDipilih;
+      var isProses = ["DISTRIBUSI", "PENERIMAAN", "DEKONTAMINASI", "PACKING", "STERILISASI"].indexOf(r.kategori) !== -1;
+      if(!isProses) return false;
+      if(prosesDipilih !== "SEMUA_PROSES" && r.kategori !== prosesDipilih) return false;
+      return true;
     }
+
     if(kategori === "KASSA_LINEN"){
-      if(rec.arah !== "KELUAR" && rec.kategori !== "DISTRIBUSI") return false;
-      return (rec.items || []).some(function(it){
+      if(r.kategori !== "DISTRIBUSI") return false;
+      return (r.items || []).some(function(it){
         var n = String(it.alat || "").toUpperCase();
         return n.indexOf("KASSA") !== -1 ||
-               n.indexOf("BIGKASSA") !== -1 ||
                n.indexOf("TAMPON") !== -1 ||
                n.indexOf("LINEN") !== -1 ||
-               n.indexOf("DUK") !== -1 ||
-               n.indexOf("JAS") !== -1 ||
-               n.indexOf("SET GV") !== -1 ||
-               n.indexOf("SET PARTUS") !== -1 ||
-               n.indexOf("SET KURET") !== -1;
+               n.indexOf("DUK BOLONG") !== -1 ||
+               n.indexOf("JAS KOAN") !== -1 ||
+               n.indexOf("JAS CATHLAB") !== -1 ||
+               n === "SET GV" ||
+               n === "SET PARTUS" ||
+               n === "SET KURET" ||
+               n === "SET CVC";
       });
     }
+
     if(kategori === "PENDUKUNG"){
-      var pendList = ["SUHU", "MUTU", "REUSE"];
-      if(pendukungDipilih === "SEMUA_PENDUKUNG"){
-        return pendList.indexOf(rec.kategori) !== -1;
-      }
-      return rec.kategori === pendukungDipilih;
+      var isPend = ["SUHU", "MUTU", "REUSE"].indexOf(r.kategori) !== -1;
+      if(!isPend) return false;
+      if(pendukungDipilih !== "SEMUA_PENDUKUNG" && r.kategori !== pendukungDipilih) return false;
+      return true;
     }
+
     if(kategori === "PETUGAS"){
-      return String(rec.petugas || "").trim().toLowerCase() === String(petugasDipilih || "").trim().toLowerCase();
+      return String(r.petugas || "").trim().toLowerCase() === String(petugasDipilih || "").trim().toLowerCase();
     }
+
     return true;
   });
 
-  var totalTransaksi = filtered.length;
-  var totalKeluar = filtered.filter(function(r){ return r.arah === "KELUAR"; })
+  var masukQty = filtered
+    .filter(function(r){ return r.arah === "MASUK"; })
     .reduce(function(acc, r){ return acc + Number(r.jumlah || 0); }, 0);
-  var totalMasuk = filtered.filter(function(r){ return r.arah === "MASUK"; })
-    .reduce(function(acc, r){ return acc + Number(r.jumlah || 0); }, 0);
-  var totalVolume = filtered.reduce(function(acc, r){ return acc + Number(r.jumlah || 0); }, 0);
 
-  var mapRuang = {};
-  var mapProses = {};
+  var keluarQty = filtered
+    .filter(function(r){ return r.arah === "KELUAR"; })
+    .reduce(function(acc, r){ return acc + Number(r.jumlah || 0); }, 0);
+
+  var prosesQty = filtered
+    .filter(function(r){ return r.arah === "PROSES"; })
+    .reduce(function(acc, r){ return acc + Number(r.jumlah || 0); }, 0);
+
+  var kassaLinenStats = hitungRingkasanKassaDanLinen(filtered);
+
+  var countByKat = {};
   filtered.forEach(function(r){
-    var u = r.unit || "-";
-    mapRuang[u] = (mapRuang[u] || 0) + (Number(r.jumlah || 0) || 1);
-    var p = r.labelKategori || r.kategori;
-    mapProses[p] = (mapProses[p] || 0) + (Number(r.jumlah || 0) || 1);
+    var key = r.labelKategori || r.kategori;
+    countByKat[key] = (countByKat[key] || 0) + Number(r.jumlah || 1);
   });
+  var katEntries = Object.keys(countByKat).map(function(k){
+    return { label: k, value: countByKat[k] };
+  }).sort(function(a, b){ return b.value - a.value; });
 
-  var entriesRuang = Object.keys(mapRuang).map(function(k){ return { label: k, value: mapRuang[k] }; })
-    .sort(function(a, b){ return b.value - a.value; });
-  var entriesProses = Object.keys(mapProses).map(function(k){ return { label: k, value: mapProses[k] }; })
-    .sort(function(a, b){ return b.value - a.value; });
-
-  var kassaInfo = ekstrakRingkasanKassaDanLinen(filtered);
-
-  TERAKHIR_CSV_ROWS = [
-    ["Periode", "Kategori", "Tanggal", "Jam", "Proses", "Unit / Ruang", "Petugas", "Jumlah", "Status", "Ringkasan", "Catatan", "PJ Rekap"]
-  ].concat(filtered.map(function(r){
-    return [periode, kategori, r.tanggal, r.jam, r.labelKategori, r.unit, r.petugas, r.jumlah, r.status, r.ringkasan, r.catatan, pj];
-  }));
+  var countByUnit = {};
+  filtered.forEach(function(r){
+    if(r.unit && r.unit !== "-" && r.unit !== "Area Dekontaminasi" && r.unit !== "Area Packing" && r.unit !== "Area Sterilisasi"){
+      countByUnit[r.unit] = (countByUnit[r.unit] || 0) + Number(r.jumlah || 1);
+    }
+  });
+  var unitEntries = Object.keys(countByUnit).map(function(k){
+    return { label: k, value: countByUnit[k] };
+  }).sort(function(a, b){ return b.value - a.value; }).slice(0, 7);
 
   var kpiHtml =
     '<div class="rekap-kpi-grid">' +
-      '<div class="rekap-kpi"><span>Total Catatan</span><strong>' + totalTransaksi + '</strong><small>Periode: ' + periode + '</small></div>' +
-      '<div class="rekap-kpi"><span>Total Jumlah / Volume</span><strong>' + totalVolume + '</strong><small>Keluar: ' + totalKeluar + ' • Masuk: ' + totalMasuk + '</small></div>' +
-      '<div class="rekap-kpi"><span>Kassa 5 cm Keluar</span><strong>' + kassaInfo.totalKassa5Lembar + ' lbr</strong><small>' + kassaInfo.kassa5Pcs + ' pcs + ' + kassaInfo.kassa5LembarDariSet + ' lbr dari set</small></div>' +
-      '<div class="rekap-kpi"><span>Set Linen Keluar</span><strong>' + kassaInfo.linenSetQty + ' set</strong><small>' + kassaInfo.totalPcsLinenSet + ' pcs komponen linen</small></div>' +
+      '<div class="rekap-kpi"><span>Total Transaksi / Catatan</span><strong>' + filtered.length + '</strong><small>Periode: ' + periode + '</small></div>' +
+      '<div class="rekap-kpi"><span>Alat Kotor Masuk</span><strong>' + masukQty + '</strong><small>Penerimaan alat kotor</small></div>' +
+      '<div class="rekap-kpi"><span>Alat Steril Keluar</span><strong>' + keluarQty + '</strong><small>Distribusi ke ruangan</small></div>' +
+      '<div class="rekap-kpi"><span>Proses &amp; Pemantauan</span><strong>' + (prosesQty + filtered.filter(function(r){ return r.arah === "PENDUKUNG"; }).length) + '</strong><small>Dekon, Packing, Steril &amp; Pendukung</small></div>' +
+    '</div>';
+
+  var kassaCardHtml =
+    '<div class="rekap-chart-card">' +
+      '<div class="rekap-chart-title">🧶 Rekap Kassa &amp; Linen Keluar (Termasuk Isi Set GV, Partus, Kuret &amp; CVC)</div>' +
+      '<div class="rekap-kassa-box">' +
+        '<div class="rekap-kassa-row"><span>Kassa 5 cm (1 pcs = 10 lembar)</span><strong>' + kassaLinenStats.kassa5Lembar + ' lembar (' + kassaLinenStats.kassa5PcsSetara + ' pcs)</strong></div>' +
+        '<div class="rekap-kassa-row"><span>Kassa 7,5 cm (1 pcs = 10 lembar)</span><strong>' + kassaLinenStats.kassa75Lembar + ' lembar (' + kassaLinenStats.kassa75PcsSetara + ' pcs)</strong></div>' +
+        '<div class="rekap-kassa-row"><span>Bigkassa / Tampon Keluar</span><strong>' + kassaLinenStats.bigkassaQty + ' / ' + kassaLinenStats.tamponQty + '</strong></div>' +
+        '<div class="rekap-kassa-row"><span>Linen Keluar (Set / Satuan)</span><strong>' + kassaLinenStats.linenSetQty + ' set / ' + kassaLinenStats.linenSatuanQty + ' pcs</strong></div>' +
+      '</div>' +
     '</div>';
 
   var chartsHtml = "";
   if(BENTUK_DIAGRAM_AKTIF === "SEMUA" || BENTUK_DIAGRAM_AKTIF === "BATANG"){
-    chartsHtml += renderBarChartCard("Volume per Ruangan / Unit", entriesRuang);
-    chartsHtml += renderBarChartCard("Volume per Proses / Kategori", entriesProses);
+    chartsHtml += renderBarChartHtml("📶 Jumlah per Kategori / Proses", katEntries);
+    if(unitEntries.length > 0){
+      chartsHtml += renderBarChartHtml("🏥 Pemakaian / Aktivitas per Ruangan (Top 7)", unitEntries);
+    }
   }
   if(BENTUK_DIAGRAM_AKTIF === "SEMUA" || BENTUK_DIAGRAM_AKTIF === "DONAT"){
-    chartsHtml += renderDonutChartCard("Proporsi per Proses / Kategori", entriesProses);
+    chartsHtml += renderDonutChartHtml("🍩 Proporsi Kategori / Proses", katEntries);
   }
   if(BENTUK_DIAGRAM_AKTIF === "SEMUA" || BENTUK_DIAGRAM_AKTIF === "TREN"){
-    chartsHtml += renderTrendChartCard("Tren Aktivitas / Volume Harian", filtered);
+    chartsHtml += renderTrendChartHtml("📈 Tren Harian (Maks. 10 Tanggal Terakhir)", filtered);
   }
 
-  var kassaCardHtml = (kategori === "KASSA_LINEN" || kategori === "MENYELURUH" || kategori === "RUANGAN")
-    ? renderKassaLinenSummaryCard(kassaInfo)
-    : "";
+  var rincianHtml = "";
+  if(filtered.length === 0){
+    rincianHtml = '<div class="rekap-item-card" style="text-align:center;color:#8b7562">Tidak ada data pada filter (' + periode + ' • ' + kategori + ').</div>';
+  }else{
+    rincianHtml = filtered.slice(0, 30).map(function(r){
+      return (
+        '<div class="rekap-item-card">' +
+          '<div class="rekap-item-head">' +
+            '<div class="rekap-item-title">' + r.labelKategori + ' — ' + (r.unit || "-") + '</div>' +
+            '<span class="rekap-item-badge">' + (r.tanggal || "-") + ' • ' + (r.jam || "-") + '</span>' +
+          '</div>' +
+          '<div style="font-size:13px;color:#65482f;line-height:1.5">' + r.ringkasan + '</div>' +
+          '<div style="font-size:12px;color:#80664e;margin-top:6px"><strong>Petugas:</strong> ' + r.petugas + ' • <strong>Status/Info:</strong> ' + r.status + '</div>' +
+          (r.catatan ? '<div class="master-catatan" style="margin-top:8px">Catatan: ' + r.catatan + '</div>' : '') +
+        '</div>'
+      );
+    }).join("");
+  }
 
-  var signHtml =
-    '<div class="suhu-sign-block">' +
-      '<div>Mengetahui,</div>' +
-      '<div class="suhu-sign-name">' + pj + '</div>' +
-      '<div>Penanggung Jawab Rekap / CSSD</div>' +
-    '</div>';
+  TERAKHIR_CSV_ROWS = [
+    ["Periode", "Kategori Rekap", "Tanggal", "Jam", "Proses", "Ruangan / Area", "Petugas", "Jumlah", "Status / Info", "Ringkasan", "Catatan", "Penanggung Jawab"]
+  ].concat(filtered.map(function(r){
+    return [
+      periode, kategori, r.tanggal, r.jam, r.labelKategori, r.unit,
+      r.petugas, r.jumlah, r.status, r.ringkasan, r.catatan, pj
+    ];
+  }));
 
-  hasil.innerHTML = kpiHtml + chartsHtml + kassaCardHtml + signHtml;
+  hasil.innerHTML =
+    '<div class="rekap-item-card" style="background:#fff5e8">' +
+      '<strong style="color:#9a6736">Penanggung Jawab: ' + pj + '</strong>' +
+      '<div style="font-size:12px;color:#80664e;margin-top:3px">Periode: ' + periode + ' • Kategori: ' + kategori + ' • Diagram: ' + BENTUK_DIAGRAM_AKTIF + '</div>' +
+    '</div>' +
+    kpiHtml +
+    kassaCardHtml +
+    chartsHtml +
+    '<div class="rekap-chart-title" style="margin-top:16px">📄 Rincian Data (' + filtered.length + ' catatan)</div>' +
+    rincianHtml;
 };
 
 document.getElementById("btnProfil").onclick = function(){
   var tombol = document.getElementById("btnProfil");
   var panel = document.getElementById("isiProfil");
   tombol.insertAdjacentElement("afterend", panel);
-  document.getElementById("isiBeranda").style.display = "none";
-  document.getElementById("isiAktivitas").style.display = "none";
   document.getElementById("isiKelolaAkun").style.display = "none";
   document.getElementById("isiLaporan").style.display = "none";
   panel.style.display = "block";
@@ -5863,7 +5889,7 @@ document.getElementById("simpanAktivitas").onclick = async function(){
 
   if(!tanggal || !jam || !petugas || !unit || !jenis || !alat || !jumlah || !kondisi || !status){
     document.getElementById("pesanAktivitas").innerText =
-      "Lengkapi semua kolom aktivitas terlebih dahulu.";
+      "Lengkapi semua data aktivitas terlebih dahulu.";
     return;
   }
 
@@ -5872,8 +5898,8 @@ document.getElementById("simpanAktivitas").onclick = async function(){
     jam: jam,
     petugas: petugas,
     unit: unit,
-    jenisAktivitas: jenis,
-    namaAlat: alat,
+    jenis: jenis,
+    alat: alat,
     jumlah: Number(jumlah),
     kondisi: kondisi,
     status: status,
@@ -5883,8 +5909,8 @@ document.getElementById("simpanAktivitas").onclick = async function(){
   };
 
   try{
-    await addDoc(collection(firebaseDb, "aktivitasCssd"), aktivitas);
-    document.getElementById("pesanAktivitas").innerText = "✓ Aktivitas CSSD berhasil disimpan.";
+    await addDoc(collection(firebaseDb, "aktivitasCSSD"), aktivitas);
+    document.getElementById("pesanAktivitas").innerText = "✓ Aktivitas berhasil disimpan.";
     document.getElementById("tanggalAktivitas").value = "";
     document.getElementById("jamAktivitas").value = "";
     document.getElementById("unitAktivitas").value = "";
@@ -5897,6 +5923,71 @@ document.getElementById("simpanAktivitas").onclick = async function(){
   }catch(error){
     console.log(error);
     document.getElementById("pesanAktivitas").innerText = "Aktivitas gagal disimpan: " + error.code;
+  }
+};
+
+document.getElementById("lihatRiwayat").onclick = async function(){
+  var areaPesan = document.getElementById("pesanAktivitas");
+  areaPesan.innerHTML = "Memuat riwayat aktivitas...";
+
+  try{
+    var q = query(collection(firebaseDb, "aktivitasCSSD"), orderBy("dibuatPada", "desc"));
+    var dataSnapshot = await getDocs(q);
+
+    areaPesan.innerHTML = "";
+    var jumlahRiwayatPribadi = 0;
+
+    dataSnapshot.forEach(function(dokumen){
+      var data = dokumen.data();
+      if(data.petugas !== penggunaAktif.nama) return;
+      jumlahRiwayatPribadi++;
+
+      var kartu = document.createElement("div");
+      kartu.style.background = "#ffffff";
+      kartu.style.border = "1px solid #e2eeea";
+      kartu.style.borderRadius = "14px";
+      kartu.style.padding = "14px";
+      kartu.style.marginBottom = "12px";
+
+      var judul = document.createElement("strong");
+      judul.textContent = data.jenis + " — " + data.unit;
+      judul.style.display = "block";
+      judul.style.color = "#315f55";
+
+      var waktu = document.createElement("p");
+      waktu.textContent = data.tanggal + " • " + data.jam;
+      waktu.style.fontSize = "12px";
+      waktu.style.color = "#6d857e";
+      waktu.style.margin = "4px 0 8px";
+
+      var detail = document.createElement("p");
+      detail.textContent =
+        "Alat: " + data.alat + " (" + data.jumlah + ") | Kondisi: " + data.kondisi + " | Status: " + data.status;
+      detail.style.margin = "4px 0";
+      detail.style.color = "#28483f";
+
+      kartu.appendChild(judul);
+      kartu.appendChild(waktu);
+      kartu.appendChild(detail);
+
+      if(data.catatan){
+        var catatan = document.createElement("p");
+        catatan.textContent = "Catatan: " + data.catatan;
+        catatan.style.fontSize = "12px";
+        catatan.style.color = "#526d65";
+        catatan.style.margin = "6px 0 0";
+        kartu.appendChild(catatan);
+      }
+
+      areaPesan.appendChild(kartu);
+    });
+
+    if(jumlahRiwayatPribadi === 0){
+      areaPesan.innerHTML = "Belum ada riwayat aktivitas Anda.";
+    }
+  }catch(error){
+    console.log(error);
+    areaPesan.innerHTML = "Riwayat gagal dimuat.";
   }
 };
 
@@ -5945,7 +6036,7 @@ document.getElementById("simpanDistribusi").onclick = async function(){
   };
 
   try{
-    await addDoc(collection(firebaseDb, "distribusi"), distribusi);
+    await addDoc(collection(firebaseDb, "distribusiAlat"), distribusi);
     document.getElementById("pesanDistribusi").innerText = "✓ Distribusi berhasil disimpan.";
     document.getElementById("tanggalDistribusi").value = "";
     document.getElementById("jamDistribusi").value = "";
@@ -5959,6 +6050,116 @@ document.getElementById("simpanDistribusi").onclick = async function(){
   }catch(error){
     console.log(error);
     document.getElementById("pesanDistribusi").innerText = "Distribusi gagal disimpan: " + error.code;
+  }
+};
+
+document.getElementById("riwayatDistribusi").onclick = async function(){
+  var hasilRiwayat = document.getElementById("hasilRiwayatDistribusi");
+  if(hasilRiwayat.style.display === "block"){
+    hasilRiwayat.style.display = "none";
+    return;
+  }
+  hasilRiwayat.style.display = "block";
+  hasilRiwayat.innerHTML = "Memuat riwayat distribusi...";
+
+  try{
+    var qDistribusi = query(collection(firebaseDb, "distribusiAlat"), orderBy("dibuatPada", "desc"));
+    var dataDistribusi = await getDocs(qDistribusi);
+    hasilRiwayat.innerHTML = "";
+    var jumlahRiwayatPribadi = 0;
+
+    dataDistribusi.forEach(function(dokumen){
+      var data = dokumen.data();
+      if(data.petugas !== penggunaAktif.nama) return;
+      jumlahRiwayatPribadi++;
+
+      var kartu = document.createElement("div");
+      kartu.style.background = "linear-gradient(145deg,#ffffff,#f7fbf9)";
+      kartu.style.border = "1px solid #d4e8e0";
+      kartu.style.borderRadius = "18px";
+      kartu.style.padding = "18px";
+      kartu.style.marginBottom = "14px";
+      kartu.style.boxShadow = "0 4px 12px rgba(70,105,95,.05)";
+
+      var judul = document.createElement("strong");
+      judul.textContent = "📦 " + data.ruang;
+      judul.style.display = "block";
+      judul.style.fontSize = "17px";
+      judul.style.color = "#35665a";
+      judul.style.marginBottom = "6px";
+
+      var waktu = document.createElement("p");
+      waktu.textContent = data.tanggal + " • " + data.jam;
+      waktu.style.fontSize = "13px";
+      waktu.style.color = "#7c8e88";
+      waktu.style.margin = "4px 0 14px";
+
+      var daftar = document.createElement("div");
+      (data.items || []).forEach(function(item){
+        var baris = document.createElement("div");
+        baris.textContent = "• " + item.alat + " — Jumlah: " + item.jumlah;
+        baris.style.background = "#edf7f3";
+        baris.style.padding = "9px 11px";
+        baris.style.borderRadius = "10px";
+        baris.style.marginBottom = "6px";
+        baris.style.color = "#315f55";
+        baris.style.fontSize = "13px";
+        daftar.appendChild(baris);
+      });
+
+      var petugas = document.createElement("p");
+      petugas.textContent = "Petugas CSSD: " + data.petugas;
+      petugas.style.margin = "12px 0 4px";
+      petugas.style.fontSize = "13px";
+      petugas.style.color = "#426b62";
+      petugas.style.fontWeight = "600";
+
+      var penerima = document.createElement("p");
+      penerima.textContent = "Penerima: " + data.penerima;
+      penerima.style.margin = "0 0 12px";
+      penerima.style.fontSize = "13px";
+      penerima.style.color = "#426b62";
+      penerima.style.fontWeight = "600";
+
+      var status = document.createElement("span");
+      status.textContent = data.status;
+      status.style.display = "inline-block";
+      status.style.padding = "6px 12px";
+      status.style.borderRadius = "999px";
+      status.style.background = "#d9f0e6";
+      status.style.color = "#2f6658";
+      status.style.fontSize = "12px";
+      status.style.fontWeight = "700";
+
+      kartu.appendChild(judul);
+      kartu.appendChild(waktu);
+      kartu.appendChild(daftar);
+      kartu.appendChild(petugas);
+      kartu.appendChild(penerima);
+      kartu.appendChild(status);
+
+      if(data.catatan){
+        var catatan = document.createElement("p");
+        catatan.textContent = "Catatan: " + data.catatan;
+        catatan.style.background = "#f4f9f7";
+        catatan.style.borderLeft = "2px solid #8fc2b0";
+        catatan.style.padding = "9px 11px";
+        catatan.style.borderRadius = "8px";
+        catatan.style.fontSize = "12px";
+        catatan.style.color = "#5a756d";
+        catatan.style.margin = "10px 0 0";
+        kartu.appendChild(catatan);
+      }
+
+      hasilRiwayat.appendChild(kartu);
+    });
+
+    if(jumlahRiwayatPribadi === 0){
+      hasilRiwayat.innerHTML = "Belum ada riwayat distribusi Anda.";
+    }
+  }catch(error){
+    console.log(error);
+    hasilRiwayat.innerHTML = "Riwayat distribusi gagal dimuat.";
   }
 };
 
@@ -5990,7 +6191,7 @@ document.getElementById("simpanPenerimaan").onclick = async function(){
 
   if(!tanggal || !jam || !ruang || !petugas || !menyerahkan || items.length === 0){
     document.getElementById("pesanPenerimaan").innerText =
-      "Lengkapi data penerimaan dan minimal 1 alat beserta jumlah dan kondisinya.";
+      "Lengkapi data penerimaan dan minimal 1 alat beserta jumlah serta kondisinya.";
     return;
   }
 
@@ -6007,7 +6208,7 @@ document.getElementById("simpanPenerimaan").onclick = async function(){
   };
 
   try{
-    await addDoc(collection(firebaseDb, "penerimaan"), penerimaan);
+    await addDoc(collection(firebaseDb, "penerimaanAlat"), penerimaan);
     document.getElementById("pesanPenerimaan").innerText = "✓ Penerimaan berhasil disimpan.";
     document.getElementById("tanggalPenerimaan").value = "";
     document.getElementById("jamPenerimaan").value = "";
@@ -6021,6 +6222,105 @@ document.getElementById("simpanPenerimaan").onclick = async function(){
   }catch(error){
     console.log(error);
     document.getElementById("pesanPenerimaan").innerText = "Penerimaan gagal disimpan: " + error.code;
+  }
+};
+
+document.getElementById("riwayatPenerimaan").onclick = async function(){
+  var hasilRiwayat = document.getElementById("hasilRiwayatPenerimaan");
+  if(hasilRiwayat.style.display === "block"){
+    hasilRiwayat.style.display = "none";
+    return;
+  }
+  hasilRiwayat.style.display = "block";
+  hasilRiwayat.innerHTML = "Memuat riwayat penerimaan...";
+
+  try{
+    var qPenerimaan = query(collection(firebaseDb, "penerimaanAlat"), orderBy("dibuatPada", "desc"));
+    var dataPenerimaan = await getDocs(qPenerimaan);
+    hasilRiwayat.innerHTML = "";
+    var jumlahRiwayatPribadi = 0;
+
+    dataPenerimaan.forEach(function(dokumen){
+      var data = dokumen.data();
+      if(data.petugas !== penggunaAktif.nama) return;
+      jumlahRiwayatPribadi++;
+
+      var kartu = document.createElement("div");
+      kartu.style.background = "linear-gradient(145deg,#ffffff,#fff8f6)";
+      kartu.style.border = "1px solid #efd0c9";
+      kartu.style.borderRadius = "18px";
+      kartu.style.padding = "18px";
+      kartu.style.marginBottom = "14px";
+      kartu.style.boxShadow = "0 4px 12px rgba(150,85,75,.05)";
+
+      var judul = document.createElement("strong");
+      judul.textContent = "🧺 " + data.ruang;
+      judul.style.display = "block";
+      judul.style.fontSize = "17px";
+      judul.style.color = "#8a544b";
+      judul.style.marginBottom = "6px";
+
+      var waktu = document.createElement("p");
+      waktu.textContent = data.tanggal + " • " + data.jam;
+      waktu.style.fontSize = "13px";
+      waktu.style.color = "#9c7a74";
+      waktu.style.margin = "4px 0 14px";
+
+      var daftar = document.createElement("div");
+      (data.items || []).forEach(function(item){
+        var baris = document.createElement("div");
+        baris.textContent = "• " + item.alat + " — Jumlah: " + item.jumlah + " (" + item.kondisi + ")";
+        baris.style.background = "#fde9e5";
+        baris.style.padding = "9px 11px";
+        baris.style.borderRadius = "10px";
+        baris.style.marginBottom = "6px";
+        baris.style.color = "#8a544b";
+        baris.style.fontSize = "13px";
+        daftar.appendChild(baris);
+      });
+
+      var petugas = document.createElement("p");
+      petugas.textContent = "Petugas CSSD: " + data.petugas;
+      petugas.style.margin = "12px 0 4px";
+      petugas.style.fontSize = "13px";
+      petugas.style.color = "#8a544b";
+      petugas.style.fontWeight = "600";
+
+      var menyerahkan = document.createElement("p");
+      menyerahkan.textContent = "Yang menyerahkan: " + data.menyerahkan;
+      menyerahkan.style.margin = "0 0 12px";
+      menyerahkan.style.fontSize = "13px";
+      menyerahkan.style.color = "#8a544b";
+      menyerahkan.style.fontWeight = "600";
+
+      kartu.appendChild(judul);
+      kartu.appendChild(waktu);
+      kartu.appendChild(daftar);
+      kartu.appendChild(petugas);
+      kartu.appendChild(menyerahkan);
+
+      if(data.catatan){
+        var catatan = document.createElement("p");
+        catatan.textContent = "Catatan: " + data.catatan;
+        catatan.style.background = "#fff8f6";
+        catatan.style.borderLeft = "2px solid #d4948a";
+        catatan.style.padding = "9px 11px";
+        catatan.style.borderRadius = "8px";
+        catatan.style.fontSize = "12px";
+        catatan.style.color = "#8c6862";
+        catatan.style.margin = "10px 0 0";
+        kartu.appendChild(catatan);
+      }
+
+      hasilRiwayat.appendChild(kartu);
+    });
+
+    if(jumlahRiwayatPribadi === 0){
+      hasilRiwayat.innerHTML = "Belum ada riwayat penerimaan Anda.";
+    }
+  }catch(error){
+    console.log(error);
+    hasilRiwayat.innerHTML = "Riwayat penerimaan gagal dimuat.";
   }
 };
 
@@ -6065,7 +6365,7 @@ document.getElementById("simpanDekontaminasi").onclick = async function(){
   };
 
   try{
-    await addDoc(collection(firebaseDb, "dekontaminasi"), dekontaminasi);
+    await addDoc(collection(firebaseDb, "dekontaminasiAlat"), dekontaminasi);
     document.getElementById("pesanDekontaminasi").innerText = "✓ Dekontaminasi berhasil disimpan.";
     document.getElementById("tanggalDekontaminasi").value = "";
     document.getElementById("jamDekontaminasi").value = "";
@@ -6077,6 +6377,97 @@ document.getElementById("simpanDekontaminasi").onclick = async function(){
   }catch(error){
     console.log(error);
     document.getElementById("pesanDekontaminasi").innerText = "Dekontaminasi gagal disimpan: " + error.code;
+  }
+};
+
+document.getElementById("riwayatDekontaminasi").onclick = async function(){
+  var hasilRiwayat = document.getElementById("hasilRiwayatDekontaminasi");
+  if(hasilRiwayat.style.display === "block"){
+    hasilRiwayat.style.display = "none";
+    return;
+  }
+  hasilRiwayat.style.display = "block";
+  hasilRiwayat.innerHTML = "Memuat riwayat dekontaminasi...";
+
+  try{
+    var qDekontaminasi = query(collection(firebaseDb, "dekontaminasiAlat"), orderBy("dibuatPada", "desc"));
+    var dataDekontaminasi = await getDocs(qDekontaminasi);
+    hasilRiwayat.innerHTML = "";
+    var jumlahRiwayatPribadi = 0;
+
+    dataDekontaminasi.forEach(function(dokumen){
+      var data = dokumen.data();
+      if(data.petugas !== penggunaAktif.nama) return;
+      jumlahRiwayatPribadi++;
+
+      var kartu = document.createElement("div");
+      kartu.style.background = "linear-gradient(145deg,#ffffff,#fff8f6)";
+      kartu.style.border = "1px solid #efd0c9";
+      kartu.style.borderRadius = "18px";
+      kartu.style.padding = "18px";
+      kartu.style.marginBottom = "14px";
+      kartu.style.boxShadow = "0 4px 12px rgba(150,85,75,.05)";
+
+      var judul = document.createElement("strong");
+      judul.textContent = "🧼 " + data.metode;
+      judul.style.display = "block";
+      judul.style.fontSize = "17px";
+      judul.style.color = "#8a544b";
+      judul.style.marginBottom = "6px";
+
+      var waktu = document.createElement("p");
+      waktu.textContent = data.tanggal + " • " + data.jam;
+      waktu.style.fontSize = "13px";
+      waktu.style.color = "#9c7a74";
+      waktu.style.margin = "4px 0 14px";
+
+      var daftar = document.createElement("div");
+      (data.items || []).forEach(function(item){
+        var baris = document.createElement("div");
+        baris.textContent = "• " + item.alat + " — Jumlah: " + item.jumlah;
+        baris.style.background = "#fde9e5";
+        baris.style.padding = "9px 11px";
+        baris.style.borderRadius = "10px";
+        baris.style.marginBottom = "6px";
+        baris.style.color = "#8a544b";
+        baris.style.fontSize = "13px";
+        daftar.appendChild(baris);
+      });
+
+      var petugas = document.createElement("p");
+      petugas.textContent = "Petugas CSSD: " + data.petugas;
+      petugas.style.margin = "12px 0 4px";
+      petugas.style.fontSize = "13px";
+      petugas.style.color = "#8a544b";
+      petugas.style.fontWeight = "600";
+
+      kartu.appendChild(judul);
+      kartu.appendChild(waktu);
+      kartu.appendChild(daftar);
+      kartu.appendChild(petugas);
+
+      if(data.catatan){
+        var catatan = document.createElement("p");
+        catatan.textContent = "Catatan: " + data.catatan;
+        catatan.style.background = "#fff8f6";
+        catatan.style.borderLeft = "2px solid #d4948a";
+        catatan.style.padding = "9px 11px";
+        catatan.style.borderRadius = "8px";
+        catatan.style.fontSize = "12px";
+        catatan.style.color = "#8c6862";
+        catatan.style.margin = "10px 0 0";
+        kartu.appendChild(catatan);
+      }
+
+      hasilRiwayat.appendChild(kartu);
+    });
+
+    if(jumlahRiwayatPribadi === 0){
+      hasilRiwayat.innerHTML = "Belum ada riwayat dekontaminasi Anda.";
+    }
+  }catch(error){
+    console.log(error);
+    hasilRiwayat.innerHTML = "Riwayat dekontaminasi gagal dimuat.";
   }
 };
 
@@ -6141,7 +6532,7 @@ document.getElementById("simpanPacking").onclick = async function(){
   };
 
   try{
-    await addDoc(collection(firebaseDb, "packing"), packing);
+    await addDoc(collection(firebaseDb, "packingAlat"), packing);
     document.getElementById("pesanPacking").innerText = "✓ Packing berhasil disimpan.";
     document.getElementById("tanggalPacking").value = "";
     document.getElementById("waktuPacking").value = "";
@@ -6156,6 +6547,103 @@ document.getElementById("simpanPacking").onclick = async function(){
   }catch(error){
     console.log(error);
     document.getElementById("pesanPacking").innerText = "Packing gagal disimpan: " + error.code;
+  }
+};
+
+document.getElementById("riwayatPacking").onclick = async function(){
+  var hasilRiwayat = document.getElementById("hasilRiwayatPacking");
+  if(hasilRiwayat.style.display === "block"){
+    hasilRiwayat.style.display = "none";
+    return;
+  }
+  hasilRiwayat.style.display = "block";
+  hasilRiwayat.innerHTML = "Memuat riwayat packing...";
+
+  try{
+    var qPacking = query(collection(firebaseDb, "packingAlat"), orderBy("dibuatPada", "desc"));
+    var dataPacking = await getDocs(qPacking);
+    hasilRiwayat.innerHTML = "";
+    var jumlahRiwayatPribadi = 0;
+
+    dataPacking.forEach(function(dokumen){
+      var data = dokumen.data();
+      if(data.petugas !== penggunaAktif.nama) return;
+      jumlahRiwayatPribadi++;
+
+      var kartu = document.createElement("div");
+      kartu.style.background = "linear-gradient(145deg,#ffffff,#f5f9ff)";
+      kartu.style.border = "1px solid #c9ddf1";
+      kartu.style.borderRadius = "18px";
+      kartu.style.padding = "18px";
+      kartu.style.marginBottom = "14px";
+      kartu.style.boxShadow = "0 4px 12px rgba(80,120,160,.05)";
+
+      var judul = document.createElement("strong");
+      judul.textContent = "📋 Packing CSSD";
+      judul.style.display = "block";
+      judul.style.fontSize = "17px";
+      judul.style.color = "#496f91";
+      judul.style.marginBottom = "6px";
+
+      var waktu = document.createElement("p");
+      waktu.textContent = data.tanggal + " • " + data.waktu;
+      waktu.style.fontSize = "13px";
+      waktu.style.color = "#7c94ab";
+      waktu.style.margin = "4px 0 14px";
+
+      var daftar = document.createElement("div");
+      (data.items || []).forEach(function(item){
+        var baris = document.createElement("div");
+        baris.textContent =
+          "• " + item.alat +
+          " — Jumlah: " + item.jumlah +
+          " | Kondisi: " + item.kondisi +
+          " | Kemasan: " + item.kemasan +
+          " | Suhu Tinggi: " + item.indikatorTinggi +
+          " | Suhu Rendah: " + item.indikatorRendah;
+        baris.style.background = "#e7f1fb";
+        baris.style.padding = "9px 11px";
+        baris.style.borderRadius = "10px";
+        baris.style.marginBottom = "6px";
+        baris.style.color = "#496f91";
+        baris.style.fontSize = "13px";
+        daftar.appendChild(baris);
+      });
+
+      var petugas = document.createElement("p");
+      petugas.textContent = "Petugas CSSD: " + data.petugas;
+      petugas.style.margin = "12px 0 4px";
+      petugas.style.fontSize = "13px";
+      petugas.style.color = "#496f91";
+      petugas.style.fontWeight = "600";
+
+      kartu.appendChild(judul);
+      kartu.appendChild(waktu);
+      kartu.appendChild(daftar);
+      kartu.appendChild(petugas);
+
+      if(data.catatan){
+        var catatan = document.createElement("p");
+        catatan.textContent = "Catatan: " + data.catatan;
+        catatan.style.background = "#f5f9ff";
+        catatan.style.borderLeft = "2px solid #7fa6c9";
+        catatan.style.padding = "9px 11px";
+        catatan.style.borderRadius = "8px";
+        catatan.style.fontSize = "12px";
+        catatan.style.color = "#63829e";
+        catatan.style.margin = "10px 0 0";
+        kartu.appendChild(catatan);
+      }
+
+      hasilRiwayat.appendChild(kartu);
+    });
+
+    if(jumlahRiwayatPribadi === 0){
+      hasilRiwayat.innerHTML = "Belum ada riwayat packing Anda.";
+    }
+  }catch(error){
+    console.log(error);
+    hasilRiwayat.innerHTML = "Riwayat packing gagal dimuat.";
   }
 };
 
@@ -6186,7 +6674,7 @@ document.getElementById("simpanSterilisasi").onclick = async function(){
 
   if(!tanggal || !jam || !petugas || !metode || !validasiPrintout || !validasiIndikatorKimia || items.length === 0){
     document.getElementById("pesanSterilisasi").innerText =
-      "Lengkapi data sterilisasi, metode, validasi, dan minimal 1 alat beserta jumlahnya.";
+      "Lengkapi data sterilisasi, validasi, dan minimal 1 alat beserta jumlahnya.";
     return;
   }
 
@@ -6204,7 +6692,7 @@ document.getElementById("simpanSterilisasi").onclick = async function(){
   };
 
   try{
-    await addDoc(collection(firebaseDb, "sterilisasi"), sterilisasi);
+    await addDoc(collection(firebaseDb, "sterilisasiAlat"), sterilisasi);
     document.getElementById("pesanSterilisasi").innerText = "✓ Sterilisasi berhasil disimpan.";
     document.getElementById("tanggalSterilisasi").value = "";
     document.getElementById("jamSterilisasi").value = "";
@@ -6221,382 +6709,6 @@ document.getElementById("simpanSterilisasi").onclick = async function(){
   }
 };
 
-document.getElementById("riwayatDistribusi").onclick = async function(){
-  var hasilRiwayat = document.getElementById("hasilRiwayatDistribusi");
-  if(hasilRiwayat.style.display === "block"){
-    hasilRiwayat.style.display = "none";
-    return;
-  }
-  hasilRiwayat.style.display = "block";
-  hasilRiwayat.innerHTML = "Memuat riwayat distribusi...";
-
-  try{
-    var qDistribusi = query(collection(firebaseDb, "distribusi"), orderBy("dibuatPada", "desc"));
-    var dataDistribusi = await getDocs(qDistribusi);
-    hasilRiwayat.innerHTML = "";
-    var jumlahRiwayatPribadi = 0;
-
-    dataDistribusi.forEach(function(dokumen){
-      var data = dokumen.data();
-      if(data.petugas !== penggunaAktif.nama) return;
-      jumlahRiwayatPribadi++;
-
-      var kartu = document.createElement("div");
-      kartu.style.background = "linear-gradient(145deg,#ffffff,#f2faf6)";
-      kartu.style.border = "1px solid #d4e8e0";
-      kartu.style.borderRadius = "18px";
-      kartu.style.padding = "18px";
-      kartu.style.marginBottom = "14px";
-      kartu.style.boxShadow = "0 3px 10px rgba(70,105,95,.04)";
-
-      var judul = document.createElement("strong");
-      judul.textContent = "📦 " + data.ruang;
-      judul.style.display = "block";
-      judul.style.fontSize = "17px";
-      judul.style.color = "#3b6d61";
-      judul.style.marginBottom = "6px";
-
-      var waktu = document.createElement("p");
-      waktu.textContent = data.tanggal + " • " + data.jam;
-      waktu.style.fontSize = "13px";
-      waktu.style.color = "#7a8d87";
-      waktu.style.margin = "4px 0 14px";
-
-      var daftar = document.createElement("div");
-      data.items.forEach(function(item){
-        var baris = document.createElement("div");
-        baris.textContent = "• " + item.alat + " — Jumlah: " + item.jumlah;
-        baris.style.background = "#e9f5f0";
-        baris.style.border = "1px solid #d4e8e0";
-        baris.style.padding = "9px 11px";
-        baris.style.borderRadius = "10px";
-        baris.style.marginBottom = "6px";
-        baris.style.color = "#3b6d61";
-        baris.style.fontSize = "13px";
-        daftar.appendChild(baris);
-      });
-
-      var penerima = document.createElement("p");
-      penerima.textContent = "Penerima: " + data.penerima;
-      penerima.style.margin = "12px 0 4px";
-      penerima.style.fontSize = "13px";
-      penerima.style.color = "#4b6b63";
-      penerima.style.fontWeight = "600";
-
-      var status = document.createElement("p");
-      status.textContent = "Status: " + data.status;
-      status.style.display = "inline-block";
-      status.style.margin = "6px 0 4px";
-      status.style.padding = "6px 10px";
-      status.style.background = "#e2f2eb";
-      status.style.color = "#35665a";
-      status.style.borderRadius = "999px";
-      status.style.fontSize = "12px";
-      status.style.fontWeight = "700";
-
-      kartu.appendChild(judul);
-      kartu.appendChild(waktu);
-      kartu.appendChild(daftar);
-      kartu.appendChild(penerima);
-      kartu.appendChild(status);
-
-      if(data.catatan){
-        var catatan = document.createElement("p");
-        catatan.textContent = "Catatan: " + data.catatan;
-        catatan.style.background = "#f7fbf9";
-        catatan.style.borderLeft = "2px solid #96c4b7";
-        catatan.style.padding = "9px 11px";
-        catatan.style.borderRadius = "8px";
-        catatan.style.fontSize = "12px";
-        catatan.style.color = "#637872";
-        catatan.style.margin = "10px 0 0";
-        kartu.appendChild(catatan);
-      }
-
-      hasilRiwayat.appendChild(kartu);
-    });
-
-    if(jumlahRiwayatPribadi === 0){
-      hasilRiwayat.innerHTML = "Belum ada riwayat distribusi Anda.";
-    }
-  }catch(error){
-    console.log(error);
-    hasilRiwayat.innerHTML = "Riwayat distribusi gagal dimuat.";
-  }
-};
-
-document.getElementById("riwayatPenerimaan").onclick = async function(){
-  var hasilRiwayat = document.getElementById("hasilRiwayatPenerimaan");
-  if(hasilRiwayat.style.display === "block"){
-    hasilRiwayat.style.display = "none";
-    return;
-  }
-  hasilRiwayat.style.display = "block";
-  hasilRiwayat.innerHTML = "Memuat riwayat penerimaan...";
-
-  try{
-    var qPenerimaan = query(collection(firebaseDb, "penerimaan"), orderBy("dibuatPada", "desc"));
-    var dataPenerimaan = await getDocs(qPenerimaan);
-    hasilRiwayat.innerHTML = "";
-    var jumlahRiwayatPenerimaanPribadi = 0;
-
-    dataPenerimaan.forEach(function(dokumen){
-      var data = dokumen.data();
-      if(data.petugas !== penggunaAktif.nama) return;
-      jumlahRiwayatPenerimaanPribadi++;
-
-      var kartu = document.createElement("div");
-      kartu.style.background = "linear-gradient(145deg,#ffffff,#fff8f6)";
-      kartu.style.border = "1px solid #efd0c9";
-      kartu.style.borderRadius = "18px";
-      kartu.style.padding = "18px";
-      kartu.style.marginBottom = "14px";
-      kartu.style.boxShadow = "0 3px 10px rgba(150,85,75,.04)";
-
-      var judul = document.createElement("strong");
-      judul.textContent = "🧺 " + data.ruang;
-      judul.style.display = "block";
-      judul.style.fontSize = "17px";
-      judul.style.color = "#8a544b";
-      judul.style.marginBottom = "6px";
-
-      var waktu = document.createElement("p");
-      waktu.textContent = data.tanggal + " • " + data.jam;
-      waktu.style.fontSize = "13px";
-      waktu.style.color = "#967874";
-      waktu.style.margin = "4px 0 14px";
-
-      var daftar = document.createElement("div");
-      data.items.forEach(function(item){
-        var baris = document.createElement("div");
-        baris.textContent = "• " + item.alat + " — Jumlah: " + item.jumlah + " (" + item.kondisi + ")";
-        baris.style.background = "#fde9e5";
-        baris.style.border = "1px solid #efd0c9";
-        baris.style.padding = "9px 11px";
-        baris.style.borderRadius = "10px";
-        baris.style.marginBottom = "6px";
-        baris.style.color = "#8a544b";
-        baris.style.fontSize = "13px";
-        daftar.appendChild(baris);
-      });
-
-      var menyerahkan = document.createElement("p");
-      menyerahkan.textContent = "Yang menyerahkan: " + data.menyerahkan;
-      menyerahkan.style.margin = "12px 0 4px";
-      menyerahkan.style.fontSize = "13px";
-      menyerahkan.style.color = "#7a524b";
-      menyerahkan.style.fontWeight = "600";
-
-      kartu.appendChild(judul);
-      kartu.appendChild(waktu);
-      kartu.appendChild(daftar);
-      kartu.appendChild(menyerahkan);
-
-      if(data.catatan){
-        var catatan = document.createElement("p");
-        catatan.textContent = "Catatan: " + data.catatan;
-        catatan.style.background = "#fff8f6";
-        catatan.style.borderLeft = "2px solid #d4968c";
-        catatan.style.padding = "9px 11px";
-        catatan.style.borderRadius = "8px";
-        catatan.style.fontSize = "12px";
-        catatan.style.color = "#7d605b";
-        catatan.style.margin = "10px 0 0";
-        kartu.appendChild(catatan);
-      }
-
-      hasilRiwayat.appendChild(kartu);
-    });
-
-    if(jumlahRiwayatPenerimaanPribadi === 0){
-      hasilRiwayat.innerHTML = "Belum ada riwayat penerimaan Anda.";
-    }
-  }catch(error){
-    console.log(error);
-    hasilRiwayat.innerHTML = "Riwayat penerimaan gagal dimuat.";
-  }
-};
-
-document.getElementById("riwayatDekontaminasi").onclick = async function(){
-  var hasilRiwayat = document.getElementById("hasilRiwayatDekontaminasi");
-  if(hasilRiwayat.style.display === "block"){
-    hasilRiwayat.style.display = "none";
-    return;
-  }
-  hasilRiwayat.style.display = "block";
-  hasilRiwayat.innerHTML = "Memuat riwayat dekontaminasi...";
-
-  try{
-    var qDekontaminasi = query(collection(firebaseDb, "dekontaminasi"), orderBy("dibuatPada", "desc"));
-    var dataDekontaminasi = await getDocs(qDekontaminasi);
-    hasilRiwayat.innerHTML = "";
-    var jumlahRiwayatDekontaminasiPribadi = 0;
-
-    dataDekontaminasi.forEach(function(dokumen){
-      var data = dokumen.data();
-      if(data.petugas !== penggunaAktif.nama) return;
-      jumlahRiwayatDekontaminasiPribadi++;
-
-      var kartu = document.createElement("div");
-      kartu.style.background = "linear-gradient(145deg,#ffffff,#fff8f6)";
-      kartu.style.border = "1px solid #efd0c9";
-      kartu.style.borderRadius = "18px";
-      kartu.style.padding = "18px";
-      kartu.style.marginBottom = "14px";
-      kartu.style.boxShadow = "0 3px 10px rgba(150,85,75,.04)";
-
-      var judul = document.createElement("strong");
-      judul.textContent = "🧼 " + data.metode;
-      judul.style.display = "block";
-      judul.style.fontSize = "17px";
-      judul.style.color = "#8a544b";
-      judul.style.marginBottom = "6px";
-
-      var waktu = document.createElement("p");
-      waktu.textContent = data.tanggal + " • " + data.jam;
-      waktu.style.fontSize = "13px";
-      waktu.style.color = "#967874";
-      waktu.style.margin = "4px 0 14px";
-
-      var daftar = document.createElement("div");
-      data.items.forEach(function(item){
-        var baris = document.createElement("div");
-        baris.textContent = "• " + item.alat + " — Jumlah: " + item.jumlah;
-        baris.style.background = "#fde9e5";
-        baris.style.border = "1px solid #efd0c9";
-        baris.style.padding = "9px 11px";
-        baris.style.borderRadius = "10px";
-        baris.style.marginBottom = "6px";
-        baris.style.color = "#8a544b";
-        baris.style.fontSize = "13px";
-        daftar.appendChild(baris);
-      });
-
-      var petugas = document.createElement("p");
-      petugas.textContent = "Petugas CSSD: " + data.petugas;
-      petugas.style.margin = "12px 0 4px";
-      petugas.style.fontSize = "13px";
-      petugas.style.color = "#7a524b";
-      petugas.style.fontWeight = "600";
-
-      kartu.appendChild(judul);
-      kartu.appendChild(waktu);
-      kartu.appendChild(daftar);
-      kartu.appendChild(petugas);
-
-      if(data.catatan){
-        var catatan = document.createElement("p");
-        catatan.textContent = "Catatan: " + data.catatan;
-        catatan.style.background = "#fff8f6";
-        catatan.style.borderLeft = "2px solid #d4968c";
-        catatan.style.padding = "9px 11px";
-        catatan.style.borderRadius = "8px";
-        catatan.style.fontSize = "12px";
-        catatan.style.color = "#7d605b";
-        catatan.style.margin = "10px 0 0";
-        kartu.appendChild(catatan);
-      }
-
-      hasilRiwayat.appendChild(kartu);
-    });
-
-    if(jumlahRiwayatDekontaminasiPribadi === 0){
-      hasilRiwayat.innerHTML = "Belum ada riwayat dekontaminasi Anda.";
-    }
-  }catch(error){
-    console.log(error);
-    hasilRiwayat.innerHTML = "Riwayat dekontaminasi gagal dimuat.";
-  }
-};
-
-document.getElementById("riwayatPacking").onclick = async function(){
-  var hasilRiwayat = document.getElementById("hasilRiwayatPacking");
-  if(hasilRiwayat.style.display === "block"){
-    hasilRiwayat.style.display = "none";
-    return;
-  }
-  hasilRiwayat.style.display = "block";
-  hasilRiwayat.innerHTML = "Memuat riwayat packing...";
-
-  try{
-    var qPacking = query(collection(firebaseDb, "packing"), orderBy("dibuatPada", "desc"));
-    var dataPacking = await getDocs(qPacking);
-    hasilRiwayat.innerHTML = "";
-    var jumlahRiwayatPackingPribadi = 0;
-
-    dataPacking.forEach(function(dokumen){
-      var data = dokumen.data();
-      if(data.petugas !== penggunaAktif.nama) return;
-      jumlahRiwayatPackingPribadi++;
-
-      var kartu = document.createElement("div");
-      kartu.style.background = "linear-gradient(145deg,#ffffff,#f3f8fe)";
-      kartu.style.border = "1px solid #c9ddf1";
-      kartu.style.borderRadius = "18px";
-      kartu.style.padding = "18px";
-      kartu.style.marginBottom = "14px";
-      kartu.style.boxShadow = "0 3px 10px rgba(80,120,160,.04)";
-
-      var judul = document.createElement("strong");
-      judul.textContent = "📋 " + data.tanggal + " • " + data.waktu;
-      judul.style.display = "block";
-      judul.style.fontSize = "17px";
-      judul.style.color = "#527aa0";
-      judul.style.marginBottom = "12px";
-
-      var daftar = document.createElement("div");
-      data.items.forEach(function(item){
-        var baris = document.createElement("div");
-        baris.textContent = "• " + item.alat + " — Jumlah: " + item.jumlah +
-          " (" + item.kondisi + ", Kemasan: " + item.kemasan +
-          ", Indikator Suhu Tinggi: " + item.indikatorTinggi +
-          ", Indikator Suhu Rendah: " + item.indikatorRendah + ")";
-        baris.style.background = "#e7f1fb";
-        baris.style.border = "1px solid #c9ddf1";
-        baris.style.padding = "9px 11px";
-        baris.style.borderRadius = "10px";
-        baris.style.marginBottom = "6px";
-        baris.style.color = "#456888";
-        baris.style.fontSize = "13px";
-        daftar.appendChild(baris);
-      });
-
-      var petugas = document.createElement("p");
-      petugas.textContent = "Petugas CSSD: " + data.petugas;
-      petugas.style.margin = "12px 0 4px";
-      petugas.style.fontSize = "13px";
-      petugas.style.color = "#4b6d8d";
-      petugas.style.fontWeight = "600";
-
-      kartu.appendChild(judul);
-      kartu.appendChild(daftar);
-      kartu.appendChild(petugas);
-
-      if(data.catatan){
-        var catatan = document.createElement("p");
-        catatan.textContent = "Catatan: " + data.catatan;
-        catatan.style.background = "#f3f8fe";
-        catatan.style.borderLeft = "2px solid #8eb6db";
-        catatan.style.padding = "9px 11px";
-        catatan.style.borderRadius = "8px";
-        catatan.style.fontSize = "12px";
-        catatan.style.color = "#5a7691";
-        catatan.style.margin = "10px 0 0";
-        kartu.appendChild(catatan);
-      }
-
-      hasilRiwayat.appendChild(kartu);
-    });
-
-    if(jumlahRiwayatPackingPribadi === 0){
-      hasilRiwayat.innerHTML = "Belum ada riwayat packing Anda.";
-    }
-  }catch(error){
-    console.log(error);
-    hasilRiwayat.innerHTML = "Riwayat packing gagal dimuat.";
-  }
-};
-
 document.getElementById("riwayatSterilisasi").onclick = async function(){
   var hasilRiwayat = document.getElementById("hasilRiwayatSterilisasi");
   if(hasilRiwayat.style.display === "block"){
@@ -6607,67 +6719,68 @@ document.getElementById("riwayatSterilisasi").onclick = async function(){
   hasilRiwayat.innerHTML = "Memuat riwayat sterilisasi...";
 
   try{
-    var qSterilisasi = query(collection(firebaseDb, "sterilisasi"), orderBy("dibuatPada", "desc"));
+    var qSterilisasi = query(collection(firebaseDb, "sterilisasiAlat"), orderBy("dibuatPada", "desc"));
     var dataSterilisasi = await getDocs(qSterilisasi);
     hasilRiwayat.innerHTML = "";
-    var jumlahRiwayatSterilisasiPribadi = 0;
+    var jumlahRiwayatPribadi = 0;
 
     dataSterilisasi.forEach(function(dokumen){
       var data = dokumen.data();
       if(data.petugas !== penggunaAktif.nama) return;
-      jumlahRiwayatSterilisasiPribadi++;
+      jumlahRiwayatPribadi++;
 
       var kartu = document.createElement("div");
-      kartu.style.background = "linear-gradient(145deg,#ffffff,#f3f8fe)";
+      kartu.style.background = "linear-gradient(145deg,#ffffff,#f5f9ff)";
       kartu.style.border = "1px solid #c9ddf1";
       kartu.style.borderRadius = "18px";
       kartu.style.padding = "18px";
       kartu.style.marginBottom = "14px";
-      kartu.style.boxShadow = "0 3px 10px rgba(80,120,160,.04)";
+      kartu.style.boxShadow = "0 4px 12px rgba(80,120,160,.05)";
 
       var judul = document.createElement("strong");
       judul.textContent = "♨️ " + data.metode;
       judul.style.display = "block";
       judul.style.fontSize = "17px";
-      judul.style.color = "#527aa0";
+      judul.style.color = "#496f91";
       judul.style.marginBottom = "6px";
 
       var waktu = document.createElement("p");
       waktu.textContent = data.tanggal + " • " + data.jam;
       waktu.style.fontSize = "13px";
-      waktu.style.color = "#7a90a6";
+      waktu.style.color = "#7c94ab";
       waktu.style.margin = "4px 0 14px";
 
       var daftar = document.createElement("div");
-      data.items.forEach(function(item){
+      (data.items || []).forEach(function(item){
         var baris = document.createElement("div");
         baris.textContent = "• " + item.alat + " — Jumlah: " + item.jumlah;
         baris.style.background = "#e7f1fb";
-        baris.style.border = "1px solid #c9ddf1";
         baris.style.padding = "9px 11px";
         baris.style.borderRadius = "10px";
         baris.style.marginBottom = "6px";
-        baris.style.color = "#456888";
+        baris.style.color = "#496f91";
         baris.style.fontSize = "13px";
         daftar.appendChild(baris);
       });
 
-      var validasi = document.createElement("p");
-      validasi.textContent = "Validasi — Printout / Parameter Mesin: " + data.validasiPrintout + " • Indikator Kimia: " + data.validasiIndikatorKimia;
-      validasi.style.display = "inline-block";
-      validasi.style.margin = "10px 0 4px";
-      validasi.style.padding = "6px 10px";
-      validasi.style.background = "#e7f1fb";
-      validasi.style.color = "#456888";
+      var validasi = document.createElement("div");
+      validasi.innerHTML =
+        "<strong>Hasil Printout / Parameter Mesin:</strong> " + (data.validasiPrintout || "-") + "<br>" +
+        "<strong>Hasil Indikator Kimia:</strong> " + (data.validasiIndikatorKimia || "-");
+      validasi.style.background = "#f0f6fc";
+      validasi.style.border = "1px solid #dce9f5";
+      validasi.style.padding = "9px 11px";
       validasi.style.borderRadius = "10px";
-      validasi.style.fontSize = "12px";
-      validasi.style.fontWeight = "700";
+      validasi.style.margin = "10px 0";
+      validasi.style.color = "#496f91";
+      validasi.style.fontSize = "13px";
+      validasi.style.lineHeight = "1.6";
 
       var petugas = document.createElement("p");
       petugas.textContent = "Petugas CSSD: " + data.petugas;
-      petugas.style.margin = "10px 0 4px";
+      petugas.style.margin = "12px 0 4px";
       petugas.style.fontSize = "13px";
-      petugas.style.color = "#4b6d8d";
+      petugas.style.color = "#496f91";
       petugas.style.fontWeight = "600";
 
       kartu.appendChild(judul);
@@ -6679,12 +6792,12 @@ document.getElementById("riwayatSterilisasi").onclick = async function(){
       if(data.catatan){
         var catatan = document.createElement("p");
         catatan.textContent = "Catatan: " + data.catatan;
-        catatan.style.background = "#f3f8fe";
-        catatan.style.borderLeft = "2px solid #8eb6db";
+        catatan.style.background = "#f5f9ff";
+        catatan.style.borderLeft = "2px solid #7fa6c9";
         catatan.style.padding = "9px 11px";
         catatan.style.borderRadius = "8px";
         catatan.style.fontSize = "12px";
-        catatan.style.color = "#5a7691";
+        catatan.style.color = "#63829e";
         catatan.style.margin = "10px 0 0";
         kartu.appendChild(catatan);
       }
@@ -6692,65 +6805,12 @@ document.getElementById("riwayatSterilisasi").onclick = async function(){
       hasilRiwayat.appendChild(kartu);
     });
 
-    if(jumlahRiwayatSterilisasiPribadi === 0){
+    if(jumlahRiwayatPribadi === 0){
       hasilRiwayat.innerHTML = "Belum ada riwayat sterilisasi Anda.";
     }
   }catch(error){
     console.log(error);
     hasilRiwayat.innerHTML = "Riwayat sterilisasi gagal dimuat.";
-  }
-};
-
-document.getElementById("lihatRiwayat").onclick = async function(){
-  var pesan = document.getElementById("pesanAktivitas");
-  pesan.innerHTML = "Memuat riwayat...";
-
-  try{
-    var q = query(collection(firebaseDb, "aktivitasCssd"), orderBy("dibuatPada", "desc"));
-    var dataSnapshot = await getDocs(q);
-
-    pesan.innerHTML = "";
-
-    dataSnapshot.forEach(function(dokumen){
-      var data = dokumen.data();
-
-      var kartu = document.createElement("div");
-      kartu.style.border = "1px solid #d7e9e3";
-      kartu.style.borderRadius = "14px";
-      kartu.style.padding = "12px";
-      kartu.style.marginBottom = "10px";
-      kartu.style.background = "#ffffff";
-
-      var judul = document.createElement("strong");
-      judul.textContent = data.jenisAktivitas + " — " + data.namaAlat;
-
-      var info = document.createElement("p");
-      info.textContent = data.tanggal + " " + data.jam + " | Unit: " + data.unit + " | Jumlah: " + data.jumlah + " | Status: " + data.status;
-      info.style.margin = "6px 0 0";
-      info.style.fontSize = "13px";
-      info.style.color = "#4b6b63";
-
-      kartu.appendChild(judul);
-      kartu.appendChild(info);
-
-      if(data.catatan){
-        var catatan = document.createElement("p");
-        catatan.textContent = "Catatan: " + data.catatan;
-        catatan.style.margin = "6px 0 0";
-        catatan.style.fontSize = "12px";
-        catatan.style.color = "#6b7e78";
-        kartu.appendChild(catatan);
-      }
-
-      pesan.appendChild(kartu);
-    });
-
-    if(!pesan.innerHTML){
-      pesan.innerHTML = "Belum ada riwayat aktivitas.";
-    }
-  }catch(error){
-    console.log(error);
-    pesan.innerHTML = "Riwayat gagal dimuat: " + error.code;
   }
 };
 </script>
